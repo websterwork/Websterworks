@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+.font-syncopate {
+  font-family: var(--font-syncopate);
+}
+
+.font-space {
+  font-family: var(--font-space-grotesk);
+}
