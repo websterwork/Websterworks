@@ -29,18 +29,18 @@ services:
       - app-network # ADD THIS
 
   nginx:
-    image: nginx:latest
-    container_name: nginx
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
-    depends_on:
-      - frontend
-      - backend
-    restart: always
-    networks: # ADD THIS
-      - app-network # ADD THIS
+  image: nginx:latest
+  container_name: nginx
+  ports:
+    - "127.0.0.1:80:80" # internal only
+  volumes:
+    - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+  depends_on:
+    - frontend
+    - backend
+  restart: always
+  networks:
+    - app-network
 
   mongo:
     image: mongo:7.0
