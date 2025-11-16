@@ -2,6 +2,8 @@ import { Module, Logger } from '@nestjs/common';
 import { Connection } from 'mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule, MongooseModuleOptions } from '@nestjs/mongoose';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { MessagesModule } from './messages/messages.module';
@@ -46,5 +48,7 @@ import { TeamMeetsModule } from './team-meets/team-meets.module';
     TwoFactorModule,
     TeamMeetsModule,
   ],
+  controllers: [AppController], // ✅ Add this
+  providers: [AppService], // ✅ Add this
 })
 export class AppModule {}
