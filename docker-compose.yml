@@ -5,6 +5,8 @@ services:
     build: ./frontend
     container_name: frontend
     restart: always
+    ports:
+      - "3000:3000"  # ADD THIS
     volumes:
       - frontend_node_modules:/app/node_modules
 
@@ -12,6 +14,8 @@ services:
     build: ./backend
     container_name: backend
     restart: always
+    ports:
+      - "5000:5000"  # ADD THIS
     env_file:
       - ./backend/.env.production
     depends_on:
@@ -25,11 +29,10 @@ services:
     container_name: nginx
     ports:
       - "80:80"
-      - "443:443"
+      # REMOVE 443:443 - we don't have certificates yet
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
-      - certbot_etc:/etc/letsencrypt
-      - certbot_www:/var/www/certbot
+      # REMOVE certbot volumes for now
     depends_on:
       - frontend
       - backend
@@ -48,6 +51,5 @@ volumes:
   frontend_node_modules:
   backend_node_modules:
   backend_storage:
-  certbot_etc:
-  certbot_www:
   mongo_data:
+  # REMOVE certbot volumes
