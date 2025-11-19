@@ -35,9 +35,9 @@ export class AuthController {
     // In development (NODE_ENV !== 'production'), allow more permissive settings for LAN access
     const isProduction = process.env.NODE_ENV === 'production';
     res.cookie(process.env.CSRF_COOKIE_NAME || 'XSRF-TOKEN', token, {
-      httpOnly: true,
+      httpOnly: false,
       secure: isProduction, // HTTPS only in production
-      sameSite: isProduction ? 'strict' : 'lax', // Stricter in production
+      sameSite: isProduction ? 'none' : 'lax', // Stricter in production
       maxAge: 1000 * 60 * 60, // 1 hour
       path: '/',
     });
@@ -45,7 +45,6 @@ export class AuthController {
     // Return the token so the frontend can store it and send it in headers
     return { csrfToken: token };
   }
-
   @Post('signup')
   async signUp(@Body() dto: AuthCredentialsDto) {
     const user = await this.authService.signUp(dto.email, dto.password);
@@ -66,7 +65,7 @@ export class AuthController {
 
     res.cookie(process.env.REFRESH_COOKIE_NAME || 'jid', tokens.refreshToken, {
       httpOnly: true,
-      sameSite: 'lax',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       secure: process.env.NODE_ENV === 'production',
       path: '/api/auth/refresh',
       maxAge: 1000 * 60 * 60 * 24 * 7,
@@ -103,7 +102,7 @@ export class AuthController {
 
     res.cookie(process.env.REFRESH_COOKIE_NAME || 'jid', tokens.refreshToken, {
       httpOnly: true,
-      sameSite: 'lax',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       secure: process.env.NODE_ENV === 'production',
       path: '/api/auth/refresh',
       maxAge: 1000 * 60 * 60 * 24 * 7,

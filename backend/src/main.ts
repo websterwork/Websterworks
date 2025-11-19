@@ -1,37 +1,44 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import cookieParser from 'cookie-parser';
 import { ValidationPipe, Logger } from '@nestjs/common';
+import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import * as express from 'express';
 import { expressLogger } from './utils/logger';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
-
-// note: using upgraded sanitize library
 import mongoSanitize from '@exortek/express-mongo-sanitize';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  // IMPORTANT: Tell Nest to use the Express version
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  // ADD THIS LINE
+   app.setGlobalPrefix('api/');
   const logger = new Logger('Bootstrap');
 
+  /*
+   * Cloudflare / Nginx / Proxy handling
+   * Fixes express-rate-limit ERR_ERL_UNEXPECTED_X_FORWARDED_FOR
+   */
+  app.set('trust proxy', 1);
 
+  // Security middleware
   app.use(helmet());
-
   app.use(express.json({ limit: '10kb' }));
   app.use(express.urlencoded({ extended: false, limit: '10kb' }));
 
-  // Use upgraded sanitize with selective parts
+  // Sanitization
   app.use(
     mongoSanitize({
       replaceWith: '_',
-      sanitizeObjects: ['body'], // only sanitize body
-      // query and params skipped
+      sanitizeObjects: ['body'],
       removeMatches: false,
       debug: { enabled: false, level: 'info' },
     }),
   );
 
+  // Global rate limiter
   app.use(
     rateLimit({
       windowMs: Number(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000,
@@ -41,13 +48,10 @@ async function bootstrap() {
     }),
   );
 
-  // cookieParser's types can be noisy in some TS setups; cast to unknown then to a handler to satisfy the checker
-  const _cookieParser = cookieParser as unknown as (...args: any[]) => any;
-  app.use(_cookieParser());
+  // Cookies
+  app.use(cookieParser());
 
-  // CSRF middleware removed - now applied selectively via XsrfGuard on mutation endpoints
-  // This ensures GET /api/auth/token is accessible without CSRF validation
-
+  // Validation
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -56,21 +60,22 @@ async function bootstrap() {
     }),
   );
 
+  // Logging & Errors
   app.use(expressLogger);
   app.useGlobalFilters(new HttpExceptionFilter());
 
-  // Enable CORS for frontend (defaults to http://192.168.0.107:3000)
-  // Support multiple origins for development (localhost + LAN IP)
+  // CORS config
   const frontendUrl = process.env.FRONTEND_URL || 'http://192.168.0.107:3000';
   const corsOrigins = [
     'http://localhost:3000',
     'http://192.168.0.107:3000',
+    'https://websterwork.com',
     frontendUrl,
   ];
 
   app.enableCors({
     origin: corsOrigins,
-    credentials: true, // allow cookies (needed for csrf cookie/auth)
+    credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: [
       'Content-Type',
@@ -89,4 +94,5 @@ async function bootstrap() {
   await app.listen(port, '0.0.0.0');
   logger.log(`Server is running on port ${port}`);
 }
+
 void bootstrap();

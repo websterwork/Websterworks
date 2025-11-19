@@ -41,32 +41,33 @@ export const AuthProvider = ( { children } ) =>
     }, [] );
 
     // Refresh access token using refresh endpoint
-    const doRefreshToken = useCallback( async () =>
-    {
-        try
-        {
-            const response = await fetch( `${ API_URL }/api/auth/refresh`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                credentials: "include", // Include refresh token cookie
-            } );
+    const doRefreshToken = useCallback(async () => {
+    try {
+        // Ensure CSRF token is present
+        const csrf = csrfToken || (await fetchCsrfToken());
 
-            if ( !response.ok ) throw new Error( "Token refresh failed" );
+        const response = await fetch(`${API_URL}/api/auth/refresh`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "x-csrf-token": csrf, // <-- added CSRF header
+            },
+            credentials: "include", // Include refresh token cookie
+        });
 
-            const data = await response.json();
-            setToken( data.accessToken );
-            localStorage.setItem( "authToken", data.accessToken );
-            return data.accessToken;
-        } catch ( err )
-        {
-            // If refresh fails, clear auth state
-            setUser( null );
-            setToken( null );
-            localStorage.removeItem( "authToken" );
-            throw err;
-        }
-    }, [] );
+        if (!response.ok) throw new Error("Token refresh failed");
 
+        const data = await response.json();
+        setToken(data.accessToken);
+        localStorage.setItem("authToken", data.accessToken);
+        return data.accessToken;
+    } catch (err) {
+        setUser(null);
+        setToken(null);
+        localStorage.removeItem("authToken");
+        throw err;
+    }
+}, [csrfToken, fetchCsrfToken]);
     // Secure API calls with auto-refresh on 401
     const apiCall = useCallback( async ( endpoint, method = "GET", body = null ) =>
     {
