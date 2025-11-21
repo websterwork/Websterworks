@@ -14,7 +14,7 @@ async function bootstrap() {
   // IMPORTANT: Tell Nest to use the Express version
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   // ADD THIS LINE
-   app.setGlobalPrefix('api/');
+  app.setGlobalPrefix('api/');
   const logger = new Logger('Bootstrap');
 
   /*
@@ -72,9 +72,21 @@ async function bootstrap() {
     'https://websterwork.com',
     frontendUrl,
   ];
+  console.log('CORS allowed origins:', corsOrigins);
 
   app.enableCors({
-    origin: corsOrigins,
+    origin: (origin, callback) => {
+      // Log incoming origin for debugging
+      console.log('[CORS] incoming Origin:', origin);
+      // allow non-browser requests like curl that have no origin
+      if (!origin) return callback(null, true);
+      if (corsOrigins.includes(origin)) {
+        console.log('[CORS] allowing origin:', origin);
+        return callback(null, true);
+      }
+      console.warn('[CORS] rejecting origin:', origin);
+      return callback(new Error('Not allowed by CORS'));
+    },
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: [

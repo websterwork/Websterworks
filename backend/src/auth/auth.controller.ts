@@ -27,20 +27,55 @@ export class AuthController {
   ) {}
 
   @Get('token')
-  getCsrfToken(@Res({ passthrough: true }) res: Response) {
+  getCsrfToken(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
     // Generate a new CSRF token
     const token = this.csrfTokenService.generateToken();
+
+    // Debug: log incoming origin/header info
+    try {
+      console.log(
+        '[CSRF] GET /auth/token - req.headers.origin:',
+        req.headers.origin,
+      );
+      console.log('[CSRF] GET /auth/token - req.get("host"):', req.get('host'));
+    } catch (e) {
+      // ignore
+    }
 
     // Set the token as a secure, httpOnly cookie
     // In development (NODE_ENV !== 'production'), allow more permissive settings for LAN access
     const isProduction = process.env.NODE_ENV === 'production';
-    res.cookie(process.env.CSRF_COOKIE_NAME || 'XSRF-TOKEN', token, {
+    const cookieName = process.env.CSRF_COOKIE_NAME || 'XSRF-TOKEN';
+    const cookieOpts = {
       httpOnly: false,
       secure: isProduction, // HTTPS only in production
       sameSite: isProduction ? 'none' : 'lax', // Stricter in production
       maxAge: 1000 * 60 * 60, // 1 hour
       path: '/',
-    });
+    } as const;
+
+    console.log('[CSRF] setting cookie', cookieName, cookieOpts);
+    res.cookie(cookieName, token, cookieOpts as any);
+    // ensure the response is not cached (helps Cloudflare/nginx debugging)
+    try {
+      res.setHeader(
+        'Cache-Control',
+        'no-store, no-cache, must-revalidate, proxy-revalidate',
+      );
+    } catch {}
+
+    // log what headers express has set for debugging
+    try {
+      // res.getHeader may return string|string[]|number|undefined
+      const setCookie =
+        (res.getHeader as any) && (res.getHeader as any)('Set-Cookie');
+      console.log(
+        '[CSRF] response Set-Cookie header after cookie():',
+        setCookie,
+      );
+    } catch (e) {
+      console.warn('[CSRF] failed to read Set-Cookie header', e?.message || e);
+    }
 
     // Return the token so the frontend can store it and send it in headers
     return { csrfToken: token };
@@ -54,22 +89,40 @@ export class AuthController {
   @Post('login')
   @HttpCode(200)
   async login(
+    @Req() req: Request,
     @Body() dto: AuthCredentialsDto,
     @Res({ passthrough: true }) res: Response,
   ) {
-    console.log('Login attempt for:', dto.email);
+    console.log('Login attempt for:', dto.email, 'origin:', req.headers.origin);
     const user = await this.authService.validateUser(dto.email, dto.password);
     if (!user) return { error: 'Invalid credentials' };
 
     const tokens = await this.authService.loginAndGetTokens(user);
 
-    res.cookie(process.env.REFRESH_COOKIE_NAME || 'jid', tokens.refreshToken, {
+    const refreshCookieName = process.env.REFRESH_COOKIE_NAME || 'jid';
+    const refreshOpts = {
       httpOnly: true,
       sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       secure: process.env.NODE_ENV === 'production',
       path: '/api/auth/refresh',
       maxAge: 1000 * 60 * 60 * 24 * 7,
-    });
+    } as const;
+    console.log(
+      '[LOGIN] setting refresh cookie',
+      refreshCookieName,
+      refreshOpts,
+    );
+    res.cookie(refreshCookieName, tokens.refreshToken, refreshOpts as any);
+    try {
+      const setCookie =
+        (res.getHeader as any) && (res.getHeader as any)('Set-Cookie');
+      console.log(
+        '[LOGIN] response Set-Cookie header after cookie():',
+        setCookie,
+      );
+    } catch (e) {
+      console.warn('[LOGIN] failed to read Set-Cookie header', e?.message || e);
+    }
 
     return { accessToken: tokens.accessToken };
   }
@@ -81,6 +134,12 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
   ) {
     const user = (req.user as JwtPayload) || undefined;
+    console.log(
+      '[REFRESH] incoming origin:',
+      req.headers.origin,
+      'cookies:',
+      req.cookies,
+    );
     const cookies = (req.cookies ?? undefined) as
       | Record<string, unknown>
       | undefined;
@@ -100,13 +159,33 @@ export class AuthController {
       providedRefreshToken,
     );
 
-    res.cookie(process.env.REFRESH_COOKIE_NAME || 'jid', tokens.refreshToken, {
+    const refreshCookieName2 = process.env.REFRESH_COOKIE_NAME || 'jid';
+    const refreshOpts2 = {
       httpOnly: true,
       sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       secure: process.env.NODE_ENV === 'production',
       path: '/api/auth/refresh',
       maxAge: 1000 * 60 * 60 * 24 * 7,
-    });
+    } as const;
+    console.log(
+      '[REFRESH] setting refresh cookie',
+      refreshCookieName2,
+      refreshOpts2,
+    );
+    res.cookie(refreshCookieName2, tokens.refreshToken, refreshOpts2 as any);
+    try {
+      const setCookie =
+        (res.getHeader as any) && (res.getHeader as any)('Set-Cookie');
+      console.log(
+        '[REFRESH] response Set-Cookie header after cookie():',
+        setCookie,
+      );
+    } catch (e) {
+      console.warn(
+        '[REFRESH] failed to read Set-Cookie header',
+        e?.message || e,
+      );
+    }
 
     return { accessToken: tokens.accessToken };
   }
@@ -125,9 +204,29 @@ export class AuthController {
       // ignore decode errors
     }
 
-    res.clearCookie(process.env.REFRESH_COOKIE_NAME || 'jid', {
+    const clearName = process.env.REFRESH_COOKIE_NAME || 'jid';
+    console.log(
+      '[LOGOUT] clearing cookie',
+      clearName,
+      'origin:',
+      req.headers.origin,
+    );
+    res.clearCookie(clearName, {
       path: '/api/auth/refresh',
     });
+    try {
+      const setCookie =
+        (res.getHeader as any) && (res.getHeader as any)('Set-Cookie');
+      console.log(
+        '[LOGOUT] response Set-Cookie header after clearCookie():',
+        setCookie,
+      );
+    } catch (e) {
+      console.warn(
+        '[LOGOUT] failed to read Set-Cookie header',
+        e?.message || e,
+      );
+    }
     return { ok: true };
   }
 }
