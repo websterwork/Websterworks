@@ -80,10 +80,27 @@ async function bootstrap() {
       console.log('[CORS] incoming Origin:', origin);
       // allow non-browser requests like curl that have no origin
       if (!origin) return callback(null, true);
-      if (corsOrigins.includes(origin)) {
-        console.log('[CORS] allowing origin:', origin);
-        return callback(null, true);
+      try {
+        // Accept explicit matches
+        if (corsOrigins.includes(origin)) {
+          console.log('[CORS] allowing origin (explicit):', origin);
+          return callback(null, true);
+        }
+
+        // Accept any subdomain of websterwork.com (e.g. www.websterwork.com, app.websterwork.com)
+        const parsed = new URL(origin);
+        const hostname = parsed.hostname;
+        if (
+          hostname === 'websterwork.com' ||
+          hostname.endsWith('.websterwork.com')
+        ) {
+          console.log('[CORS] allowing origin (subdomain match):', origin);
+          return callback(null, true);
+        }
+      } catch (err) {
+        console.warn('[CORS] origin parse failed:', err?.message || err);
       }
+
       console.warn('[CORS] rejecting origin:', origin);
       return callback(new Error('Not allowed by CORS'));
     },

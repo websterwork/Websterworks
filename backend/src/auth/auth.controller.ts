@@ -46,16 +46,19 @@ export class AuthController {
     // In development (NODE_ENV !== 'production'), allow more permissive settings for LAN access
     const isProduction = process.env.NODE_ENV === 'production';
     const cookieName = process.env.CSRF_COOKIE_NAME || 'XSRF-TOKEN';
-    const cookieOpts = {
+    const cookieOpts: Record<string, any> = {
       httpOnly: false,
       secure: isProduction, // HTTPS only in production
       sameSite: isProduction ? 'none' : 'lax', // Stricter in production
       maxAge: 1000 * 60 * 60, // 1 hour
       path: '/',
-    } as const;
+    };
+    if (isProduction) {
+      cookieOpts.domain = process.env.COOKIE_DOMAIN || '.websterwork.com';
+    }
 
     console.log('[CSRF] setting cookie', cookieName, cookieOpts);
-    res.cookie(cookieName, token, cookieOpts as any);
+    res.cookie(cookieName, token, cookieOpts);
     // ensure the response is not cached (helps Cloudflare/nginx debugging)
     try {
       res.setHeader(
@@ -100,19 +103,22 @@ export class AuthController {
     const tokens = await this.authService.loginAndGetTokens(user);
 
     const refreshCookieName = process.env.REFRESH_COOKIE_NAME || 'jid';
-    const refreshOpts = {
+    const refreshOpts: Record<string, any> = {
       httpOnly: true,
       sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       secure: process.env.NODE_ENV === 'production',
       path: '/api/auth/refresh',
       maxAge: 1000 * 60 * 60 * 24 * 7,
-    } as const;
+    };
+    if (process.env.NODE_ENV === 'production') {
+      refreshOpts.domain = process.env.COOKIE_DOMAIN || '.websterwork.com';
+    }
     console.log(
       '[LOGIN] setting refresh cookie',
       refreshCookieName,
       refreshOpts,
     );
-    res.cookie(refreshCookieName, tokens.refreshToken, refreshOpts as any);
+    res.cookie(refreshCookieName, tokens.refreshToken, refreshOpts);
     try {
       const setCookie =
         (res.getHeader as any) && (res.getHeader as any)('Set-Cookie');
@@ -160,19 +166,22 @@ export class AuthController {
     );
 
     const refreshCookieName2 = process.env.REFRESH_COOKIE_NAME || 'jid';
-    const refreshOpts2 = {
+    const refreshOpts2: Record<string, any> = {
       httpOnly: true,
       sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       secure: process.env.NODE_ENV === 'production',
       path: '/api/auth/refresh',
       maxAge: 1000 * 60 * 60 * 24 * 7,
-    } as const;
+    };
+    if (process.env.NODE_ENV === 'production') {
+      refreshOpts2.domain = process.env.COOKIE_DOMAIN || '.websterwork.com';
+    }
     console.log(
       '[REFRESH] setting refresh cookie',
       refreshCookieName2,
       refreshOpts2,
     );
-    res.cookie(refreshCookieName2, tokens.refreshToken, refreshOpts2 as any);
+    res.cookie(refreshCookieName2, tokens.refreshToken, refreshOpts2);
     try {
       const setCookie =
         (res.getHeader as any) && (res.getHeader as any)('Set-Cookie');
@@ -211,9 +220,11 @@ export class AuthController {
       'origin:',
       req.headers.origin,
     );
-    res.clearCookie(clearName, {
-      path: '/api/auth/refresh',
-    });
+    const clearOpts: Record<string, any> = { path: '/api/auth/refresh' };
+    if (process.env.NODE_ENV === 'production') {
+      clearOpts.domain = process.env.COOKIE_DOMAIN || '.websterwork.com';
+    }
+    res.clearCookie(clearName, clearOpts);
     try {
       const setCookie =
         (res.getHeader as any) && (res.getHeader as any)('Set-Cookie');

@@ -42,9 +42,12 @@ services:
     container_name: mongo
     restart: always
     environment:
+      MONGO_INITDB_ROOT_USERNAME: webster
+      MONGO_INITDB_ROOT_PASSWORD: webster.00
       MONGO_INITDB_DATABASE: websterwork
     volumes:
       - mongo_data:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     networks:
       - app-network
 
