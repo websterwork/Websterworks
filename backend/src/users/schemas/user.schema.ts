@@ -15,7 +15,8 @@ export class User {
   @Prop({ required: true })
   password: string;
 
-  @Prop({ unique: true, trim: true })
+  // Keep username unique via an explicit partial index below (avoids unique-null issues).
+  @Prop({ trim: true })
   username: string;
 
   @Prop({ type: Number, min: 13, max: 100 })
@@ -53,10 +54,6 @@ export class User {
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
-
-// Ensure unique username index only applies when a username string exists.
-// This prevents duplicate-key errors for documents where username is absent/null.
-// Uses a partial index so multiple documents can omit the username field.
 UserSchema.index(
   { username: 1 },
   { unique: true, partialFilterExpression: { username: { $type: 'string' } } },

@@ -14,12 +14,13 @@ export class UsersService {
     private projectsService: ProjectsService,
   ) {}
 
-  async create(email: string, password: string) {
+  async create(username: string, email: string, password: string) {
     if (typeof email !== 'string' || !validator.isEmail(email))
       throw new BadRequestException('Invalid email');
     if (typeof password !== 'string' || password.length < 6)
       throw new BadRequestException('Invalid password');
-
+    if (typeof username !== 'string' || username.trim().length === 0)
+      throw new BadRequestException('Invalid username');
     const normalized = validator.normalizeEmail(email);
     const existing = await this.userModel
       .findOne({ email: normalized })
@@ -30,7 +31,11 @@ export class UsersService {
     const saltRounds = Number(process.env.BCRYPT_SALT_ROUNDS) || 12;
     const hashed = await bcrypt.hash(password, saltRounds);
 
-    const user = new this.userModel({ email: normalized, password: hashed });
+    const user = new this.userModel({
+      username: username,
+      email: normalized,
+      password: hashed,
+    });
     try {
       return await user.save();
     } catch (err) {
@@ -53,7 +58,9 @@ export class UsersService {
     const normalized = validator.normalizeEmail(email);
     return this.userModel.findOne({ email: normalized }).exec();
   }
-
+  async findByUsername(username: string) {
+    return this.userModel.findOne({ username: username }).exec();
+  }
   async findById(id: string) {
     return this.userModel.findById(id).exec();
   }

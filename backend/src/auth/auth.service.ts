@@ -18,8 +18,8 @@ export class AuthService {
   ) {}
 
   /** ──────────────── USER SIGNUP ──────────────── */
-  async signUp(email: string, password: string) {
-    return this.usersService.create(email, password);
+  async signUp(username: string, email: string, password: string) {
+    return this.usersService.create(username, email, password);
   }
 
   /** ──────────────── VALIDATE USER ──────────────── */

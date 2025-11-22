@@ -3,7 +3,7 @@ import { IsEmail, IsString, MinLength, IsOptional } from 'class-validator';
 export class AuthCredentialsDto {
   @IsOptional()
   @IsString()
-  username?: string;
+  username: string;
 
   @IsEmail()
   @IsString()
