@@ -15,6 +15,7 @@ export const AuthProvider = ( { children } ) =>
     const [ error, setError ] = useState( null );
     const [ isInitialized, setIsInitialized ] = useState( false );
     const [ csrfToken, setCsrfToken ] = useState( null );
+    const [ pendingSignup, setPendingSignup ] = useState( null );
     const refreshPromiseRef = useRef( null );
 
     // Fetch CSRF token from server
@@ -41,33 +42,36 @@ export const AuthProvider = ( { children } ) =>
     }, [] );
 
     // Refresh access token using refresh endpoint
-    const doRefreshToken = useCallback(async () => {
-    try {
-        // Ensure CSRF token is present
-        const csrf = csrfToken || (await fetchCsrfToken());
+    const doRefreshToken = useCallback( async () =>
+    {
+        try
+        {
+            // Ensure CSRF token is present
+            const csrf = csrfToken || ( await fetchCsrfToken() );
 
-        const response = await fetch(`${API_URL}/api/auth/refresh`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "x-csrf-token": csrf, // <-- added CSRF header
-            },
-            credentials: "include", // Include refresh token cookie
-        });
+            const response = await fetch( `${ API_URL }/api/auth/refresh`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "x-csrf-token": csrf, // <-- added CSRF header
+                },
+                credentials: "include", // Include refresh token cookie
+            } );
 
-        if (!response.ok) throw new Error("Token refresh failed");
+            if ( !response.ok ) throw new Error( "Token refresh failed" );
 
-        const data = await response.json();
-        setToken(data.accessToken);
-        localStorage.setItem("authToken", data.accessToken);
-        return data.accessToken;
-    } catch (err) {
-        setUser(null);
-        setToken(null);
-        localStorage.removeItem("authToken");
-        throw err;
-    }
-}, [csrfToken, fetchCsrfToken]);
+            const data = await response.json();
+            setToken( data.accessToken );
+            localStorage.setItem( "authToken", data.accessToken );
+            return data.accessToken;
+        } catch ( err )
+        {
+            setUser( null );
+            setToken( null );
+            localStorage.removeItem( "authToken" );
+            throw err;
+        }
+    }, [ csrfToken, fetchCsrfToken ] );
     // Secure API calls with auto-refresh on 401
     const apiCall = useCallback( async ( endpoint, method = "GET", body = null ) =>
     {
@@ -237,7 +241,7 @@ export const AuthProvider = ( { children } ) =>
         [ csrfToken, fetchCsrfToken ]
     );
 
-    // Signup
+    // Signup: request a verification code and store pending signup data locally
     const signup = useCallback(
         async ( email, password, username ) =>
         {
@@ -277,11 +281,9 @@ export const AuthProvider = ( { children } ) =>
 
                 const data = await response.json();
 
-                if ( data.id )
-                {
-                    // Auto-login after signup
-                    await login( email, password );
-                }
+                // Backend now initiates a verification flow. Store pending signup info
+                setPendingSignup( { email, password, username } );
+
                 return data;
             } catch ( err )
             {
@@ -294,8 +296,83 @@ export const AuthProvider = ( { children } ) =>
                 setLoading( false );
             }
         },
-        [ login, csrfToken, fetchCsrfToken ]
+        [ csrfToken, fetchCsrfToken ]
     );
+
+    // Verify the 6-digit code received by email and finalize signup (auto-login)
+    const verifySignup = useCallback(
+        async ( code ) =>
+        {
+            setLoading( true );
+            setError( null );
+
+            if ( !pendingSignup )
+            {
+                const err = new Error( 'No pending signup found. Please start signup first.' );
+                setError( getSafeErrorMessage( err.message, 'signup' ) );
+                setLoading( false );
+                throw err;
+            }
+
+            try
+            {
+                let csrf = csrfToken;
+                if ( !csrf ) csrf = await fetchCsrfToken();
+
+                if ( !csrf ) throw new Error( 'Failed to obtain CSRF token' );
+
+                const response = await fetch( `${ API_URL }/api/auth/verify-signup`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-csrf-token': csrf,
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify( { email: pendingSignup.email, code } ),
+                } );
+
+                if ( !response.ok )
+                {
+                    const errorData = await response.json().catch( () => ( {} ) );
+                    throw new Error( errorData.message || 'Verification failed' );
+                }
+
+                const result = await response.json();
+
+                // On success, auto-login using the password the user provided earlier
+                try
+                {
+                    await login( pendingSignup.email, pendingSignup.password );
+                } catch ( e )
+                {
+                    // If auto-login fails, clear pendingSignup but surface friendly message
+                    setPendingSignup( null );
+                    const safeError = getSafeErrorMessage( e.message, 'login' );
+                    setError( safeError );
+                    throw e;
+                }
+
+                setPendingSignup( null );
+                return result;
+            } catch ( err )
+            {
+                const safe = getSafeErrorMessage( err.message, 'signup' );
+                setError( safe );
+                throw err;
+            } finally
+            {
+                setLoading( false );
+            }
+        },
+        [ pendingSignup, csrfToken, fetchCsrfToken, login ]
+    );
+
+    // Resend verification code for the pending signup
+    const resendVerification = useCallback( async () =>
+    {
+        if ( !pendingSignup ) throw new Error( 'No pending signup to resend verification for' );
+        return await signup( pendingSignup.email, pendingSignup.password, pendingSignup.username );
+    }, [ pendingSignup, signup ] );
 
     // Logout
     const logout = useCallback( async () =>
@@ -412,6 +489,9 @@ export const AuthProvider = ( { children } ) =>
         isInitialized,
         login,
         signup,
+        verifySignup,
+        resendVerification,
+        pendingSignup,
         logout,
         apiCall,
     };

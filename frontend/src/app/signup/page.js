@@ -15,10 +15,13 @@ import
 export default function SignupPage ()
 {
   const router = useRouter();
-  const { signup, loading, error: authError } = useAuth();
+  const { signup, verifySignup, resendVerification, pendingSignup, loading, error: authError } = useAuth();
   const [ username, setUsername ] = useState( "" );
   const [ email, setEmail ] = useState( "" );
   const [ password, setPassword ] = useState( "" );
+  const [ step, setStep ] = useState( 'form' ); // form | verify | done
+  const [ code, setCode ] = useState( '' );
+  const [ message, setMessage ] = useState( null );
   const [ confirmPassword, setConfirmPassword ] = useState( "" );
   const [ errors, setErrors ] = useState( {} );
   const [ showPassword, setShowPassword ] = useState( false );
@@ -112,11 +115,41 @@ export default function SignupPage ()
       const sanitizedUsername = sanitizeInput( username );
       // Send username to backend as it now accepts it in the DTO
       await signup( sanitizedEmail, password, sanitizedUsername );
-      // Redirect on successful signup
-      router.push( "/profile" );
+      // Move to verification step
+      setStep( 'verify' );
+      setMessage( 'Verification code sent to your email.' );
     } catch ( err )
     {
       console.error( "Signup failed:", err );
+    }
+  };
+
+  const handleVerify = async ( e ) =>
+  {
+    e.preventDefault();
+    setMessage( null );
+    try
+    {
+      await verifySignup( code );
+      setMessage( 'Verification successful — signing you in.' );
+      setStep( 'done' );
+      router.push( '/profile' );
+    } catch ( err )
+    {
+      setMessage( err?.message || 'Verification failed' );
+    }
+  };
+
+  const handleResend = async () =>
+  {
+    setMessage( null );
+    try
+    {
+      await resendVerification();
+      setMessage( 'New code sent' );
+    } catch ( err )
+    {
+      setMessage( err?.message || 'Failed to resend' );
     }
   };
 
@@ -137,218 +170,228 @@ export default function SignupPage ()
             </div>
           ) }
 
-          <form onSubmit={ handleSubmit } noValidate className="space-y-4">
-            {/* Username */ }
-            <div>
-              <label
-                htmlFor="username"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-              >
-                Username
-              </label>
-              <input
-                id="username"
-                type="text"
-                value={ username }
-                onChange={ ( e ) =>
-                {
-                  setUsername( e.target.value );
-                  setErrors( ( p ) => { const copy = { ...p }; delete copy.username; return copy; } );
-                  if ( submitted ) validateForm();
-                } }
-                className={ `w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-purple-500 focus:outline-none ${ errors.username
-                  ? "border-red-500"
-                  : "border-gray-300 dark:border-gray-600"
-                  } bg-white dark:bg-gray-700 text-gray-900 dark:text-white` }
-                placeholder="Enter Your Username"
-                required
-                autoComplete="username"
-              />
-              { errors.username && (
-                <p className="mt-1 text-sm text-red-500">{ errors.username }</p>
-              ) }
-            </div>
-            {/* Email */ }
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-              >
-                Email address
-              </label>
-              <input
-                id="email"
-                type="email"
-                value={ email }
-                onChange={ ( e ) =>
-                {
-                  setEmail( e.target.value );
-                  setErrors( ( p ) => { const copy = { ...p }; delete copy.email; return copy; } );
-                  if ( submitted ) validateForm();
-                } }
-                className={ `w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-purple-500 focus:outline-none ${ errors.email
-                  ? "border-red-500"
-                  : "border-gray-300 dark:border-gray-600"
-                  } bg-white dark:bg-gray-700 text-gray-900 dark:text-white` }
-                placeholder="you@example.com"
-                required
-                autoComplete="email"
-              />
-              { errors.email && (
-                <p className="mt-1 text-sm text-red-500">{ errors.email }</p>
-              ) }
-            </div>
-
-            {/* Password */ }
-            <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-              >
-                Password
-              </label>
-              <div className="relative">
+          { step === 'form' ? (
+            <form onSubmit={ handleSubmit } noValidate className="space-y-4">
+              {/* Username */ }
+              <div>
+                <label
+                  htmlFor="username"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
+                  Username
+                </label>
                 <input
-                  id="password"
-                  type={ showPassword ? "text" : "password" }
-                  value={ password }
+                  id="username"
+                  type="text"
+                  value={ username }
                   onChange={ ( e ) =>
                   {
-                    setPassword( e.target.value );
-                    setErrors( ( p ) => { const copy = { ...p }; delete copy.password; return copy; } );
+                    setUsername( e.target.value );
+                    setErrors( ( p ) => { const copy = { ...p }; delete copy.username; return copy; } );
                     if ( submitted ) validateForm();
                   } }
-                  className={ `w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-purple-500 focus:outline-none ${ errors.password
+                  className={ `w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-purple-500 focus:outline-none ${ errors.username
                     ? "border-red-500"
                     : "border-gray-300 dark:border-gray-600"
                     } bg-white dark:bg-gray-700 text-gray-900 dark:text-white` }
-                  placeholder="••••••••"
+                  placeholder="Enter Your Username"
                   required
-                  autoComplete="new-password"
+                  autoComplete="username"
                 />
-                <button
-                  type="button"
-                  onClick={ () => setShowPassword( !showPassword ) }
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                { errors.username && (
+                  <p className="mt-1 text-sm text-red-500">{ errors.username }</p>
+                ) }
+              </div>
+              {/* Email */ }
+              <div>
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
                 >
-                  { showPassword ? "Hide" : "Show" }
-                </button>
+                  Email address
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  value={ email }
+                  onChange={ ( e ) =>
+                  {
+                    setEmail( e.target.value );
+                    setErrors( ( p ) => { const copy = { ...p }; delete copy.email; return copy; } );
+                    if ( submitted ) validateForm();
+                  } }
+                  className={ `w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-purple-500 focus:outline-none ${ errors.email
+                    ? "border-red-500"
+                    : "border-gray-300 dark:border-gray-600"
+                    } bg-white dark:bg-gray-700 text-gray-900 dark:text-white` }
+                  placeholder="you@example.com"
+                  required
+                  autoComplete="email"
+                />
+                { errors.email && (
+                  <p className="mt-1 text-sm text-red-500">{ errors.email }</p>
+                ) }
               </div>
 
-              {/* Password Strength Meter */ }
-              { password && (
-                <div className="mt-2">
-                  <div className="flex items-center gap-2">
-                    <div className="flex-1 h-2 bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden">
-                      <div
-                        className={ `h-full ${ passwordStrength.color } transition-all` }
-                        style={ {
-                          width: `${ ( passwordStrength.score + 1 ) * 20 }%`,
-                        } }
-                      />
-                    </div>
-                    <span className="text-xs font-medium text-gray-600 dark:text-gray-300">
-                      { passwordStrength.label }
-                    </span>
-                  </div>
+              {/* Password */ }
+              <div>
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
+                  Password
+                </label>
+                <div className="relative">
+                  <input
+                    id="password"
+                    type={ showPassword ? "text" : "password" }
+                    value={ password }
+                    onChange={ ( e ) =>
+                    {
+                      setPassword( e.target.value );
+                      setErrors( ( p ) => { const copy = { ...p }; delete copy.password; return copy; } );
+                      if ( submitted ) validateForm();
+                    } }
+                    className={ `w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-purple-500 focus:outline-none ${ errors.password
+                      ? "border-red-500"
+                      : "border-gray-300 dark:border-gray-600"
+                      } bg-white dark:bg-gray-700 text-gray-900 dark:text-white` }
+                    placeholder="••••••••"
+                    required
+                    autoComplete="new-password"
+                  />
+                  <button
+                    type="button"
+                    onClick={ () => setShowPassword( !showPassword ) }
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                  >
+                    { showPassword ? "Hide" : "Show" }
+                  </button>
                 </div>
-              ) }
-              { errors.password && (
-                <p className="mt-1 text-sm text-red-500">{ errors.password }</p>
-              ) }
-            </div>
 
-            {/* Confirm Password */ }
-            <div>
-              <label
-                htmlFor="confirmPassword"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-              >
-                Confirm password
-              </label>
-              <div className="relative">
+                {/* Password Strength Meter */ }
+                { password && (
+                  <div className="mt-2">
+                    <div className="flex items-center gap-2">
+                      <div className="flex-1 h-2 bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden">
+                        <div
+                          className={ `h-full ${ passwordStrength.color } transition-all` }
+                          style={ {
+                            width: `${ ( passwordStrength.score + 1 ) * 20 }%`,
+                          } }
+                        />
+                      </div>
+                      <span className="text-xs font-medium text-gray-600 dark:text-gray-300">
+                        { passwordStrength.label }
+                      </span>
+                    </div>
+                  </div>
+                ) }
+                { errors.password && (
+                  <p className="mt-1 text-sm text-red-500">{ errors.password }</p>
+                ) }
+              </div>
+
+              {/* Confirm Password */ }
+              <div>
+                <label
+                  htmlFor="confirmPassword"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
+                  Confirm password
+                </label>
+                <div className="relative">
+                  <input
+                    id="confirmPassword"
+                    type={ showConfirmPassword ? "text" : "password" }
+                    value={ confirmPassword }
+                    onChange={ ( e ) =>
+                    {
+                      setConfirmPassword( e.target.value );
+                      setErrors( ( p ) => { const copy = { ...p }; delete copy.confirmPassword; return copy; } );
+                      if ( submitted ) validateForm();
+                    } }
+                    className={ `w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-purple-500 focus:outline-none ${ errors.confirmPassword
+                      ? "border-red-500"
+                      : "border-gray-300 dark:border-gray-600"
+                      } bg-white dark:bg-gray-700 text-gray-900 dark:text-white` }
+                    placeholder="••••••••"
+                    required
+                    autoComplete="new-password"
+                  />
+                  <button
+                    type="button"
+                    onClick={ () => setShowConfirmPassword( !showConfirmPassword ) }
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                  >
+                    { showConfirmPassword ? "Hide" : "Show" }
+                  </button>
+                </div>
+                { errors.confirmPassword && (
+                  <p className="mt-1 text-sm text-red-500">
+                    { errors.confirmPassword }
+                  </p>
+                ) }
+              </div>
+
+              {/* Terms Checkbox */ }
+              <div className="flex items-start">
                 <input
-                  id="confirmPassword"
-                  type={ showConfirmPassword ? "text" : "password" }
-                  value={ confirmPassword }
+                  id="terms"
+                  type="checkbox"
+                  checked={ agreeToTerms }
                   onChange={ ( e ) =>
                   {
-                    setConfirmPassword( e.target.value );
-                    setErrors( ( p ) => { const copy = { ...p }; delete copy.confirmPassword; return copy; } );
+                    setAgreeToTerms( e.target.checked );
+                    setErrors( ( p ) => { const copy = { ...p }; delete copy.agreeToTerms; return copy; } );
                     if ( submitted ) validateForm();
                   } }
-                  className={ `w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-purple-500 focus:outline-none ${ errors.confirmPassword
-                    ? "border-red-500"
-                    : "border-gray-300 dark:border-gray-600"
-                    } bg-white dark:bg-gray-700 text-gray-900 dark:text-white` }
-                  placeholder="••••••••"
-                  required
-                  autoComplete="new-password"
+                  className="mt-1 h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded cursor-pointer"
                 />
-                <button
-                  type="button"
-                  onClick={ () => setShowConfirmPassword( !showConfirmPassword ) }
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                <label
+                  htmlFor="terms"
+                  className="ml-2 text-sm text-gray-600 dark:text-gray-400"
                 >
-                  { showConfirmPassword ? "Hide" : "Show" }
-                </button>
+                  I agree to the{ " " }
+                  <a href="/terms" className="text-purple-600 hover:underline">
+                    terms and conditions
+                  </a>
+                </label>
               </div>
-              { errors.confirmPassword && (
-                <p className="mt-1 text-sm text-red-500">
-                  { errors.confirmPassword }
-                </p>
+              { errors.agreeToTerms && (
+                <p className="text-sm text-red-500">{ errors.agreeToTerms }</p>
               ) }
-            </div>
 
-            {/* Terms Checkbox */ }
-            <div className="flex items-start">
-              <input
-                id="terms"
-                type="checkbox"
-                checked={ agreeToTerms }
-                onChange={ ( e ) =>
-                {
-                  setAgreeToTerms( e.target.checked );
-                  setErrors( ( p ) => { const copy = { ...p }; delete copy.agreeToTerms; return copy; } );
-                  if ( submitted ) validateForm();
-                } }
-                className="mt-1 h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded cursor-pointer"
-              />
-              <label
-                htmlFor="terms"
-                className="ml-2 text-sm text-gray-600 dark:text-gray-400"
+              {/* Submit */ }
+              <button
+                type="submit"
+                disabled={ loading }
+                className="w-full mt-6 px-4 py-2 bg-gradient-to-br from-purple-600 to-purple-500 text-white rounded-md font-medium hover:from-purple-700 hover:to-purple-600 disabled:opacity-50 disabled:cursor-not-allowed transition"
               >
-                I agree to the{ " " }
-                <a href="/terms" className="text-purple-600 hover:underline">
-                  terms and conditions
-                </a>
-              </label>
+                { loading ? "Creating account..." : "Sign up" }
+              </button>
+            </form>
+          ) : step === 'verify' ? (
+            <div className="space-y-4">
+              <p className="text-sm text-gray-700">Enter the 6-digit code sent to <strong>{ pendingSignup?.email || email }</strong></p>
+              <form onSubmit={ handleVerify } className="space-y-4">
+                <div>
+                  <label htmlFor="code" className="block text-sm font-medium text-gray-700 mb-1">Verification code</label>
+                  <input id="code" value={ code } onChange={ ( e ) => setCode( e.target.value ) } className="mt-1 w-40 border rounded px-3 py-2" placeholder="123456" required />
+                </div>
+                <div className="flex items-center gap-3">
+                  <button type="submit" disabled={ loading } className="bg-green-600 text-white px-4 py-2 rounded">{ loading ? 'Verifying…' : 'Verify' }</button>
+                  <button type="button" onClick={ handleResend } className="text-sm text-blue-600">Resend code</button>
+                </div>
+              </form>
+              { message && <p className="text-sm text-red-600">{ message }</p> }
+              { authError && <p className="text-sm text-red-600">{ authError }</p> }
             </div>
-            { errors.agreeToTerms && (
-              <p className="text-sm text-red-500">{ errors.agreeToTerms }</p>
-            ) }
-
-            {/* Submit */ }
-            <button
-              type="submit"
-              disabled={ loading }
-              className="w-full mt-6 px-4 py-2 bg-gradient-to-br from-purple-600 to-purple-500 text-white rounded-md font-medium hover:from-purple-700 hover:to-purple-600 disabled:opacity-50 disabled:cursor-not-allowed transition"
-            >
-              { loading ? "Creating account..." : "Sign up" }
-            </button>
-          </form>
-
-          <div className="mt-6 text-center">
-            <p className="text-gray-600 dark:text-gray-400">
-              Already have an account?{ " " }
-              <Link
-                href="/login"
-                className="text-purple-600 dark:text-purple-400 hover:underline font-medium"
-              >
-                Sign in
-              </Link>
-            </p>
-          </div>
+          ) : (
+            <div className="mt-6 text-center">
+              <p className="text-green-600">{ message || 'Done' }</p>
+            </div>
+          ) }
         </div>
       </div>
     </div>

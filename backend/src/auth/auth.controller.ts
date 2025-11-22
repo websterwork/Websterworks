@@ -85,12 +85,19 @@ export class AuthController {
   }
   @Post('signup')
   async signUp(@Body() dto: AuthCredentialsDto) {
-    const user = await this.authService.signUp(
+    // Start verification flow: send code to user's email and persist pending signup
+    return this.authService.requestSignupVerification(
       dto.username,
       dto.email,
       dto.password,
     );
-    return { id: user._id, email: user.email };
+  }
+
+  @Post('verify-signup')
+  async verifySignup(@Body() body: { email: string; code: string }) {
+    const { email, code } = body || ({} as any);
+    const result = await this.authService.verifySignupCode(email, code);
+    return result;
   }
 
   @Post('login')

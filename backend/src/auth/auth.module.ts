@@ -8,10 +8,18 @@ import { UsersModule } from '../users/users.module';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { JwtRefreshStrategy } from './strategies/jwt-refresh.strategy';
 import { CsrfTokenService } from '../common/services/csrf-token.service';
+import { MongooseModule } from '@nestjs/mongoose';
+import {
+  EmailVerification,
+  EmailVerificationSchema,
+} from './schemas/email-verification.schema';
 
 @Module({
   imports: [
     UsersModule,
+    MongooseModule.forFeature([
+      { name: EmailVerification.name, schema: EmailVerificationSchema },
+    ]),
     PassportModule,
     ConfigModule,
     JwtModule.registerAsync({

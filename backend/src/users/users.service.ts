@@ -53,6 +53,49 @@ export class UsersService {
     }
   }
 
+  /** Create a user using an already-hashed password (used for verified signups)
+   * This avoids double-hashing when we store a bcrypt-hashed password in a
+   * temporary verification document.
+   */
+  async createWithHashedPassword(
+    username: string,
+    email: string,
+    hashedPassword: string,
+  ) {
+    if (typeof email !== 'string' || !validator.isEmail(email))
+      throw new BadRequestException('Invalid email');
+    if (typeof hashedPassword !== 'string' || hashedPassword.length === 0)
+      throw new BadRequestException('Invalid password');
+    if (typeof username !== 'string' || username.trim().length === 0)
+      throw new BadRequestException('Invalid username');
+
+    const normalized = validator.normalizeEmail(email);
+    const existing = await this.userModel
+      .findOne({ email: normalized })
+      .lean()
+      .exec();
+    if (existing) throw new BadRequestException('Email already exists');
+
+    const user = new this.userModel({
+      username: username,
+      email: normalized,
+      password: hashedPassword,
+    });
+    try {
+      return await user.save();
+    } catch (err) {
+      const mongoErr = err as
+        | { code?: number; keyValue?: Record<string, unknown> }
+        | undefined;
+      if (mongoErr?.code === 11000) {
+        let dupField = 'field';
+        if (mongoErr.keyValue) dupField = Object.keys(mongoErr.keyValue)[0];
+        throw new BadRequestException(`${dupField} already exists`);
+      }
+      throw err;
+    }
+  }
+
   async findByEmail(email: string) {
     if (typeof email !== 'string' || !validator.isEmail(email)) return null;
     const normalized = validator.normalizeEmail(email);

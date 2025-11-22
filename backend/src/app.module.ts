@@ -14,7 +14,13 @@ import { TeamMeetsModule } from './team-meets/team-meets.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    // Load environment files. Prefer `.env.<NODE_ENV>` if present, otherwise fall back to `.env`.
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: [`.env.${process.env.NODE_ENV}`, '.env'],
+      // allow environment variable expansion like ${VAR}
+      expandVariables: true,
+    }),
     MongooseModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService): MongooseModuleOptions => {
