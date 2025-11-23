@@ -353,9 +353,9 @@ export default function SignupPage ()
                   className="ml-2 text-sm text-gray-600 dark:text-gray-400"
                 >
                   I agree to the{ " " }
-                  <a href="/terms" className="text-purple-600 hover:underline">
+                  <Link href="/terms" className="text-purple-600 hover:underline">
                     terms and conditions
-                  </a>
+                  </Link>
                 </label>
               </div>
               { errors.agreeToTerms && (

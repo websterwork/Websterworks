@@ -3,6 +3,7 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { withProtectedRoute } from "@/components/ProtectedRoute";
 import Link from "next/link";
+import Image from "next/image";
 
 function ProfilePage ()
 {
@@ -60,10 +61,11 @@ function ProfilePage ()
 
                         {/* Avatar Display */ }
                         { user?.avatar ? (
-                            // eslint-disable-next-line @next/next/no-img-element
-                            <img
+                            <Image
                                 src={ user.avatar }
                                 alt="User avatar"
+                                width={ 96 }
+                                height={ 96 }
                                 className="w-24 h-24 rounded-full object-cover"
                             />
                         ) : (

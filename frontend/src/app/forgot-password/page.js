@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
@@ -102,7 +103,19 @@ export default function ForgotPasswordPage ()
                 <div className="space-y-4">
                     <p className="text-sm">Is this your account?</p>
                     <div className="flex items-center gap-4">
-                        <img src={ preview.avatarUrl } alt="avatar" className="w-16 h-16 rounded-full" />
+                        { preview.avatarUrl ? (
+                            <Image
+                                src={ preview.avatarUrl }
+                                alt="avatar"
+                                width={ 64 }
+                                height={ 64 }
+                                className="rounded-full object-cover"
+                            />
+                        ) : (
+                            <div className="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center text-lg font-semibold">
+                                { ( preview.username && preview.username[ 0 ] ) ? preview.username[ 0 ].toUpperCase() : 'U' }
+                            </div>
+                        ) }
                         <div>
                             <div className="font-medium">{ preview.username || 'Unknown' }</div>
                             <div className="text-sm text-gray-600">{ preview.emailMasked }</div>
