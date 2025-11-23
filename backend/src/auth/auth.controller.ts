@@ -251,4 +251,28 @@ export class AuthController {
     }
     return { ok: true };
   }
+
+  @Post('forgot-lookup')
+  async forgotLookup(@Body('identifier') identifier: string) {
+    if (!identifier) throw new BadRequestException('Missing identifier');
+    const result = await this.authService.lookupForPasswordReset(identifier);
+    if (!result) throw new BadRequestException('User not found');
+    return result;
+  }
+
+  @Post('forgot-confirm')
+  async forgotConfirm(@Body('userId') userId: string) {
+    if (!userId) throw new BadRequestException('Missing userId');
+    return await this.authService.requestPasswordReset(userId);
+  }
+
+  @Post('reset-password')
+  async resetPassword(
+    @Body() body: { userId: string; token: string; newPassword: string },
+  ) {
+    const { userId, token, newPassword } = body || ({} as any);
+    if (!userId || !token || !newPassword)
+      throw new BadRequestException('Missing fields');
+    return await this.authService.resetPassword(userId, token, newPassword);
+  }
 }

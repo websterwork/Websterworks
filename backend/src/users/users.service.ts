@@ -135,6 +135,15 @@ export class UsersService {
       .exec();
   }
 
+  /** Update the user's password (hashes the plain password) */
+  async updatePassword(userId: string, newPassword: string) {
+    if (typeof newPassword !== 'string' || newPassword.length < 6)
+      throw new BadRequestException('Invalid password');
+    const saltRounds = Number(process.env.BCRYPT_SALT_ROUNDS) || 12;
+    const hashed = await bcrypt.hash(newPassword, saltRounds);
+    await this.userModel.findByIdAndUpdate(userId, { password: hashed }).exec();
+  }
+
   /**
    * Get user profile with project statistics overview
    */

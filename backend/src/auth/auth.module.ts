@@ -4,6 +4,10 @@ import { PassportModule } from '@nestjs/passport';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
+import {
+  PasswordReset,
+  PasswordResetSchema,
+} from './schemas/password-reset.schema';
 import { UsersModule } from '../users/users.module';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { JwtRefreshStrategy } from './strategies/jwt-refresh.strategy';
@@ -19,6 +23,7 @@ import {
     UsersModule,
     MongooseModule.forFeature([
       { name: EmailVerification.name, schema: EmailVerificationSchema },
+      { name: PasswordReset.name, schema: PasswordResetSchema },
     ]),
     PassportModule,
     ConfigModule,

@@ -43,9 +43,7 @@ export default function ContactPage() {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Form submitted:", formData);
-    // Handle form submission here
+    e.preventDefault()
   };
 
   return (

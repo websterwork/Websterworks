@@ -131,13 +131,13 @@ export const AuthProvider = ( { children } ) =>
 
             try
             {
-                console.log( "Attempting login with:", email, "API URL:", API_URL );
+        
 
                 // Fetch CSRF token first
                 let csrf = csrfToken;
                 if ( !csrf )
                 {
-                    console.log( "No CSRF token in state, fetching..." );
+                  
                     csrf = await fetchCsrfToken();
                 }
 
@@ -146,7 +146,7 @@ export const AuthProvider = ( { children } ) =>
                     throw new Error( "Failed to obtain CSRF token. Backend may not be responding correctly." );
                 }
 
-                console.log( "Using CSRF token for login" );
+            
 
                 const response = await fetch( `${ API_URL }/api/auth/login`, {
                     method: "POST",
@@ -419,11 +419,10 @@ export const AuthProvider = ( { children } ) =>
             try
             {
                 // Fetch CSRF token on app initialization
-                console.log( "Fetching CSRF token on app initialization..." );
                 const csrf = await fetchCsrfToken();
                 if ( csrf )
                 {
-                    console.log( "CSRF token fetched successfully" );
+                    
                 }
 
                 const storedToken = typeof window !== "undefined" ? localStorage.getItem( "authToken" ) : null;
