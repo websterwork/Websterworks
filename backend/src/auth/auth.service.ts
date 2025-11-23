@@ -318,7 +318,7 @@ export class AuthService {
 
     if (pr.expiresAt < new Date()) {
       if (!isProduction)
-      await this.passwordResetModel.deleteOne({ _id: pr._id }).exec();
+        await this.passwordResetModel.deleteOne({ _id: pr._id }).exec();
       throw new BadRequestException('Reset token expired');
     }
 
