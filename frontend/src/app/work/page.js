@@ -1,5 +1,5 @@
 "use client";
-import FeatureCards from '@/Components/Cards/cards';
+import FeatureCards from '@/Components/Cards/FeatureCards';
 
 
 export default function ContactPage() {
