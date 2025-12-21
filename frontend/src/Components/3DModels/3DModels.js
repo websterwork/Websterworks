@@ -2,7 +2,7 @@
 
 import { Canvas, useFrame, extend } from '@react-three/fiber';
 import { OrbitControls, Float, Text3D, Center, useMatcapTexture, Environment } from '@react-three/drei';
-import { useRef, Suspense, useState } from 'react';
+import { useRef, Suspense, useState, useEffect } from 'react';
 import * as THREE from 'three';
 import { motion } from 'framer-motion';
 
@@ -151,7 +151,20 @@ function ParticleField() {
 
 export default function ThreeDModel() {
   const [controlsEnabled, setControlsEnabled] = useState(true);
-  
+  const [isMobile, setIsMobile] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
+
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 768);
+      setIsTablet(window.innerWidth >= 768 && window.innerWidth < 1024);
+    };
+
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+
   const floatingItems = [
     { type: 'cube', color: '#8B5CF6', position: [3.5, 1, 0], delay: 0 },
     { type: 'pyramid', color: '#3B82F6', position: [-3.5, -1, 0], delay: 1 },
@@ -159,15 +172,18 @@ export default function ThreeDModel() {
     { type: 'octa', color: '#F59E0B', position: [0, -2, -3], delay: 3 },
   ];
 
+  // Adjust camera position based on screen size
+  const cameraPosition = isMobile ? [8, 4, 8] : isTablet ? [7, 3.5, 7] : [6, 3, 6];
+
   return (
     <div className="relative group">
       <div className="absolute inset-0 bg-gradient-to-r from-purple-900/20 to-pink-900/20 rounded-3xl blur-3xl group-hover:blur-4xl transition-all duration-1000"></div>
       
-      <div className="relative h-[500px] md:h-[600px] rounded-2xl overflow-hidden border border-gray-800 shadow-2xl shadow-purple-500/20 group-hover:shadow-purple-500/40 transition-shadow duration-500">
+      <div className="relative h-[300px] sm:h-[350px] md:h-[400px] lg:h-[500px] xl:h-[600px] rounded-2xl overflow-hidden border border-gray-800 shadow-2xl shadow-purple-500/20 group-hover:shadow-purple-500/40 transition-shadow duration-500">
         <Canvas
-          camera={{ position: [6, 3, 6], fov: 50 }}
+          camera={{ position: cameraPosition, fov: isMobile ? 55 : 50 }}
           shadows
-          dpr={[1, 2]}
+          dpr={[1, isMobile ? 1.5 : 2]}
           className="cursor-grab active:cursor-grabbing"
         >
           <Suspense fallback={null}>
@@ -190,15 +206,15 @@ export default function ThreeDModel() {
             
             {/* Controls */}
             <OrbitControls 
-              enableZoom={controlsEnabled}
-              enablePan={controlsEnabled}
+              enableZoom={controlsEnabled && !isMobile}
+              enablePan={controlsEnabled && !isMobile}
               enableRotate={controlsEnabled}
               zoomSpeed={0.8}
               autoRotate={true}
               autoRotateSpeed={0.5}
               maxPolarAngle={Math.PI / 1.5}
-              minDistance={3}
-              maxDistance={15}
+              minDistance={isMobile ? 5 : 3}
+              maxDistance={isMobile ? 20 : 15}
             />
             
             {/* Grid floor */}
@@ -207,28 +223,40 @@ export default function ThreeDModel() {
         </Canvas>
         
         {/* Overlay controls */}
-        <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between">
-          <div className="flex gap-2">
+        <div className="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 right-4 sm:right-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
+          <div className="flex flex-wrap gap-2">
             <button 
               onClick={() => setControlsEnabled(!controlsEnabled)}
-              className="px-4 py-2 bg-gray-900/80 backdrop-blur-sm text-gray-300 rounded-lg border border-gray-800 hover:bg-gray-800/80 hover:border-purple-500/50 transition-all text-sm"
+              className="px-3 py-1.5 sm:px-4 sm:py-2 bg-gray-900/80 backdrop-blur-sm text-gray-300 rounded-lg border border-gray-800 hover:bg-gray-800/80 hover:border-purple-500/50 transition-all text-xs sm:text-sm"
             >
-              {controlsEnabled ? '🔒 Lock View' : '🔓 Unlock View'}
+              {controlsEnabled ? '🔒 Lock' : '🔓 Unlock'}
             </button>
-            <button className="px-4 py-2 bg-gray-900/80 backdrop-blur-sm text-gray-300 rounded-lg border border-gray-800 hover:bg-gray-800/80 hover:border-purple-500/50 transition-all text-sm">
-              Reset View
+            <button 
+              onClick={() => window.location.reload()}
+              className="px-3 py-1.5 sm:px-4 sm:py-2 bg-gray-900/80 backdrop-blur-sm text-gray-300 rounded-lg border border-gray-800 hover:bg-gray-800/80 hover:border-purple-500/50 transition-all text-xs sm:text-sm"
+            >
+              Reset
             </button>
           </div>
           
-          <div className="text-xs text-gray-400 hidden md:block">
-            Drag to rotate • Scroll to zoom
+          <div className="text-[10px] sm:text-xs text-gray-400">
+            {isMobile ? 'Touch to rotate' : 'Drag to rotate • Scroll to zoom'}
           </div>
         </div>
         
         {/* Loading indicator */}
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-          <div className="w-12 h-12 border-4 border-purple-500/30 border-t-purple-500 rounded-full animate-spin"></div>
+          <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 border-4 border-purple-500/30 border-t-purple-500 rounded-full animate-spin"></div>
         </div>
+
+        {/* Mobile warning */}
+        {isMobile && (
+          <div className="absolute top-4 left-4 right-4">
+            <div className="bg-black/50 backdrop-blur-sm text-white text-xs px-3 py-2 rounded-lg text-center">
+              Use two fingers to zoom, one finger to rotate
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

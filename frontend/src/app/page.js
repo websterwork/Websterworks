@@ -18,7 +18,7 @@ const NextImage = ({ src, alt, width, height, ...props }) => (
 );
 
 // Fixed Carousel with proper slide count
-const DynamicCarousel = dynamic(() => import('@/Components/Carousels/Carousel'), { 
+const DynamicCarousel = dynamic(() => import('@/Components/Carousels/Carousel'), {
   ssr: false,
   loading: () => <div className="h-screen bg-gradient-to-r from-gray-900 to-purple-900 animate-pulse" />
 });
@@ -44,67 +44,366 @@ import VideoShowcase from '@/Components/Video/VideoShowcase';
 // Fixed homeSlides with multiple slides for Swiper loop
 const homeSlides = [
   {
-    title: "Digital Transformation, Redefined",
-    description: "We craft cutting-edge solutions in AI, web development, and cybersecurity to elevate your business.",
-    button: "Start Your Journey",
-    link: "/contacts",
-    bgImage: "/hero-bg.jpg", // Use image instead of video to avoid 404
-    overlay: "bg-gradient-to-r from-purple-900/70 to-black/70"
+    title: "AI-Powered Business Solutions",
+    description: "Intelligent automation, machine learning models, and predictive analytics to transform your operations.",
+    button: "Start AI Journey",
+    link: "/services/ai-ml",
+    bgImage: "/ai-ml-bg.jpg",
+    overlay: "bg-gradient-to-r from-purple-900/70 via-violet-900/60 to-black/70",
+    icon: "🤖",
+    stats: "150+ AI Projects"
   },
   {
-    title: "AI & Machine Learning Solutions",
-    description: "Transform your business with cutting-edge artificial intelligence solutions.",
-    button: "Explore AI",
-    link: "/services/ai",
-    bgImage: "/ai-bg.jpg",
-    overlay: "bg-gradient-to-r from-blue-900/70 to-black/70"
+    title: "Modern Web Applications",
+    description: "Build responsive, high-performance web applications with React, Next.js, and cutting-edge frameworks.",
+    button: "Build Your Web App",
+    link: "/services/web-dev",
+    bgImage: "/web-app-bg.jpg",
+    overlay: "bg-gradient-to-r from-blue-900/70 via-cyan-900/60 to-black/70",
+    icon: "💻",
+    stats: "300+ Web Projects"
   },
   {
-    title: "Web & Mobile Development",
-    description: "Build scalable, high-performance websites and mobile applications.",
-    button: "View Projects",
-    link: "/portfolio",
-    bgImage: "/web-bg.jpg",
-    overlay: "bg-gradient-to-r from-green-900/70 to-black/70"
+    title: "Mobile App Excellence",
+    description: "Create beautiful, native mobile applications for iOS and Android with seamless user experiences.",
+    button: "Develop Mobile App",
+    link: "/services/mobile",
+    bgImage: "/mobile-bg.jpg",
+    overlay: "bg-gradient-to-r from-green-900/70 via-emerald-900/60 to-black/70",
+    icon: "📱",
+    stats: "100+ Mobile Apps"
+  },
+  {
+    title: "Cybersecurity Solutions",
+    description: "Protect your digital assets with enterprise-grade security, penetration testing, and threat monitoring.",
+    button: "Secure Your Business",
+    link: "/services/cybersecurity",
+    bgImage: "/security-bg.jpg",
+    overlay: "bg-gradient-to-r from-red-900/70 via-rose-900/60 to-black/70",
+    icon: "🔒",
+    stats: "Zero Security Breaches"
+  },
+  {
+    title: "Creative UI/UX Design",
+    description: "Craft visually stunning and user-friendly interfaces that drive engagement and conversions.",
+    button: "Design Experience",
+    link: "/services/design",
+    bgImage: "/design-ui-bg.jpg",
+    overlay: "bg-gradient-to-r from-pink-900/70 via-fuchsia-900/60 to-black/70",
+    icon: "🎨",
+    stats: "95% Client Satisfaction"
+  },
+  {
+    title: "Cloud & DevOps",
+    description: "Accelerate development with automated pipelines, scalable infrastructure, and cloud optimization.",
+    button: "Optimize Workflow",
+    link: "/services/devops",
+    bgImage: "/cloud-devops-bg.jpg",
+    overlay: "bg-gradient-to-r from-cyan-900/70 via-teal-900/60 to-black/70",
+    icon: "⚡",
+    stats: "99.9% Uptime"
+  },
+  {
+    title: "E-commerce Development",
+    description: "Build high-converting online stores with seamless checkout, inventory management, and analytics.",
+    button: "Launch Store",
+    link: "/services/ecommerce",
+    bgImage: "/ecommerce-store-bg.jpg",
+    overlay: "bg-gradient-to-r from-amber-900/70 via-orange-900/60 to-black/70",
+    icon: "🛒",
+    stats: "200% Average Growth"
+  },
+  {
+    title: "Data Analytics & BI",
+    description: "Transform data into insights with interactive dashboards, reporting tools, and predictive models.",
+    button: "Analyze Now",
+    link: "/services/analytics",
+    bgImage: "/analytics-dash-bg.jpg",
+    overlay: "bg-gradient-to-r from-indigo-900/70 via-blue-900/60 to-black/70",
+    icon: "📊",
+    stats: "Data-Driven Results"
+  },
+  {
+    title: "Digital Marketing",
+    description: "Boost your online presence with SEO, content marketing, social media, and PPC campaigns.",
+    button: "Grow Traffic",
+    link: "/services/marketing",
+    bgImage: "/marketing-digital-bg.jpg",
+    overlay: "bg-gradient-to-r from-rose-900/70 via-pink-900/60 to-black/70",
+    icon: "📈",
+    stats: "300% ROI Average"
+  },
+  {
+    title: "Custom Software",
+    description: "Tailor-made software solutions designed to solve your unique business challenges.",
+    button: "Custom Solution",
+    link: "/services/custom",
+    bgImage: "/custom-software-bg.jpg",
+    overlay: "bg-gradient-to-r from-gray-900/70 via-slate-900/60 to-black/70",
+    icon: "⚙️",
+    stats: "Bespoke Solutions"
   }
 ];
 
 const servicesData = [
+  // AI & Machine Learning
   {
-    id: "ai",
-    title: "AI & Machine Learning",
-    description: "Intelligent automation and predictive analytics for business growth.",
-    icon: "🧠",
+    id: "ai-models",
+    title: "AI Models Development",
+    description: "Custom AI models and machine learning solutions for automation, prediction, and intelligent decision-making.",
+    icon: "🤖",
     gradient: "from-purple-600 to-pink-600",
-    features: ["Predictive Analytics", "Computer Vision", "NLP Chatbots", "Process Automation"],
-    metrics: { projects: 85, satisfaction: 96 }
+    features: [
+      "Custom Neural Networks",
+      "Computer Vision Models",
+      "Natural Language Processing",
+      "Predictive Analytics",
+      "Chatbot Development",
+      "Anomaly Detection",
+      "Recommendation Systems",
+      "AI Integration APIs"
+    ],
+    metrics: {
+      projects: 120,
+      satisfaction: 96,
+      deliveryTime: "4-8 weeks",
+      accuracy: "98%"
+    },
+    technologies: ["TensorFlow", "PyTorch", "OpenAI", "LangChain", "Hugging Face"]
   },
+
+  // Website Development
   {
-    id: "web",
-    title: "Web Development",
-    description: "Scalable, high-performance websites and web applications.",
+    id: "website-development",
+    title: "Website Development",
+    description: "Modern, responsive websites with cutting-edge technology and exceptional user experiences.",
     icon: "🌐",
     gradient: "from-blue-600 to-cyan-600",
-    features: ["React/Next.js", "Real-time Apps", "E-commerce", "Progressive Web Apps"],
-    metrics: { projects: 220, satisfaction: 99 }
+    features: [
+      "React/Next.js Development",
+      "E-commerce Platforms",
+      "Progressive Web Apps",
+      "Headless CMS Integration",
+      "Real-time Applications",
+      "API Development",
+      "Performance Optimization",
+      "Cross-browser Compatibility"
+    ],
+    metrics: {
+      projects: 320,
+      satisfaction: 99,
+      deliveryTime: "3-6 weeks",
+      pageSpeed: "95+"
+    },
+    technologies: ["Next.js", "React", "Node.js", "MongoDB", "PostgreSQL"]
   },
+
+  // Mobile Development
   {
-    id: "mobile",
-    title: "Mobile Applications",
-    description: "Native and cross-platform apps with flawless user experience.",
+    id: "mobile-development",
+    title: "Android/iOS Development",
+    description: "Native and cross-platform mobile applications with seamless performance and intuitive UX.",
     icon: "📱",
     gradient: "from-green-600 to-emerald-600",
-    features: ["iOS & Android", "React Native", "UI/UX Design", "App Store Optimization"],
-    metrics: { projects: 145, satisfaction: 97 }
+    features: [
+      "Native iOS & Android Apps",
+      "React Native Cross-platform",
+      "Flutter Development",
+      "App Store Optimization",
+      "Push Notifications",
+      "In-app Purchases",
+      "Offline Capabilities",
+      "App Analytics Integration"
+    ],
+    metrics: {
+      projects: 185,
+      satisfaction: 97,
+      deliveryTime: "6-12 weeks",
+      storeRating: "4.8/5"
+    },
+    technologies: ["React Native", "Flutter", "Swift", "Kotlin", "Firebase"]
   },
+
+  // Game Development
   {
-    id: "cyber",
-    title: "Cybersecurity",
-    description: "Enterprise-grade security solutions and threat protection.",
-    icon: "🔒",
+    id: "game-development",
+    title: "Game Development",
+    description: "Immersive 2D/3D games and interactive experiences across multiple platforms.",
+    icon: "🎮",
+    gradient: "from-yellow-600 to-orange-600",
+    features: [
+      "2D/3D Game Development",
+      "Unity & Unreal Engine",
+      "Mobile Game Development",
+      "VR/AR Experiences",
+      "Multiplayer Gaming",
+      "Game Physics & AI",
+      "Game Store Publishing",
+      "Monetization Strategies"
+    ],
+    metrics: {
+      projects: 75,
+      satisfaction: 95,
+      deliveryTime: "8-16 weeks",
+      userRetention: "85%"
+    },
+    technologies: ["Unity", "Unreal Engine", "Godot", "Three.js", "WebGL"]
+  },
+
+  // Graphics Design
+  {
+    id: "graphics-design",
+    title: "Graphics Design",
+    description: "Visually stunning designs that communicate your brand message effectively.",
+    icon: "🎨",
+    gradient: "from-pink-600 to-rose-600",
+    features: [
+      "Logo & Brand Identity",
+      "Marketing Materials",
+      "Social Media Graphics",
+      "Infographic Design",
+      "Print Design",
+      "Motion Graphics",
+      "Illustration",
+      "Packaging Design"
+    ],
+    metrics: {
+      projects: 240,
+      satisfaction: 98,
+      deliveryTime: "1-2 weeks",
+      clientRevisions: "2 included"
+    },
+    technologies: ["Adobe Creative Suite", "Figma", "Canva", "Blender", "After Effects"]
+  },
+
+  // UI/UX Design
+  {
+    id: "ui-ux-design",
+    title: "UI/UX Design",
+    description: "User-centered designs that deliver exceptional experiences and drive conversions.",
+    icon: "✨",
+    gradient: "from-indigo-600 to-violet-600",
+    features: [
+      "User Research & Testing",
+      "Wireframing & Prototyping",
+      "Interactive Design",
+      "Design Systems",
+      "Accessibility Compliance",
+      "User Journey Mapping",
+      "A/B Testing",
+      "Mobile-First Design"
+    ],
+    metrics: {
+      projects: 190,
+      satisfaction: 98,
+      deliveryTime: "2-4 weeks",
+      conversionIncrease: "35% avg."
+    },
+    technologies: ["Figma", "Sketch", "Adobe XD", "InVision", "Miro"]
+  },
+
+  // Video Editing
+  {
+    id: "video-editing",
+    title: "Video Editing",
+    description: "Professional video production and editing for marketing, tutorials, and entertainment.",
+    icon: "🎬",
     gradient: "from-red-600 to-orange-600",
-    features: ["Threat Detection", "Data Encryption", "Security Audits", "24/7 Monitoring"],
-    metrics: { projects: 110, satisfaction: 98 }
+    features: [
+      "Corporate Videos",
+      "Product Demos",
+      "Animation & Motion Graphics",
+      "Color Grading",
+      "Sound Design",
+      "Video SEO Optimization",
+      "Social Media Clips",
+      "YouTube Channel Management"
+    ],
+    metrics: {
+      projects: 165,
+      satisfaction: 96,
+      deliveryTime: "1-3 weeks",
+      videoQuality: "4K/8K"
+    },
+    technologies: ["Premiere Pro", "After Effects", "DaVinci Resolve", "Final Cut Pro", "Blender"]
+  },
+
+  // Content Writing
+  {
+    id: "content-writing",
+    title: "Content Writing",
+    description: "Engaging, SEO-optimized content that drives traffic and establishes authority.",
+    icon: "📝",
+    gradient: "from-teal-600 to-cyan-600",
+    features: [
+      "SEO Blog Posts",
+      "Website Copywriting",
+      "Technical Documentation",
+      "Whitepapers & Case Studies",
+      "Social Media Content",
+      "Email Campaigns",
+      "Script Writing",
+      "Content Strategy"
+    ],
+    metrics: {
+      projects: 280,
+      satisfaction: 97,
+      deliveryTime: "3-5 days",
+      seoRanking: "Top 10 results"
+    },
+    technologies: ["SEO Tools", "Grammarly", "SEMrush", "Ahrefs", "Copyscape"]
+  },
+
+  // SEO Optimization
+  {
+    id: "seo-optimization",
+    title: "SEO Optimization",
+    description: "Comprehensive SEO strategies to improve visibility and drive organic traffic.",
+    icon: "📈",
+    gradient: "from-amber-600 to-yellow-600",
+    features: [
+      "Technical SEO Audits",
+      "Keyword Research",
+      "On-page Optimization",
+      "Link Building",
+      "Local SEO",
+      "E-commerce SEO",
+      "SEO Analytics",
+      "Competitor Analysis"
+    ],
+    metrics: {
+      projects: 210,
+      satisfaction: 98,
+      deliveryTime: "Ongoing",
+      trafficIncrease: "200% avg."
+    },
+    technologies: ["Google Analytics", "Search Console", "SEMrush", "Ahrefs", "Moz"]
+  },
+
+  // Cyber Security
+  {
+    id: "cyber-security",
+    title: "Cyber Security",
+    description: "Enterprise-grade security solutions to protect your digital assets and data.",
+    icon: "🛡️",
+    gradient: "from-gray-700 to-black",
+    features: [
+      "Security Audits & Testing",
+      "Penetration Testing",
+      "Network Security",
+      "Data Encryption",
+      "Threat Detection",
+      "Incident Response",
+      "Security Training",
+      "Compliance (GDPR, HIPAA)"
+    ],
+    metrics: {
+      projects: 135,
+      satisfaction: 99,
+      deliveryTime: "2-4 weeks",
+      breachPrevention: "100%"
+    },
+    technologies: ["Firewalls", "SIEM", "WAF", "VPN", "Encryption Tools"]
   }
 ];
 
@@ -164,7 +463,7 @@ export default function Home() {
               We provide end-to-end digital transformation services
             </p>
           </div>
-          
+
           <ServiceShowcase services={servicesData} />
         </div>
       </section>
@@ -176,25 +475,24 @@ export default function Home() {
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
               Performance <span className="text-green-600 dark:text-green-400">Analytics</span>
             </h2>
-            
+
             {/* Chart Filters */}
             <div className="flex flex-wrap justify-center gap-2 mb-8">
               {['All Services', 'Web', 'Mobile', 'AI', 'Security'].map((filter) => (
                 <button
                   key={filter}
                   onClick={() => setActiveChartFilter(filter.toLowerCase().replace(' ', ''))}
-                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                    activeChartFilter === filter.toLowerCase().replace(' ', '')
+                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${activeChartFilter === filter.toLowerCase().replace(' ', '')
                       ? 'bg-green-600 text-white'
                       : 'bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-700'
-                  }`}
+                    }`}
                 >
                   {filter}
                 </button>
               ))}
             </div>
           </div>
-          
+
           <div className="grid lg:grid-cols-2 gap-8">
             {/* Main Chart */}
             <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm min-h-[400px]">
@@ -209,14 +507,14 @@ export default function Home() {
                 </select>
               </div>
               <div className="h-64 min-h-[256px]">
-                <DynamicCharts 
-                  data={performanceData} 
+                <DynamicCharts
+                  data={performanceData}
                   filter={activeChartFilter}
                   animate={true}
                 />
               </div>
             </div>
-            
+
             {/* Distribution Chart */}
             <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm min-h-[400px]">
               <div className="flex items-center justify-between mb-6">
@@ -260,8 +558,8 @@ export default function Home() {
               We combine technical expertise with creative vision
             </p>
           </div>
-          
-          <FeatureCards 
+
+          <FeatureCards
             cards={[
               {
                 title: "End-to-End Solutions",
@@ -303,8 +601,8 @@ export default function Home() {
       {/* CTA Section */}
       <section className="py-16 px-4 md:px-8">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Let's Build Something <span className="text-purple-600 dark:text-purple-400">Amazing</span>
+          <h2 className="text-5xl md:text-6xl font-bold mb-8">
+            Let&apos;s Build Something <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">Amazing</span> Together
           </h2>
           <p className="text-gray-600 dark:text-gray-300 mb-8">
             Join 500+ satisfied clients

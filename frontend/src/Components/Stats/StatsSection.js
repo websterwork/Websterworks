@@ -12,7 +12,7 @@ const stats = [
 
 export default function StatsSection() {
   return (
-    <div className="bg-gray-900/90 backdrop-blur-lg border-t border-gray-800">
+    <div className="bg-gray-900/90 backdrop-blur-lg border-t border-gray-800 ">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-gray-800">
           {stats.map((stat, index) => (
