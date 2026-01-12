@@ -30,7 +30,7 @@ export default function TermsConditionsPage() {
             </h2>
             <p className="text-gray-600 dark:text-gray-300 mb-4">
               By accessing and using <Link href="https://websterwork.com" className="text-blue-600 dark:text-blue-400 hover:underline">websterwork.com</Link> 
-              ("the Website"), you accept and agree to be bound by these Terms and Conditions. 
+              (&quot;the Website&quot;), you accept and agree to be bound by these Terms and Conditions. 
               If you disagree with any part of these terms, you may not access the Website.
             </p>
             <p className="text-gray-600 dark:text-gray-300">
@@ -120,7 +120,7 @@ export default function TermsConditionsPage() {
               <div className="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-400 p-4">
                 <p className="text-red-700 dark:text-red-300">
                   <strong>Disclaimer:</strong> The information on this Website is provided 
-                  "as is" without any representations or warranties, express or implied. 
+                  &quot;as is&quot; without any representations or warranties, express or implied. 
                   Websterwork makes no representations or warranties in relation to the 
                   completeness, accuracy, reliability, suitability, or availability of the 
                   information on the Website.
@@ -213,7 +213,7 @@ export default function TermsConditionsPage() {
             <p className="text-gray-600 dark:text-gray-300 mb-4">
               We reserve the right, at our sole discretion, to modify or replace these 
               Terms at any time. If a revision is material, we will try to provide at least 
-              30 days' notice prior to any new terms taking effect.
+              30 days&apos; notice prior to any new terms taking effect.
             </p>
             <p className="text-gray-600 dark:text-gray-300">
               By continuing to access or use our Website after those revisions become 

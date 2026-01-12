@@ -4,7 +4,7 @@ export default function PrivacyPolicyPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 py-12 px-4">
       <div className="max-w-4xl mx-auto">
-        
+
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
@@ -22,21 +22,22 @@ export default function PrivacyPolicyPage() {
 
         {/* Main Content */}
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
-          
+
           {/* Introduction */}
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
               1. Introduction
             </h2>
             <p className="text-gray-600 dark:text-gray-300 mb-4">
-              Welcome to Websterwork ("we," "our," or "us"). We are committed to protecting 
-              your personal information and your right to privacy. This Privacy Policy 
-              explains how we collect, use, disclose, and safeguard your information when 
-              you visit our website <Link href="https://websterwork.com" className="text-blue-600 dark:text-blue-400 hover:underline">websterwork.com</Link>.
+              Welcome to Websterwork (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;). We are committed to protecting
+              your personal information and your right to privacy. This Privacy Policy
+              explains how we collect, use, disclose, and safeguard your information when
+              you visit our website <Link href="https://websterwork.com" className="text-blue-600 dark:text-blue-400 hover:underline">websterwork.com</Link>. We&apos;re here to serve you responsibly.
             </p>
+
             <p className="text-gray-600 dark:text-gray-300">
-              By using our website, you consent to the data practices described in this 
-              policy. If you do not agree with the terms of this policy, please do not 
+              By using our website, you consent to the data practices described in this
+              policy. If you do not agree with the terms of this policy, please do not
               access the site.
             </p>
           </section>
@@ -61,7 +62,7 @@ export default function PrivacyPolicyPage() {
                   <li>Any other information you voluntarily provide in your message</li>
                 </ul>
               </div>
-              
+
               <div>
                 <h3 className="text-lg font-medium text-gray-800 dark:text-gray-200 mb-2">
                   2.2 Automatically Collected Information
@@ -102,12 +103,12 @@ export default function PrivacyPolicyPage() {
               4. Data Protection and Security
             </h2>
             <p className="text-gray-600 dark:text-gray-300 mb-4">
-              We implement appropriate security measures to protect your personal 
-              information. However, no method of transmission over the Internet or 
+              We implement appropriate security measures to protect your personal
+              information. However, no method of transmission over the Internet or
               electronic storage is 100% secure, and we cannot guarantee absolute security.
             </p>
             <p className="text-gray-600 dark:text-gray-300">
-              We retain your personal information only for as long as necessary to 
+              We retain your personal information only for as long as necessary to
               fulfill the purposes outlined in this policy.
             </p>
           </section>
@@ -126,8 +127,8 @@ export default function PrivacyPolicyPage() {
               <li>Email service providers</li>
             </ul>
             <p className="text-gray-600 dark:text-gray-300 mt-4">
-              These third parties have access to your information only to perform 
-              specific tasks on our behalf and are obligated not to disclose or use 
+              These third parties have access to your information only to perform
+              specific tasks on our behalf and are obligated not to disclose or use
               it for any other purpose.
             </p>
           </section>
@@ -138,12 +139,12 @@ export default function PrivacyPolicyPage() {
               6. Cookies and Tracking Technologies
             </h2>
             <p className="text-gray-600 dark:text-gray-300 mb-4">
-              We may use cookies and similar tracking technologies to track activity 
-              on our website and store certain information. You can instruct your 
+              We may use cookies and similar tracking technologies to track activity
+              on our website and store certain information. You can instruct your
               browser to refuse all cookies or to indicate when a cookie is being sent.
             </p>
             <p className="text-gray-600 dark:text-gray-300">
-              However, if you do not accept cookies, you may not be able to use some 
+              However, if you do not accept cookies, you may not be able to use some
               portions of our website.
             </p>
           </section>
@@ -154,7 +155,7 @@ export default function PrivacyPolicyPage() {
               7. Your Data Protection Rights
             </h2>
             <p className="text-gray-600 dark:text-gray-300 mb-4">
-              Depending on your location, you may have the following rights regarding 
+              Depending on your location, you may have the following rights regarding
               your personal data:
             </p>
             <ul className="list-disc pl-6 text-gray-600 dark:text-gray-300 space-y-2">
@@ -175,12 +176,13 @@ export default function PrivacyPolicyPage() {
           {/* Children's Privacy */}
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
-              8. Children's Privacy
+              8. Children&apos;s Privacy
             </h2>
+
             <p className="text-gray-600 dark:text-gray-300">
-              Our website is not intended for children under the age of 13. We do not 
-              knowingly collect personal information from children under 13. If you are 
-              a parent or guardian and believe your child has provided us with personal 
+              Our website is not intended for children under the age of 13. We do not
+              knowingly collect personal information from children under 13. If you are
+              a parent or guardian and believe your child has provided us with personal
               information, please contact us immediately.
             </p>
           </section>
@@ -191,12 +193,12 @@ export default function PrivacyPolicyPage() {
               9. Changes to This Privacy Policy
             </h2>
             <p className="text-gray-600 dark:text-gray-300 mb-4">
-              We may update this Privacy Policy from time to time. We will notify you 
-              of any changes by posting the new Privacy Policy on this page and updating 
-              the "Last updated" date.
+              We may update this Privacy Policy from time to time. We will notify you
+              of any changes by posting the new Privacy Policy on this page and updating
+              the &quot;Last updated&quot; date.
             </p>
             <p className="text-gray-600 dark:text-gray-300">
-              You are advised to review this Privacy Policy periodically for any changes. 
+              You are advised to review this Privacy Policy periodically for any changes.
               Changes to this Privacy Policy are effective when they are posted on this page.
             </p>
           </section>
@@ -207,7 +209,7 @@ export default function PrivacyPolicyPage() {
               10. Contact Us
             </h2>
             <p className="text-gray-600 dark:text-gray-300 mb-4">
-              If you have any questions or concerns about this Privacy Policy, please 
+              If you have any questions or concerns about this Privacy Policy, please
               contact us:
             </p>
             <div className="bg-gray-50 dark:bg-gray-700/50 p-6 rounded-lg">
