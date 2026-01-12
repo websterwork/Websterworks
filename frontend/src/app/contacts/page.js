@@ -1,316 +1,333 @@
 "use client";
+import Link from 'next/link';
 import React, { useState } from 'react';
-import Image from "next/image";
-import { Shield } from 'lucide-react';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
-    fullName: "",
+    name: "",
     email: "",
-    contactReasons: {
-      webDesign: false,
-      collaboration: false,
-      mobileAppDesign: false,
-      others: false,
-    },
-    budget: [2500],
+    subject: "",
     message: "",
   });
 
-  const handleInputChange = (field, value) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
-
-  const handleCheckboxChange = (reason, checked) => {
-    setFormData((prev) => ({
-      ...prev,
-      contactReasons: {
-        ...prev.contactReasons,
-        [reason]: checked,
-      },
-    }));
-  };
-
-  const handleBudgetChange = (e) => {
-    const value = parseInt(e.target.value);
-    setFormData((prev) => ({
-      ...prev,
-      budget: [value],
-    }));
-  };
-
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
+    // Add your form submission logic here
+    console.log('Form submitted:', formData);
+    alert('Message sent! We\'ll get back to you soon.');
+    setFormData({ name: "", email: "", subject: "", message: "" });
+  };
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-slate-900 flex items-center justify-center p-4">
-      {/* Background Image Overlay */}
-      <div className="absolute inset-0 opacity-5">
-        <Image
-          src="/ai-generated-8540913_1280.jpg" 
-          alt="Background" 
-          className="w-full h-full object-cover"
-          fill
-          priority
-        />
-      </div>
-      
-      {/* Contact Section Container */}
-      <div
-        className="relative bg-gradient-to-br from-slate-800/95 to-gray-900/95 backdrop-blur-lg border border-slate-600/30 rounded-3xl overflow-hidden shadow-2xl"
-        style={{
-          width: "1596px",
-          minHeight: "1771px",
-          maxWidth: "100vw",
-        }}
-      >
-        <div className="flex flex-col h-full">
-          {/* Header Section */}
-          <div className="bg-gradient-to-br from-blue-600/30 to-teal-600/30 text-center px-8 py-12 flex-shrink-0 relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-teal-500/10"></div>
-            
-            {/* Icon Box */}
-            <div className="relative w-20 h-20 rounded-2xl mx-auto mb-8 flex items-center justify-center bg-gradient-to-br from-blue-500 to-teal-500 shadow-xl">
-              <Shield className="w-10 h-10 text-white" />
-            </div>
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 py-12 px-4">
+      <div className="max-w-6xl mx-auto">
 
-            {/* Heading */}
-            <h1 className="relative text-white text-4xl md:text-5xl font-bold mb-6 max-w-2xl mx-auto leading-tight">
-              Thank you for your Interest in{" "}
-              <span className="bg-gradient-to-r from-blue-400 to-teal-400 bg-clip-text text-transparent">
-                SquareUp.
-              </span>
-            </h1>
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+            Contact Us
+          </h1>
+          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+            Get in touch with Websterwork. We're here to help with your digital projects.
+          </p>
 
-            {/* Paragraph */}
-            <p className="relative text-slate-300 text-lg mb-10 leading-relaxed max-w-2xl mx-auto">
-              We would love to hear from you and discuss how we can help bring
-              your digital ideas to life. Here are the different ways you can
-              get in touch with us.
+          {/* Owner Verification Note */}
+          <div className="mt-6 inline-block bg-blue-50 dark:bg-blue-900/30 px-4 py-2 rounded-lg">
+            <p className="text-sm text-blue-700 dark:text-blue-300">
+              Websterwork is operated by <strong>Muhammad Hussnain</strong> from Lahore, Pakistan.
             </p>
-
-            {/* Button */}
-            <button className="relative bg-gradient-to-r from-blue-500 to-teal-500 hover:from-blue-600 hover:to-teal-600 text-white font-semibold px-10 py-4 rounded-xl shadow-xl transition-all duration-300 text-lg transform hover:scale-105 hover:shadow-2xl">
-              Start Project
-            </button>
           </div>
+        </div>
 
-          {/* Form Section */}
-          <div className="flex-1 px-8 py-12">
-            <div className="max-w-4xl mx-auto">
-              <form onSubmit={handleSubmit} className="space-y-10">
-                {/* Name and Email Row */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                  <div className="space-y-3">
-                    <label
-                      htmlFor="fullName"
-                      className="block text-slate-200 text-lg font-medium"
-                    >
-                      Full Name
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+          {/* Contact Form - Left Column */}
+          <div className="lg:col-span-2">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
+              <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-6">
+                Send us a Message
+              </h2>
+
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Your Name *
                     </label>
                     <input
-                      id="fullName"
                       type="text"
-                      placeholder="Type here"
-                      value={formData.fullName}
-                      onChange={(e) =>
-                        handleInputChange("fullName", e.target.value)
-                      }
-                      className="w-full px-4 py-4 bg-slate-800/50 border border-slate-600/50 rounded-xl text-white text-lg placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent backdrop-blur-sm transition-all duration-200"
+                      id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
                       required
+                      className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:text-white transition-colors"
+                      placeholder="John Doe"
                     />
                   </div>
-                  <div className="space-y-3">
-                    <label
-                      htmlFor="email"
-                      className="block text-slate-200 text-lg font-medium"
-                    >
-                      Email
+
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Email Address *
                     </label>
                     <input
-                      id="email"
                       type="email"
-                      placeholder="Type here"
+                      id="email"
+                      name="email"
                       value={formData.email}
-                      onChange={(e) =>
-                        handleInputChange("email", e.target.value)
-                      }
-                      className="w-full px-4 py-4 bg-slate-800/50 border border-slate-600/50 rounded-xl text-white text-lg placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent backdrop-blur-sm transition-all duration-200"
+                      onChange={handleChange}
                       required
+                      className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:text-white transition-colors"
+                      placeholder="john@example.com"
                     />
                   </div>
                 </div>
 
-                {/* Contact Reasons */}
-                <div className="space-y-6">
-                  <label className="block text-slate-200 text-lg font-medium">
-                    Why are you contacting us?
+                <div>
+                  <label htmlFor="subject" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Subject *
                   </label>
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    {[
-                      { key: "webDesign", label: "Web Design" },
-                      { key: "collaboration", label: "Collaboration" },
-                      { key: "mobileAppDesign", label: "Mobile App Design" },
-                      { key: "others", label: "Others" },
-                    ].map((item) => (
-                      <div
-                        key={item.key}
-                        className="flex items-center space-x-4 p-4 rounded-xl bg-slate-800/30 border border-slate-700/50 hover:bg-slate-700/30 transition-all duration-200"
-                      >
-                        <div className="relative">
-                          <input
-                            type="checkbox"
-                            id={item.key}
-                            checked={formData.contactReasons[item.key]}
-                            onChange={(e) =>
-                              handleCheckboxChange(item.key, e.target.checked)
-                            }
-                            className="w-6 h-6 text-blue-400 bg-slate-800 border-slate-600 rounded-lg focus:ring-blue-400 focus:ring-2 transition-all duration-200"
-                          />
-                          {formData.contactReasons[item.key] && (
-                            <svg
-                              className="absolute top-1 left-1 w-4 h-4 text-blue-400 pointer-events-none"
-                              fill="currentColor"
-                              viewBox="0 0 20 20"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
-                          )}
-                        </div>
-                        <label
-                          htmlFor={item.key}
-                          className="text-slate-300 cursor-pointer hover:text-white transition-colors text-lg"
-                        >
-                          {item.label}
-                        </label>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Budget Slider */}
-                <div className="space-y-6">
-                  <label className="block text-slate-200 text-lg font-medium">
-                    Your Budget
-                  </label>
-                  <p className="text-slate-400 text-base">
-                    Slide to indicate your budget range
-                  </p>
-                  <div className="px-4 py-8 bg-slate-800/30 rounded-xl border border-slate-700/50">
-                    <div className="relative">
-                      <input
-                        type="range"
-                        min="1000"
-                        max="5000"
-                        step="100"
-                        value={formData.budget[0]}
-                        onChange={handleBudgetChange}
-                        className="w-full h-3 bg-slate-700 rounded-lg appearance-none cursor-pointer slider"
-                      />
-                      <div
-                        className="absolute top-0 left-0 h-3 bg-gradient-to-r from-blue-500 to-teal-500 rounded-lg pointer-events-none transition-all duration-300"
-                        style={{
-                          width: `${
-                            ((formData.budget[0] - 1000) / 4000) * 100
-                          }%`,
-                        }}
-                      ></div>
-                    </div>
-                    <div className="flex justify-between text-base text-slate-400 mt-6">
-                      <span>$1,000</span>
-                      <span className="text-transparent bg-gradient-to-r from-blue-400 to-teal-400 bg-clip-text font-bold text-xl">
-                        ${formData.budget[0].toLocaleString()}
-                      </span>
-                      <span>$5,000</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Message */}
-                <div className="space-y-3">
-                  <label
-                    htmlFor="message"
-                    className="block text-slate-200 text-lg font-medium"
-                  >
-                    Your Message
-                  </label>
-                  <textarea
-                    id="message"
-                    placeholder="Type here"
-                    value={formData.message}
-                    onChange={(e) =>
-                      handleInputChange("message", e.target.value)
-                    }
-                    rows="6"
-                    className="w-full px-4 py-4 bg-slate-800/50 border border-slate-600/50 rounded-xl text-white text-lg placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent resize-none backdrop-blur-sm transition-all duration-200"
+                  <input
+                    type="text"
+                    id="subject"
+                    name="subject"
+                    value={formData.subject}
+                    onChange={handleChange}
                     required
+                    className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:text-white transition-colors"
+                    placeholder="Project Inquiry"
                   />
                 </div>
 
-                {/* Submit Button */}
-                <div className="text-center pt-8">
-                  <button
-                    type="submit"
-                    className="w-full max-w-md bg-gradient-to-r from-blue-500 to-teal-500 hover:from-blue-600 hover:to-teal-600 text-white font-semibold py-5 px-8 rounded-xl transition-all duration-300 shadow-xl hover:shadow-2xl text-lg transform hover:scale-105 hover:-translate-y-1"
-                  >
-                    Submit
-                  </button>
+                <div>
+                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Message *
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
+                    required
+                    rows="6"
+                    className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:text-white transition-colors resize-none"
+                    placeholder="Tell us about your project..."
+                  />
                 </div>
+
+                <button
+                  type="submit"
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200"
+                >
+                  Send Message
+                </button>
               </form>
             </div>
           </div>
+
+          {/* Contact Info - Right Column */}
+          <div className="space-y-8">
+
+            {/* Business Information Card */}
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                Business Information
+              </h3>
+              <div className="space-y-4">
+                <div>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Business Name</p>
+                  <p className="font-medium dark:text-white">Websterwork</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Legal Owner</p>
+                  <p className="font-medium dark:text-white">Muhammad Hussnain</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Location</p>
+                  <p className="font-medium dark:text-white">Lahore, Pakistan</p>
+                </div>
+                <div className="pt-4 border-t">
+                  <Link
+                    href="/legal/owner"
+                    className="text-blue-600 dark:text-blue-400 hover:underline text-sm"
+                  >
+                    View Full Business Verification →
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+            {/* Contact Details Card - UPDATED WITH SOCIAL MEDIA */}
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                Contact Details
+              </h3>
+              <div className="space-y-4">
+                <div>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Phone</p>
+                  <Link
+                    href="tel:+923134385885"
+                    className="font-medium dark:text-white text-blue-600 dark:text-blue-400 hover:underline"
+                  >
+                    +92 313 4385885
+                  </Link>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Email</p>
+                  <Link
+                    href="mailto:info@websterwork.com"
+                    className="font-medium dark:text-white text-blue-600 dark:text-blue-400 hover:underline"
+                  >
+                    info@websterwork.com
+                  </Link>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Response Time</p>
+                  <p className="font-medium dark:text-white">Within 24 hours</p>
+                </div>
+
+                {/* Social Media Section */}
+                <div className="pt-4 border-t">
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">Connect on Social Media</p>
+                  <div className="grid grid-cols-2 gap-3">
+
+                    {/* WhatsApp */}
+                    <Link
+                      href="https://wa.me/923134385885"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-3 rounded-lg transition-colors text-sm"
+                    >
+                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.76.982.998-3.675-.236-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.9 6.994c-.004 5.45-4.438 9.88-9.888 9.88m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.333.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.333 11.893-11.893 0-3.18-1.24-6.162-3.495-8.411" />
+                      </svg>
+                      WhatsApp
+                    </Link>
+
+                    {/* Instagram */}
+                    <Link
+                      href="https://instagram.com/YOUR_USERNAME"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-medium py-2 px-3 rounded-lg transition-colors text-sm"
+                    >
+                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                      </svg>
+                      Instagram
+                    </Link>
+
+                    {/* Facebook */}
+                    <Link
+                      href="https://facebook.com/YOUR_PAGE"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-800 text-white font-medium py-2 px-3 rounded-lg transition-colors text-sm"
+                    >
+                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                      </svg>
+                      Facebook
+                    </Link>
+
+                    {/* X (Twitter) */}
+                    <Link
+                      href="https://twitter.com/YOUR_USERNAME"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2 bg-black hover:bg-gray-800 text-white font-medium py-2 px-3 rounded-lg transition-colors text-sm"
+                    >
+                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                      </svg>
+                      X / Twitter
+                    </Link>
+
+                    {/* LinkedIn */}
+                    <Link
+                      href="https://linkedin.com/in/YOUR_PROFILE"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2 bg-blue-800 hover:bg-blue-900 text-white font-medium py-2 px-3 rounded-lg transition-colors text-sm"
+                    >
+                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                      </svg>
+                      LinkedIn
+                    </Link>
+
+                    {/* TikTok */}
+                    <Link
+                      href="https://tiktok.com/@YOUR_USERNAME"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2 bg-gray-900 hover:bg-black text-white font-medium py-2 px-3 rounded-lg transition-colors text-sm"
+                    >
+                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z" />
+                      </svg>
+                      TikTok
+                    </Link>
+
+                    {/* YouTube */}
+                    <Link
+                      href="https://youtube.com/c/YOUR_CHANNEL"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-3 rounded-lg transition-colors text-sm"
+                    >
+                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                      </svg>
+                      YouTube
+                    </Link>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Verification Note */}
+            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 rounded-xl p-5">
+              <h4 className="font-medium text-blue-800 dark:text-blue-300 mb-2">
+                Verification Note
+              </h4>
+              <p className="text-sm text-blue-700 dark:text-blue-400">
+                This contact page verifies that Websterwork is operated by Muhammad Hussnain.
+                For official business verification, visit our verification page.
+              </p>
+            </div>
+
+          </div>
         </div>
+
+        {/* Additional Verification Section */}
+        <div className="mt-12 bg-gray-50 dark:bg-gray-800/50 rounded-2xl p-8">
+          <div className="text-center">
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+              Business Verification
+            </h3>
+            <p className="text-gray-600 dark:text-gray-300 mb-6">
+              Websterwork is a sole proprietorship business operating under the legal
+              ownership of Muhammad Hussnain. For detailed verification information:
+            </p>
+            <Link
+              href="/legal/owner"
+              className="inline-flex items-center justify-center px-6 py-3 bg-gray-900 dark:bg-gray-700 text-white rounded-lg hover:bg-gray-800 dark:hover:bg-gray-600 transition-colors"
+            >
+              Visit Verification Page
+            </Link>
+          </div>
+        </div>
+
       </div>
-
-      <style jsx>{`
-        .slider::-webkit-slider-thumb {
-          appearance: none;
-          height: 28px;
-          width: 28px;
-          border-radius: 50%;
-          background: linear-gradient(135deg, #3b82f6, #14b8a6);
-          cursor: pointer;
-          border: 4px solid #1e293b;
-          box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
-          transition: all 0.2s ease;
-        }
-
-        .slider::-webkit-slider-thumb:hover {
-          transform: scale(1.1);
-          box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
-        }
-
-        .slider::-moz-range-thumb {
-          height: 28px;
-          width: 28px;
-          border-radius: 50%;
-          background: linear-gradient(135deg, #3b82f6, #14b8a6);
-          cursor: pointer;
-          border: 4px solid #1e293b;
-          box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
-          transition: all 0.2s ease;
-        }
-
-        .slider::-moz-range-thumb:hover {
-          transform: scale(1.1);
-          box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
-        }
-
-        @media (max-width: 1596px) {
-          .contact-container {
-            width: 100% !important;
-            margin: 0 1rem;
-          }
-        }
-      `}</style>
     </div>
   );
 }

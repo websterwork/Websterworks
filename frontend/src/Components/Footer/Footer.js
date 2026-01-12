@@ -65,6 +65,7 @@ const Footer = () => {
     {
       heading: "Legal",
       links: [
+        { name: "Owner Info", href: "/legal/owner" },
         { name: "Privacy Policy", href: "/legal/privacypolicy" },
         { name: "Terms & Conditions", href: "/legal/terms&conditions" },
       ],
@@ -189,7 +190,10 @@ const Footer = () => {
               ))}
             </div>
             <div className="text-black dark:text-white text-sm">
-              © 2025 Websterwork. All rights reserved.
+              © {new Date().getFullYear()} Websterwork. Operated by Muhammad Hussnain.
+              <Link href="/legal/owner" className="ml-2 text-blue-600 dark:text-blue-400 hover:underline">
+                Verification
+              </Link>
             </div>
           </div>
         </div>
