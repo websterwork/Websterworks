@@ -76,6 +76,7 @@ async function bootstrap() {
     'http://localhost:3000',
     'http://192.168.0.107:3000',
     'https://websterwork.com',
+    'https://www.websterwork.com',
     frontendUrl,
   ];
   console.log('CORS allowed origins:', corsOrigins);
