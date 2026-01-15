@@ -76,7 +76,7 @@ services:
     image: mongo:7.0
     container_name: mongo
     restart: unless-stopped
-    command: ["mongod", "--bind_ip", "127.0.0.1"]
+    command: ["mongod", "--bind_ip_all", "--auth"]
     environment:
       MONGO_INITDB_ROOT_USERNAME: webster
       MONGO_INITDB_ROOT_PASSWORD: webster.00
