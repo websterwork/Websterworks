@@ -64,7 +64,13 @@ async function bootstrap() {
   app.use(expressLogger);
   app.useGlobalFilters(new HttpExceptionFilter());
 
-  // CORS config
+  // ✅ DISABLE CORS IN BACKEND - Let nginx handle it
+  app.enableCors({
+    origin: false,  // Disable CORS in backend
+    credentials: false,
+  });
+
+  // OLD CORS CONFIG - REMOVE OR COMMENT OUT
   const frontendUrl = process.env.FRONTEND_URL || 'http://192.168.0.107:3000';
   const corsOrigins = [
     'http://localhost:3000',
@@ -118,7 +124,6 @@ async function bootstrap() {
     ],
     exposedHeaders: ['X-XSRF-TOKEN', 'x-csrf-token'],
   });
-
   const port = process.env.PORT || 5095;
   await app.listen(port, '0.0.0.0');
   logger.log(`Server is running on port ${port}`);
