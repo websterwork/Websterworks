@@ -4,7 +4,7 @@ services:
   cloudflared:
     image: cloudflare/cloudflared:latest
     container_name: cloudflared
-    command: tunnel run --ha-connections 2 websterwork
+    command: tunnel run websterwork 
     restart: unless-stopped
     volumes:
       - /home/soul00/.cloudflared:/home/nonroot/.cloudflared:ro
@@ -38,7 +38,7 @@ services:
           cpus: "2.0"
           memory: 2G
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:3000/health"]
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/"]
       interval: 15s
       timeout: 5s
       retries: 5
@@ -67,7 +67,7 @@ services:
           cpus: "2.0"
           memory: 2G
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:5000/health"]
+      test: ["CMD", "wget", "-qO-", "http://localhost:5000/"]
       interval: 15s
       timeout: 5s
       retries: 5
