@@ -11,6 +11,7 @@ import { ProjectsModule } from './projects/projects.module';
 import { BillingModule } from './billing/billing.module';
 import { TwoFactorModule } from './two-factor/two-factor.module';
 import { TeamMeetsModule } from './team-meets/team-meets.module';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -53,6 +54,7 @@ import { TeamMeetsModule } from './team-meets/team-meets.module';
     BillingModule,
     TwoFactorModule,
     TeamMeetsModule,
+    HealthModule,
   ],
   controllers: [AppController], // ✅ Add this
   providers: [AppService], // ✅ Add this
