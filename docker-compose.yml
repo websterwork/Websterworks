@@ -4,10 +4,18 @@ services:
   cloudflared:
     image: cloudflare/cloudflared:latest
     container_name: cloudflared
-    command: tunnel run websterwork
+    command: tunnel run --ha-connections 2 websterwork
     restart: unless-stopped
     volumes:
       - /home/soul00/.cloudflared:/home/nonroot/.cloudflared:ro
+    depends_on:
+      nginx:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "cloudflared", "tunnel", "info"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
     networks:
       - app-network
 
@@ -27,8 +35,13 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "1.0"
-          memory: 512M
+          cpus: "2.0"
+          memory: 2G
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
 
   backend:
     build: ./backend
@@ -39,7 +52,8 @@ services:
     env_file:
       - ./backend/.env.production
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
     networks:
       - app-network
     security_opt:
@@ -50,20 +64,27 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "1.0"
-          memory: 512M
+          cpus: "2.0"
+          memory: 2G
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:5000/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
 
   nginx:
     image: nginx:1.29-alpine
     container_name: nginx
     restart: unless-stopped
     ports:
-      - "80:80" # Cloudflared will hit this
+      - "80:80"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
     depends_on:
-      - frontend
-      - backend
+      frontend:
+        condition: service_healthy
+      backend:
+        condition: service_healthy
     networks:
       - app-network
     security_opt:
@@ -72,6 +93,11 @@ services:
     tmpfs:
       - /var/cache/nginx
       - /var/run
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
 
   mongo:
     image: mongo:7.0
@@ -86,9 +112,9 @@ services:
       - mongo_data:/data/db
       - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     expose:
-      - "27017" # used internally for Docker network
+      - "27017"
     ports:
-      - "100.103.125.7:27017:27017" # Tailscale access only
+      - "100.103.125.7:27017:27017"
     networks:
       - app-network
     security_opt:
@@ -96,8 +122,13 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "1.0"
-          memory: 1G
+          cpus: "2.0"
+          memory: 4G
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
 
 volumes:
   mongo_data:
