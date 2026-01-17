@@ -10,6 +10,7 @@ services:
       - /home/soul00/.cloudflared:/home/nonroot/.cloudflared:ro
     networks:
       - app-network
+
   frontend:
     build: ./frontend
     container_name: frontend
@@ -57,7 +58,7 @@ services:
     container_name: nginx
     restart: unless-stopped
     ports:
-      - "80:80"   # Cloudflared will hit this
+      - "80:80" # Cloudflared will hit this
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
     depends_on:
@@ -85,7 +86,9 @@ services:
       - mongo_data:/data/db
       - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     expose:
-      - "27017"
+      - "27017" # used internally for Docker network
+    ports:
+      - "100.103.125.7:27017:27017" # Tailscale access only
     networks:
       - app-network
     security_opt:
