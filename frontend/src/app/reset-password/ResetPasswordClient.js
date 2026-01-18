@@ -17,7 +17,7 @@ export default function ResetPasswordClient ( { uid = "", token = "" } )
     {
         try
         {
-            const res = await fetch( `${ API_URL }/api/auth/token`, { credentials: "include" } );
+            const res = await fetch( `/api/auth/token`, { credentials: "include" } );
             if ( res.ok ) return ( await res.json() ).csrfToken;
         } catch { }
         return null;
@@ -33,7 +33,7 @@ export default function ResetPasswordClient ( { uid = "", token = "" } )
         try
         {
             const csrf = await fetchCsrf();
-            const res = await fetch( `${ API_URL }/api/auth/reset-password`, {
+            const res = await fetch( `/api/auth/reset-password`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json", "x-csrf-token": csrf },
                 credentials: "include",

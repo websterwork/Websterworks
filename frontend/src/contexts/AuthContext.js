@@ -23,7 +23,7 @@ export const AuthProvider = ( { children } ) =>
     {
         try
         {
-            const response = await fetch( `${ API_URL }/api/auth/token`, {
+            const response = await fetch( `/api/auth/token`, {
                 method: "GET",
                 credentials: "include", // Important: include cookies
             } );
@@ -49,7 +49,7 @@ export const AuthProvider = ( { children } ) =>
             // Ensure CSRF token is present
             const csrf = csrfToken || ( await fetchCsrfToken() );
 
-            const response = await fetch( `${ API_URL }/api/auth/refresh`, {
+            const response = await fetch( `/api/auth/refresh`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -148,7 +148,7 @@ export const AuthProvider = ( { children } ) =>
 
             
 
-                const response = await fetch( `${ API_URL }/api/auth/login`, {
+                const response = await fetch( `/api/auth/login`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -186,7 +186,7 @@ export const AuthProvider = ( { children } ) =>
                         {
                             // attempt /api/users/me
                             let userData = null;
-                            const meRes = await fetch( `${ API_URL }/api/users/me`, {
+                            const meRes = await fetch( `/api/users/me`, {
                                 method: 'GET',
                                 headers: { Authorization: `Bearer ${ data.accessToken }` },
                                 credentials: 'include',
@@ -197,7 +197,7 @@ export const AuthProvider = ( { children } ) =>
                                 setUser( userData );
                             } else if ( data.userId )
                             {
-                                const byIdRes = await fetch( `${ API_URL }/api/users/${ data.userId }`, {
+                                const byIdRes = await fetch( `/api/users/${ data.userId }`, {
                                     method: 'GET',
                                     headers: { Authorization: `Bearer ${ data.accessToken }` },
                                     credentials: 'include',
@@ -262,7 +262,7 @@ export const AuthProvider = ( { children } ) =>
                     throw new Error( "Failed to obtain CSRF token. Backend may not be responding correctly." );
                 }
 
-                const response = await fetch( `${ API_URL }/api/auth/signup`, {
+                const response = await fetch( `/api/auth/signup`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -321,7 +321,7 @@ export const AuthProvider = ( { children } ) =>
 
                 if ( !csrf ) throw new Error( 'Failed to obtain CSRF token' );
 
-                const response = await fetch( `${ API_URL }/api/auth/verify-signup`, {
+                const response = await fetch( `/api/auth/verify-signup`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -389,7 +389,7 @@ export const AuthProvider = ( { children } ) =>
 
             if ( csrf )
             {
-                await fetch( `${ API_URL }/api/auth/logout`, {
+                await fetch( `/api/auth/logout`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -434,7 +434,7 @@ export const AuthProvider = ( { children } ) =>
                     // Try to fetch user data to verify token is still valid
                     try
                     {
-                        const userResponse = await fetch( `${ API_URL }/api/users/me`, {
+                        const userResponse = await fetch( `/api/users/me`, {
                             method: "GET",
                             headers: { Authorization: `Bearer ${ storedToken }` },
                             credentials: "include",
@@ -446,7 +446,7 @@ export const AuthProvider = ( { children } ) =>
                         } else if ( userResponse.status === 401 )
                         {
                             // Token expired, try to refresh
-                            const refreshResponse = await fetch( `${ API_URL }/api/auth/refresh`, {
+                            const refreshResponse = await fetch( `/api/auth/refresh`, {
                                 method: "POST",
                                 headers: { "Content-Type": "application/json" },
                                 credentials: "include",

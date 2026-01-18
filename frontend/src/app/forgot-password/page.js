@@ -18,7 +18,7 @@ export default function ForgotPasswordPage ()
     {
         try
         {
-            const res = await fetch( `${ API_URL }/api/auth/token`, { credentials: "include" } );
+            const res = await fetch( `/api/auth/token`, { credentials: "include" } );
             if ( res.ok ) return ( await res.json() ).csrfToken;
         } catch { }
         return null;
@@ -32,7 +32,7 @@ export default function ForgotPasswordPage ()
         try
         {
             const csrf = await fetchCsrf();
-            const res = await fetch( `${ API_URL }/api/auth/forgot-lookup`, {
+            const res = await fetch( `/api/auth/forgot-lookup`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json", "x-csrf-token": csrf },
                 credentials: "include",
@@ -61,7 +61,7 @@ export default function ForgotPasswordPage ()
         try
         {
             const csrf = await fetchCsrf();
-            const res = await fetch( `${ API_URL }/api/auth/forgot-confirm`, {
+            const res = await fetch( `/api/auth/forgot-confirm`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json", "x-csrf-token": csrf },
                 credentials: "include",
