@@ -4,7 +4,7 @@ services:
   cloudflared:
     image: cloudflare/cloudflared:latest
     container_name: cloudflared
-    command: tunnel run websterwork 
+    command: tunnel run websterwork
     restart: unless-stopped
     volumes:
       - /home/soul00/.cloudflared:/home/nonroot/.cloudflared:ro
@@ -38,7 +38,7 @@ services:
           cpus: "2.0"
           memory: 2G
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:3000/api/health"]
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3000/api/health || exit 1"]
       interval: 15s
       timeout: 5s
       retries: 5
@@ -67,7 +67,7 @@ services:
           cpus: "2.0"
           memory: 2G
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:5000/api/health"]
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:5000/api/health || exit 1"]
       interval: 15s
       timeout: 5s
       retries: 5
@@ -94,7 +94,7 @@ services:
       - /var/cache/nginx
       - /var/run
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost/health"]
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1/health || exit 1"]
       interval: 10s
       timeout: 3s
       retries: 5
@@ -125,7 +125,7 @@ services:
           cpus: "2.0"
           memory: 4G
     healthcheck:
-      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      test: ["CMD-SHELL", "mongosh --eval \"db.adminCommand('ping')\" || exit 1"]
       interval: 20s
       timeout: 5s
       retries: 5
