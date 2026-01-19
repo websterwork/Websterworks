@@ -12,13 +12,6 @@ services:
     - nginx
    networks:
     - app-network
-   sysctls:
-    - net.core.rmem_max=2500000
-    - net.core.wmem_max=2500000
-   cap_add:
-    - NET_ADMIN
-   extra_hosts:
-    - "host.docker.internal:host-gateway" # For localhost access
   frontend:
     build: ./frontend
     container_name: frontend
