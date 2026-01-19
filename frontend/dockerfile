@@ -6,11 +6,20 @@ WORKDIR /app
 
 RUN npm config set registry https://registry.npmjs.org/
 
-RUN mkdir -p /app/.next/cache/images && chown -R app:app /app/.next
-
-# Create non-root user
+# -----------------------------
+# Create non-root user FIRST
+# -----------------------------
 RUN addgroup -S app && adduser -S app -G app
 
+# -----------------------------
+# Prepare Next.js cache dirs
+# -----------------------------
+RUN mkdir -p /app/.next/cache/images \
+    && chown -R app:app /app
+
+# -----------------------------
+# Install deps
+# -----------------------------
 COPY package*.json ./
 RUN npm install \
   --no-audit \
@@ -20,11 +29,15 @@ RUN npm install \
   --fetch-retry-mintimeout=20000 \
   --fetch-retry-maxtimeout=120000
 
+# -----------------------------
+# App source & build
+# -----------------------------
 COPY . .
-
 RUN npm run build
 
+# -----------------------------
+# Runtime
+# -----------------------------
 USER app
-
 EXPOSE 3000
 CMD ["npm", "start"]
