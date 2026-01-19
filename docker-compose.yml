@@ -2,17 +2,23 @@ version: "3.9"
 
 services:
   cloudflared:
-    image: cloudflare/cloudflared:latest
-    container_name: cloudflared
-    command: tunnel run websterwork
-    restart: unless-stopped
-    volumes:
-      - /home/soul00/.cloudflared:/home/nonroot/.cloudflared:ro
-    depends_on:
-      - nginx
-    networks:
-      - app-network
-
+   image: cloudflare/cloudflared:latest
+   container_name: cloudflared
+   command: tunnel --config /home/nonroot/.cloudflared/config.yml run
+   restart: unless-stopped
+   volumes:
+    - /home/soul00/.cloudflared:/home/nonroot/.cloudflared:ro
+   depends_on:
+    - nginx
+   networks:
+    - app-network
+   sysctls:
+    - net.core.rmem_max=2500000
+    - net.core.wmem_max=2500000
+   cap_add:
+    - NET_ADMIN
+   extra_hosts:
+    - "host.docker.internal:host-gateway" # For localhost access
   frontend:
     build: ./frontend
     container_name: frontend
@@ -33,7 +39,8 @@ services:
           cpus: "2.0"
           memory: 2G
     healthcheck:
-      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3000/api/health || exit 1"]
+      test:
+        ["CMD-SHELL", "wget -qO- http://127.0.0.1:3000/api/health || exit 1"]
       interval: 15s
       timeout: 5s
       retries: 5
@@ -61,7 +68,8 @@ services:
           cpus: "2.0"
           memory: 2G
     healthcheck:
-      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:5000/api/health || exit 1"]
+      test:
+        ["CMD-SHELL", "wget -qO- http://127.0.0.1:5000/api/health || exit 1"]
       interval: 15s
       timeout: 5s
       retries: 5
@@ -113,7 +121,8 @@ services:
           cpus: "2.0"
           memory: 4G
     healthcheck:
-      test: ["CMD-SHELL", "mongosh --eval \"db.adminCommand('ping')\" || exit 1"]
+      test:
+        ["CMD-SHELL", 'mongosh --eval "db.adminCommand(''ping'')" || exit 1']
       interval: 20s
       timeout: 5s
       retries: 5
