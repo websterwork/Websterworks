@@ -6,6 +6,8 @@ WORKDIR /app
 
 RUN npm config set registry https://registry.npmjs.org/
 
+RUN mkdir -p /app/.next/cache/images && chown -R app:app /app/.next
+
 # Create non-root user
 RUN addgroup -S app && adduser -S app -G app
 
