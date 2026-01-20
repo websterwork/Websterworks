@@ -2,16 +2,17 @@ version: "3.9"
 
 services:
   cloudflared:
-   image: cloudflare/cloudflared:latest
-   container_name: cloudflared
-   command: tunnel --config /home/nonroot/.cloudflared/config.yml run
-   restart: unless-stopped
-   volumes:
-    - /home/soul00/.cloudflared:/home/nonroot/.cloudflared:ro
-   depends_on:
-    - nginx
-   networks:
-    - app-network
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run
+    environment:
+      - TUNNEL_TOKEN=eyJhIjoiYWRlN2I3ODUzN2MwYmVkNjhjN2MzODcwOWU4MGFjOWEiLCJ0IjoiMWU4MzFiM2EtNzM0Zi00OTFkLWFlOGItMTg0Yzc0ZTAzYjY1IiwicyI6Ik5URmlOakJtTVRZdE1tVmxaUzAwWkdOaUxUazVZakl0TldVelpERmhOVEpoTVdSbCJ9
+    depends_on:
+      - nginx
+    networks:
+      - app-network
+
   frontend:
     build: ./frontend
     container_name: frontend
@@ -32,8 +33,7 @@ services:
           cpus: "2.0"
           memory: 2G
     healthcheck:
-      test:
-        ["CMD-SHELL", "wget -qO- http://127.0.0.1:3000/api/health || exit 1"]
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3000/api/health || exit 1"]
       interval: 15s
       timeout: 5s
       retries: 5
@@ -61,21 +61,17 @@ services:
           cpus: "2.0"
           memory: 2G
     healthcheck:
-      test:
-        ["CMD-SHELL", "wget -qO- http://127.0.0.1:5000/api/health || exit 1"]
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:5000/api/health || exit 1"]
       interval: 15s
       timeout: 5s
       retries: 5
 
   nginx:
-    image: nginx:1.29-alpine
+    image: nginx:1.27-alpine # Current stable is 1.27
     container_name: nginx
     restart: unless-stopped
-    ports:
-      - "80:80" # HTTP only, Cloudflared handles HTTPS
     volumes:
       - /home/soul00/Websterworks/nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
-      - /home/soul00/nginx/certs:/etc/nginx/certs:ro
     depends_on:
       - frontend
       - backend
@@ -114,8 +110,7 @@ services:
           cpus: "2.0"
           memory: 4G
     healthcheck:
-      test:
-        ["CMD-SHELL", 'mongosh --eval "db.adminCommand(''ping'')" || exit 1']
+      test: ["CMD-SHELL", 'mongosh --eval "db.adminCommand(''ping'')" || exit 1']
       interval: 20s
       timeout: 5s
       retries: 5
