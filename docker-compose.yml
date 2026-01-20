@@ -5,7 +5,7 @@ services:
     image: cloudflare/cloudflared:latest
     container_name: cloudflared
     restart: unless-stopped
-    command: tunnel --no-autoupdate run
+    command: tunnel --no-autoupdate run --protocol http2
     environment:
       - TUNNEL_TOKEN=eyJhIjoiYWRlN2I3ODUzN2MwYmVkNjhjN2MzODcwOWU4MGFjOWEiLCJ0IjoiMWU4MzFiM2EtNzM0Zi00OTFkLWFlOGItMTg0Yzc0ZTAzYjY1IiwicyI6Ik5URmlOakJtTVRZdE1tVmxaUzAwWkdOaUxUazVZakl0TldVelpERmhOVEpoTVdSbCJ9
     depends_on:
