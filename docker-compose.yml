@@ -7,7 +7,7 @@ services:
     restart: unless-stopped
     command: tunnel --no-autoupdate run --protocol http2
     environment:
-      - TUNNEL_TOKEN=eyJhIjoiYWRlN2I3ODUzN2MwYmVkNjhjN2MzODcwOWU4MGFjOWEiLCJ0IjoiMWU4MzFiM2EtNzM0Zi00OTFkLWFlOGItMTg0Yzc0ZTAzYjY1IiwicyI6Ik5URmlOakJtTVRZdE1tVmxaUzAwWkdOaUxUazVZakl0TldVelpERmhOVEpoTVdSbCJ9
+      - TUNNEL_TOKEN=eyJhIjoiYWRlN2I3ODUzN2MwYmVkNjhjN2MzODcwOWU4MGFjOWEiLCJ0IjoiMDI5NDk2YjUtZjMzMC00ZGIwLTllYWEtMzI1OTA1NmQwOTM2IiwicyI6Ik56Y3dObUk1TURVdFlUQXhNaTAwWm1Ga0xUaGtNekl0T0RZeFpUUmhZamt5TUdJeSJ9
     depends_on:
       - nginx
     networks:
