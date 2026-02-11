@@ -18,6 +18,7 @@ const Footer = () => {
       links: [
         { name: "Home", href: "/" },
         { name: "About Us", href: "/about" },
+        { name: "Our Process", href: "/process" },
         { name: "Career", href: "/careers" },
         { name: "Customer-Support", href: "/contacts/customer-support" },
       ],
@@ -25,11 +26,15 @@ const Footer = () => {
     {
       heading: "Resources",
       links: [
-        { name: "Blogs", href: "/resources/blogs" },
-        { name: "FAQs", href: "/resources/faqs" },
-        { name: "Industry Reports", href: "/resources/industry-reports" },
+        { name: "Featured", href: "/resources/featured" },
+        { name: "Blogs", href: "/resources/blog" },
         { name: "Case Studies", href: "/resources/case-studies" },
-        { name: "Market Analysis", href: "/resources/market-analysis" },
+        { name: "Guides", href: "/resources/guides" },
+        { name: "Topics", href: "/resources/topics" },
+        { name: "Webinars", href: "/resources/webinars" },
+        { name: "White Papers", href: "/resources/whitepapers" },
+        { name: "Tools", href: "/resources/tools" },
+        { name: "FAQs", href: "/resources/faqs" },
       ],
     },
     {
@@ -91,7 +96,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-white dark:bg-black text-white">
+    <footer className="bg-gradient-to-b from-white to-gray-50dark:from-gray-950 dark:via-gray-900 dark:to-gray-800 text-white dark:text-gray-100">
       <div className="relative w-full h-max">
         <div id="map" className="w-full h-max">
           <iframe

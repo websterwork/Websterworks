@@ -1,10 +1,10 @@
 // app/layout.js
-// use client;
 import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "../Components/Navbar/Navbar";
 import Footer from "../Components/Footer/Footer";
 import { AuthProvider } from "../contexts/AuthContext";
+import FloatingChat from "../Components/Chat/FloatingChat"; // Import the chat component
 
 const syncopate = localFont({
   src: [
@@ -24,7 +24,6 @@ const spaceGrotesk = localFont({
   ],
   variable: "--font-space-grotesk"
 });
-
 
 export const metadata = {
   title: "Websterwork - AI Powered Software Development",
@@ -46,6 +45,7 @@ export default function RootLayout({ children }) {
             <Navbar />
             <main className="flex-grow">{children}</main>
             <Footer />
+            <FloatingChat /> {/* Add the floating chat button here */}
           </div>
         </AuthProvider>
       </body>
