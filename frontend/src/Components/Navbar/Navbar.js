@@ -206,16 +206,6 @@ const Navbar = () => {
   const visibleLinks = publicLinks.slice(0, 5);
   const moreLinks = publicLinks.slice(5);
 
-  const privateLinks = [
-    { name: "Dashboard", href: "/dashboard", icon: MdDashboard },
-    { name: "Projects", href: "/projects", icon: FiGrid },
-    { name: "Messages", href: "/chat", icon: FiMessageSquare },
-    { name: "Team", href: "/team", icon: FiUser },
-    { name: "Billing", href: "/billing", icon: FiSettings },
-  ];
-
-  const linksToShow = user ? privateLinks : publicLinks;
-
   // Check if link is active
   const isActive = (href) => {
     if (href === '/') return pathname === href;
@@ -311,7 +301,7 @@ const Navbar = () => {
             )}
 
             {/* Private Navigation for Logged-in Users */}
-            {user && (
+            {/* {user && (
               <nav className="hidden lg:flex items-center justify-center flex-1 mx-8">
                 <div className="flex items-center gap-1">
                   {privateLinks.map((link) => {
@@ -333,7 +323,7 @@ const Navbar = () => {
                   })}
                 </div>
               </nav>
-            )}
+            )} */}
 
             {/* Right Side Actions */}
             <div className="flex items-center gap-2 lg:gap-3 flex-shrink-0">
@@ -489,11 +479,11 @@ const Navbar = () => {
                       className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
                     >
                       <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white font-semibold shadow-md">
-                        {user?.name ? user.name.charAt(0).toUpperCase() : "U"}
+                        {user?.username ? user.username.charAt(0).toUpperCase() : "U"}
                       </div>
                       <div className="hidden lg:block text-left">
                         <p className="text-sm font-medium text-gray-900 dark:text-white">
-                          {user?.name?.split(' ')[0] || "User"}
+                          {user?.username?.split(' ')[0] || "User"}
                         </p>
                       </div>
                       <FiChevronDown className={`w-4 h-4 text-gray-500 transition-transform ${userMenuOpen ? 'rotate-180' : ''}`} />
@@ -510,7 +500,7 @@ const Navbar = () => {
                         >
                           <div className="px-4 py-3 border-b border-gray-100 dark:border-gray-700 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-gray-800 dark:to-gray-800">
                             <p className="font-medium text-gray-900 dark:text-white">
-                              {user?.name || "User"}
+                              {user?.username || "User"}
                             </p>
                             <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
                               {user?.email || "user@example.com"}
@@ -518,7 +508,7 @@ const Navbar = () => {
                           </div>
                           <div className="py-1">
                             <Link
-                              href="/profile"
+                              href="/portal/profile"
                               onClick={() => setUserMenuOpen(false)}
                               className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                             >
@@ -526,7 +516,7 @@ const Navbar = () => {
                               Profile
                             </Link>
                             <Link
-                              href="/dashboard"
+                              href="/portal/dashboard"
                               onClick={() => setUserMenuOpen(false)}
                               className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                             >
@@ -534,7 +524,7 @@ const Navbar = () => {
                               Dashboard
                             </Link>
                             <Link
-                              href="/billing"
+                              href="/portal/billing"
                               onClick={() => setUserMenuOpen(false)}
                               className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                             >

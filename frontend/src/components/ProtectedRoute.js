@@ -13,7 +13,7 @@ export const withProtectedRoute = (Component) => {
       // Only act after auth is initialized
       if (isInitialized && !user) {
         // Use replace to prevent back navigation to protected route
-        router.replace("/login");
+        router.replace("/portal/login");
       }
     }, [user, isInitialized, router]);
 

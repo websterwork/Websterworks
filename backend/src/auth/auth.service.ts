@@ -106,7 +106,7 @@ export class AuthService {
       auth: { user, pass },
       tls: { rejectUnauthorized: true },
     });
-
+console.log(transporter)
     const html = `
       <div style="font-family: Arial, Helvetica, sans-serif; color: #111;">
         <h2>Verify your email for WebsterWork</h2>
@@ -239,7 +239,7 @@ export class AuthService {
     // Build reset link early so it can be logged in dev if SMTP isn't configured
     const frontendBase =
       this.configService.get<string>('FRONTEND_URL') || 'http://localhost:3000';
-    const resetLink = `${frontendBase}/reset-password?uid=${encodeURIComponent(
+    const resetLink = `${frontendBase}/portal/reset-password?uid=${encodeURIComponent(
       userId,
     )}&token=${encodeURIComponent(token)}`;
 

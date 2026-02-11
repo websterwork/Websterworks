@@ -1,10 +1,11 @@
+// src/app/portal/reset-password/page.js
 import ResetPasswordClient from './ResetPasswordClient';
 
-// Server component wrapper: read searchParams on the server and pass them into
-// the client component so the client can safely use client-only hooks.
-export default function ResetPasswordPage ( { searchParams } )
-{
-    const uid = ( searchParams && searchParams.uid ) || '';
-    const token = ( searchParams && searchParams.token ) || '';
-    return <ResetPasswordClient uid={ uid } token={ token } />;
+export default async function ResetPasswordPage({ searchParams }) {
+    // ✅ Await searchParams in Next.js 15+
+    const params = await searchParams;
+    const uid = params?.uid || '';
+    const token = params?.token || '';
+
+    return <ResetPasswordClient uid={uid} token={token} />;
 }

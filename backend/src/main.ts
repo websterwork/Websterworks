@@ -64,58 +64,6 @@ async function bootstrap() {
   app.use(expressLogger);
   app.useGlobalFilters(new HttpExceptionFilter());
 
-  // ✅ DISABLE CORS IN BACKEND - Let nginx handle it
-  app.enableCors({
-    origin: false,  // Disable CORS in backend
-    credentials: false,
-  });
-
-  // OLD CORS CONFIG - REMOVE OR COMMENT OUT
-  const frontendUrl = process.env.FRONTEND_URL || 'http://192.168.0.107:3000';
-  const corsOrigins = [
-    'http://localhost:3000',
-    'http://192.168.0.107:3000',
-    'https://websterwork.com',
-    'https://www.websterwork.com',
-    frontendUrl,
-  ];
-
-  app.enableCors({
-    origin: (origin, callback) => {
-      if (!origin) return callback(null, true);
-      try {
-        if (corsOrigins.includes(origin)) {
-          return callback(null, true);
-        }
-
-        // Accept any subdomain of websterwork.com (e.g. www.websterwork.com, app.websterwork.com)
-        const parsed = new URL(origin);
-        const hostname = parsed.hostname;
-        if (
-          hostname === 'websterwork.com' ||
-          hostname.endsWith('.websterwork.com')
-        ) {
-          return callback(null, true);
-        }
-      } catch (err) {
-        console.warn('[CORS] origin parse failed:', err?.message || err);
-      }
-      return callback(new Error('Not allowed by CORS'));
-    },
-    credentials: true,
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    allowedHeaders: [
-      'Content-Type',
-      'Authorization',
-      'X-Requested-With',
-      'X-XSRF-TOKEN',
-      'x-csrf-token',
-      'x-xsrf-token',
-      'XSRF-TOKEN',
-      'Accept',
-    ],
-    exposedHeaders: ['X-XSRF-TOKEN', 'x-csrf-token'],
-  });
   const port = process.env.PORT || 5095;
   await app.listen(port, '0.0.0.0');
   logger.log(`Server is running on port ${port}`);
