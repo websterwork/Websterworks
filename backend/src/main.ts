@@ -12,7 +12,9 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
   // IMPORTANT: Tell Nest to use the Express version
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    cors: false,
+  });
   // ADD THIS LINE
   app.setGlobalPrefix('api/');
   const logger = new Logger('Bootstrap');
