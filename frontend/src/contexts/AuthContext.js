@@ -15,17 +15,8 @@ export const AuthProvider = ({ children }) => {
     const [pendingSignup, setPendingSignup] = useState(null);
     const refreshPromiseRef = useRef(null);
 
-    // 🔥 SMART API URL - Works everywhere!
-    const getApiUrl = () => {
-        // 1. Use environment variable if provided (for custom domains)
-        if (process.env.NEXT_PUBLIC_API_URL) {
-            return process.env.NEXT_PUBLIC_API_URL;
-        }
-        // 2. Fallback to relative URLs (works with Nginx proxy)
-        return '';
-    };
+    const API_BASE = process.env.NEXT_PUBLIC_API_URL || '';
 
-    const API_BASE = getApiUrl();
 
     // Fetch CSRF token from server
     const fetchCsrfToken = useCallback(async () => {
