@@ -24,10 +24,6 @@ async function bootstrap() {
   app.use(express.json({ limit: '10kb' }));
   app.use(express.urlencoded({ extended: false, limit: '10kb' }));
 
-  app.enableCors({
-    origin: ['https://websterwork.com', 'https://www.websterwork.com'],
-    credentials: true,
-  });
 
   app.use(
     mongoSanitize({
