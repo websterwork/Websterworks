@@ -70,7 +70,7 @@ const FloatingChat = () => {
             responseTime: '< 5 min',
             availability: '24/7',
             color: 'green',
-            link: 'https://wa.me/1234567890?text=Hello%20Websterwork%2C%20I%20need%20assistance'
+            link: 'https://wa.me/923134385885?text=Hello%20Websterwork%2C%20I%20need%20assistance'
         },
         {
             id: 'telegram',

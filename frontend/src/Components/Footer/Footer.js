@@ -15,10 +15,11 @@ import {
   FaInstagram,
   FaLinkedin,
   FaWhatsapp,
-  FaTwitter,
   FaGithub,
   FaArrowUp,
 } from "react-icons/fa";
+
+import { FaXTwitter } from "react-icons/fa6";
 
 const Footer = () => {
   const [showScrollTop, setShowScrollTop] = React.useState(false);
@@ -107,14 +108,14 @@ const Footer = () => {
       color: "hover:bg-[#1877f2]"
     },
     {
-      icon: FaTwitter,
+      icon: FaXTwitter,
       href: "https://x.com/webs_terwork",
       label: "Twitter",
-      color: "hover:bg-[#1DA1F2]"
+      color: "hover:bg-[#000000]"
     },
     {
       icon: FaLinkedin,
-      href: "https://www.linkedin.com/in/hussnain-b00b06373",
+      href: "https://www.linkedin.com/company/websterworks",
       label: "LinkedIn",
       color: "hover:bg-[#0A66C2]"
     },
@@ -126,7 +127,7 @@ const Footer = () => {
     },
     {
       icon: FaWhatsapp,
-      href: "https://wa.me/qr/IYPOXSLB77ADO1",
+      href: "https://wa.me/923134385885?text=Hello%20Websterwork%2C%20I%20need%20assistance",
       label: "WhatsApp",
       color: "hover:bg-[#25D366]"
     },

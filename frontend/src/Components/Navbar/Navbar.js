@@ -327,126 +327,6 @@ const Navbar = () => {
 
             {/* Right Side Actions */}
             <div className="flex items-center gap-2 lg:gap-3 flex-shrink-0">
-              {/* Search Button (Mobile/Tablet) */}
-              <button
-                onClick={() => setShowMobileSearch(!showMobileSearch)}
-                className="lg:hidden p-2.5 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
-              >
-                <FiSearch className="w-5 h-5" />
-              </button>
-
-              {/* Desktop Search Bar - Compact */}
-              <div className="hidden lg:block relative w-64" ref={searchRef}>
-                <form onSubmit={handleSearchSubmit} className="relative">
-                  <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                  <input
-                    ref={searchInputRef}
-                    type="search"
-                    placeholder="Search..."
-                    value={searchQuery}
-                    onChange={handleSearchChange}
-                    onFocus={() => setShowSuggestions(true)}
-                    className="w-full pl-9 pr-8 py-2 bg-gray-100 dark:bg-gray-800 text-sm text-gray-900 dark:text-gray-100 rounded-lg border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    autoComplete="off"
-                  />
-                  {searchQuery && (
-                    <button
-                      type="button"
-                      onClick={clearSearch}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
-                    >
-                      <FiX className="w-4 h-4" />
-                    </button>
-                  )}
-                </form>
-
-                {/* Search Suggestions Dropdown */}
-                <AnimatePresence>
-                  {showSuggestions && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      transition={{ duration: 0.2 }}
-                      className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-2xl overflow-hidden z-50"
-                    >
-                      {/* Search Results */}
-                      {searchQuery ? (
-                        searchResults.length > 0 ? (
-                          <div className="max-h-96 overflow-y-auto">
-                            {searchResults.slice(0, 5).map((result) => {
-                              const Icon = typeIcons[result.type] || FiFileText;
-                              return (
-                                <button
-                                  key={result.id}
-                                  onClick={() => handleSuggestionClick(result)}
-                                  className="flex items-start gap-3 w-full px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors border-b border-gray-100 dark:border-gray-800 last:border-0 group"
-                                >
-                                  <div className={`flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center ${result.type === 'whitepaper' ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600' :
-                                      result.type === 'case-study' ? 'bg-green-100 dark:bg-green-900/30 text-green-600' :
-                                        result.type === 'guide' ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-600' :
-                                          result.type === 'webinar' ? 'bg-orange-100 dark:bg-orange-900/30 text-orange-600' :
-                                            result.type === 'blog' ? 'bg-pink-100 dark:bg-pink-900/30 text-pink-600' :
-                                              'bg-gray-100 dark:bg-gray-800 text-gray-600'
-                                    }`}>
-                                    <Icon className="w-4 h-4" />
-                                  </div>
-                                  <div className="flex-grow min-w-0">
-                                    <span className="text-sm font-medium text-gray-900 dark:text-white line-clamp-1">
-                                      {result.fields.title}
-                                    </span>
-                                    <span className="text-xs text-gray-500 dark:text-gray-400">
-                                      {getResourceTypeName(result.type)}
-                                    </span>
-                                  </div>
-                                </button>
-                              );
-                            })}
-                            <div className="p-2 border-t border-gray-100 dark:border-gray-800">
-                              <button
-                                onClick={handleSearchSubmit}
-                                className="w-full px-4 py-2 text-sm text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors text-center"
-                              >
-                                View all results ({searchResults.length})
-                              </button>
-                            </div>
-                          </div>
-                        ) : (
-                          <div className="p-4 text-center">
-                            <p className="text-sm text-gray-500 dark:text-gray-400">
-                              No results found
-                            </p>
-                          </div>
-                        )
-                      ) : recentSearches.length > 0 ? (
-                        <div className="p-2">
-                          <div className="flex items-center justify-between px-2 py-1">
-                            <span className="text-xs font-semibold text-gray-500 dark:text-gray-400">
-                              Recent
-                            </span>
-                            <button
-                              onClick={clearRecentSearches}
-                              className="text-xs text-red-500 hover:text-red-600"
-                            >
-                              Clear
-                            </button>
-                          </div>
-                          {recentSearches.map((query, index) => (
-                            <button
-                              key={index}
-                              onClick={() => handleRecentSearchClick(query)}
-                              className="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
-                            >
-                              <FiSearch className="w-3 h-3 text-gray-400" />
-                              <span>{query}</span>
-                            </button>
-                          ))}
-                        </div>
-                      ) : null}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
 
               {/* Theme Toggle */}
               <div className="hidden sm:block">
@@ -561,40 +441,6 @@ const Navbar = () => {
               </button>
             </div>
           </div>
-
-          {/* Mobile Search Bar */}
-          <AnimatePresence>
-            {showMobileSearch && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.2 }}
-                className="lg:hidden py-3 border-t border-gray-200 dark:border-gray-800"
-              >
-                <form onSubmit={handleSearchSubmit} className="relative">
-                  <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                  <input
-                    type="search"
-                    placeholder="Search resources, guides, tools..."
-                    value={searchQuery}
-                    onChange={handleSearchChange}
-                    className="w-full pl-10 pr-10 py-3 bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-xl border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    autoFocus
-                  />
-                  {searchQuery && (
-                    <button
-                      type="button"
-                      onClick={clearSearch}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                    >
-                      <FiX className="w-5 h-5" />
-                    </button>
-                  )}
-                </form>
-              </motion.div>
-            )}
-          </AnimatePresence>
         </div>
       </header>
 
@@ -606,7 +452,7 @@ const Navbar = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.2 }}
-            className="fixed top-16 left-0 right-0 bottom-0 z-40 lg:hidden bg-white dark:bg-gray-950 overflow-y-auto"
+            className="fixed top-16 left-0 right-0 bottom-0 z-50 lg:hidden bg-white dark:bg-gray-950 overflow-y-auto"
           >
             <div className="container mx-auto px-4 py-6">
               {/* Mobile Navigation Links */}
