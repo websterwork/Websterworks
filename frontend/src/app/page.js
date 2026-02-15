@@ -31,8 +31,8 @@ export default function Home() {
       id: 'ai-models',
       title: 'AI Models Development',
       description: 'Custom AI models and machine learning solutions for automation and intelligent decision-making.',
-      bgImage: '/services/ai-bg.jpg',
-      darkBgImage: '/services/ai-bg-dark.jpg',
+      bgImage: '/services/ai-light.png',
+      darkBgImage: '/services/ai-dark.png',
       icon: FiZap,
       link: '/services/ai-models'
     },
@@ -40,8 +40,8 @@ export default function Home() {
       id: 'website-development',
       title: 'Website Development',
       description: 'Modern, responsive websites with React, Next.js, and cutting-edge frameworks.',
-      bgImage: '/services/web-bg.jpg',
-      darkBgImage: '/services/web-bg-dark.jpg',
+      bgImage: '/services/web-light.png',
+      darkBgImage: '/services/web-dark.png',
       icon: FiMonitor,
       link: '/services/website-development'
     },
@@ -49,8 +49,8 @@ export default function Home() {
       id: 'app-development',
       title: 'Android/iOS Development',
       description: 'Native and cross-platform mobile applications with seamless performance.',
-      bgImage: '/services/mobile-bg.jpg',
-      darkBgImage: '/services/mobile-bg-dark.jpg',
+      bgImage: '/services/android-light.png',
+      darkBgImage: '/services/android-dark.png',
       icon: FiSmartphone,
       link: '/services/app-development'
     },
@@ -58,8 +58,8 @@ export default function Home() {
       id: 'game-development',
       title: 'Game Development',
       description: 'Immersive 2D/3D games and interactive experiences across multiple platforms.',
-      bgImage: '/services/game-bg.jpg',
-      darkBgImage: '/services/game-bg-dark.jpg',
+      bgImage: '/services/game-light.png',
+      darkBgImage: '/services/game-dark.png',
       icon: FiCode,
       link: '/services/game-development'
     },
@@ -67,8 +67,8 @@ export default function Home() {
       id: 'graphics-design',
       title: 'Graphics Design',
       description: 'Visually stunning designs that communicate your brand message effectively.',
-      bgImage: '/services/design-bg.jpg',
-      darkBgImage: '/services/design-bg-dark.jpg',
+      bgImage: '/services/graphics-light.png',
+      darkBgImage: '/services/graphics-dark.png',
       icon: FiTarget,
       link: '/services/graphics-design'
     },
@@ -76,8 +76,8 @@ export default function Home() {
       id: 'uiux-design',
       title: 'UI/UX Design',
       description: 'User-centered designs that deliver exceptional experiences and drive conversions.',
-      bgImage: '/services/uiux-bg.jpg',
-      darkBgImage: '/services/uiux-bg-dark.jpg',
+      bgImage: '/services/ui-light.png',
+      darkBgImage: '/services/ui-dark.png',
       icon: FiEye,
       link: '/services/uiux-design'
     },
@@ -85,8 +85,8 @@ export default function Home() {
       id: 'video-editing',
       title: 'Video Editing',
       description: 'Professional video production and editing for marketing, tutorials, and entertainment.',
-      bgImage: '/services/video-bg.jpg',
-      darkBgImage: '/services/video-bg-dark.jpg',
+      bgImage: '/services/video-light.png',
+      darkBgImage: '/services/video-dark.png',
       icon: FiTrendingUp,
       link: '/services/video-editing'
     },
@@ -94,8 +94,8 @@ export default function Home() {
       id: 'content-writing',
       title: 'Content Writing',
       description: 'Engaging, SEO-optimized content that resonates with your audience.',
-      bgImage: '/services/content-bg.jpg',
-      darkBgImage: '/services/content-bg-dark.jpg',
+      bgImage: '/services/content-light.png',
+      darkBgImage: '/services/content-dark.png',
       icon: FiBookOpen,
       link: '/services/content-writing'
     },
@@ -103,8 +103,8 @@ export default function Home() {
       id: 'seo-optimisation',
       title: 'SEO Optimisation',
       description: 'Comprehensive SEO strategies to improve visibility and drive organic traffic.',
-      bgImage: '/services/seo-bg.jpg',
-      darkBgImage: '/services/seo-bg-dark.jpg',
+      bgImage: '/services/seo-light.png',
+      darkBgImage: '/services/seo-dark.png',
       icon: FiTrendingUp,
       link: '/services/seo-optimisation'
     },
@@ -112,8 +112,8 @@ export default function Home() {
       id: 'cyber-security',
       title: 'Cyber Security',
       description: 'Enterprise-grade security solutions to protect your digital assets and data.',
-      bgImage: '/services/security-bg.jpg',
-      darkBgImage: '/services/security-bg-dark.jpg',
+      bgImage: '/services/cyber-light.png',
+      darkBgImage: '/services/cyber-dark.png',
       icon: FiShield,
       link: '/services/cyber-security'
     }
@@ -124,72 +124,72 @@ export default function Home() {
       id: 'it-technology',
       title: 'IT Technology',
       description: 'Custom software solutions for tech companies and startups',
-      bgImage: '/industries/it-bg.jpg',
-      darkBgImage: '/industries/it-bg-dark.jpg',
+      bgImage: '/industries/IT-light.png',
+      darkBgImage: '/industries/IT-dark.png',
       count: 120
     },
     {
       id: 'medical-healthcare',
       title: 'Medical & Healthcare',
       description: 'Healthcare apps, telemedicine platforms, and medical software',
-      bgImage: '/industries/medical-bg.jpg',
-      darkBgImage: '/industries/medical-bg-dark.jpg',
+      bgImage: '/industries/medico-light.png',
+      darkBgImage: '/industries/medico-dark.png',
       count: 85
     },
     {
       id: 'finance-banking',
       title: 'Finance & Banking',
       description: 'Fintech solutions, banking apps, and financial management systems',
-      bgImage: '/industries/finance-bg.jpg',
-      darkBgImage: '/industries/finance-bg-dark.jpg',
+      bgImage: '/industries/finance-light.png',
+      darkBgImage: '/industries/finance-dark.png',
       count: 95
     },
     {
       id: 'education',
       title: 'Education',
       description: 'E-learning platforms, educational apps, and LMS development',
-      bgImage: '/industries/education-bg.jpg',
-      darkBgImage: '/industries/education-bg-dark.jpg',
+      bgImage: '/industries/education-light.png',
+      darkBgImage: '/industries/education-dark.png',
       count: 110
     },
     {
       id: 'manufacturing-telecommunication',
       title: 'Manufacturing & Telecommunication',
       description: 'Industrial software, IoT solutions, and telecom systems',
-      bgImage: '/industries/manufacturing-bg.jpg',
-      darkBgImage: '/industries/manufacturing-bg-dark.jpg',
+      bgImage: '/industries/manufacturing-light.png',
+      darkBgImage: '/industries/manufacturing-dark.png',
       count: 75
     },
     {
       id: 'travel-hospitality',
       title: 'Travel & Hospitality',
       description: 'Booking systems, travel apps, and hospitality management software',
-      bgImage: '/industries/travel-bg.jpg',
-      darkBgImage: '/industries/travel-bg-dark.jpg',
+      bgImage: '/industries/travel-light.png',
+      darkBgImage: '/industries/travel-dark.png',
       count: 65
     },
     {
       id: 'media-entertainment',
       title: 'Media & Entertainment',
       description: 'Streaming platforms, content management systems, and media apps',
-      bgImage: '/industries/media-bg.jpg',
-      darkBgImage: '/industries/media-bg-dark.jpg',
+      bgImage: '/industries/entertainment-light.png',
+      darkBgImage: '/industries/entertainment-dark.png',
       count: 90
     },
     {
       id: 'gaming',
       title: 'Gaming',
       description: 'Game development, gaming platforms, and interactive entertainment',
-      bgImage: '/industries/gaming-bg.jpg',
-      darkBgImage: '/industries/gaming-bg-dark.jpg',
+      bgImage: '/industries/gaming-light.png',
+      darkBgImage: '/industries/gaming-dark.png',
       count: 50
     },
     {
       id: 'internet-of-things',
       title: 'Internet of Things',
       description: 'IoT solutions, smart devices, and connected systems',
-      bgImage: '/industries/iot-bg.jpg',
-      darkBgImage: '/industries/iot-bg-dark.jpg',
+      bgImage: '/industries/iot-light.png',
+      darkBgImage: '/industries/iot-dark.png',
       count: 45
     }
   ];
