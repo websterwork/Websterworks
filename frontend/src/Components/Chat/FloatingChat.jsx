@@ -4,9 +4,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-    FiMessageCircle, FiX, FiMessageSquare, FiBot,
-    FiMail, FiSend, FiHelpCircle, FiChevronRight,
-    FiHeadphones, FiZap, FiGlobe, FiSmartphone
+    FiMessageCircle, FiX, FiSend, FiHelpCircle, FiChevronRight
 } from 'react-icons/fi';
 import { FaWhatsapp, FaTelegram, FaRobot, FaHeadset } from 'react-icons/fa';
 import { BsChatDotsFill } from 'react-icons/bs';
