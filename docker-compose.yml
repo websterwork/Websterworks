@@ -99,7 +99,7 @@ services:
     expose:
       - "27017"
     ports:
-      - "100.103.125.7:27017:27017"
+      - "100.85.85.122:27018:27017"
     networks:
       - app-network
     security_opt:
