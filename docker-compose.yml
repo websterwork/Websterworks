@@ -71,7 +71,7 @@ services:
     container_name: nginx
     restart: unless-stopped
     volumes:
-      - /home/soul00/Websterworks/nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    - ./nginx/conf.d:/etc/nginx/conf.d:ro
     depends_on:
       - frontend
       - backend
