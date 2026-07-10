@@ -1,5 +1,6 @@
 // app/layout.js
 import localFont from "next/font/local";
+import { GoogleTagManager } from "@next/third-parties/google";
 import "./globals.css";
 import Navbar from "../Components/Navbar/Navbar";
 import Footer from "../Components/Footer/Footer";
@@ -132,6 +133,7 @@ export default function RootLayout({ children }) {
       <body
         className={`${spaceGrotesk.className} antialiased h-full bg-white dark:bg-black`}
       >
+        <GoogleTagManager gtmId="GTM-5VZXN6F9" />
         <AuthProvider>
           <div className="min-h-full flex flex-col overflow-y-hidden">
             <Navbar />
