@@ -12,6 +12,10 @@ import { BillingModule } from './billing/billing.module';
 import { TwoFactorModule } from './two-factor/two-factor.module';
 import { TeamMeetsModule } from './team-meets/team-meets.module';
 import { HealthModule } from './health/health.module';
+import { ServicesModule } from './services/services.module';
+import { IndustriesModule } from './industries/industries.module';
+import { CategoryModule } from './category/category.module';
+import { SubServicesModule } from './sub-services/sub-services.module';
 
 @Module({
   imports: [
@@ -55,6 +59,10 @@ import { HealthModule } from './health/health.module';
     TwoFactorModule,
     TeamMeetsModule,
     HealthModule,
+    ServicesModule,
+    IndustriesModule,
+    CategoryModule,
+    SubServicesModule,
   ],
   controllers: [AppController], // ✅ Add this
   providers: [AppService], // ✅ Add this

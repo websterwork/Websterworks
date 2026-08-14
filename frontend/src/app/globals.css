@@ -1,11 +1,136 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-@custom-variant dark (&:where(.dark, .dark *));
+@custom-variant dark (&:is(.dark *));
 
-.font-syncopate {
-  font-family: var(--font-syncopate);
+/* -----------------------------------------------------------------------------
+   CSS Variables - Electric Violet (#9810fa) & Deep Slate Palette
+----------------------------------------------------------------------------- */
+
+:root {
+  /* ---------------------------------------------------------------------------
+     Dark Theme - Midnight Obsidian & Vivid Electric Violet
+  --------------------------------------------------------------------------- */
+  --background: #09090d;       /* Midnight Void */
+  --foreground: #f4f4f7;       /* Crisp Platinum Text */
+  --card: #121218;             /* Deep Slate Card Surface */
+  --card-foreground: #f4f4f7;
+  --popover: #121218;
+  --popover-foreground: #f4f4f7;
+  
+  --primary: #9810fa;          /* Your Exact Vivid Electric Violet */
+  --primary-foreground: #ffffff;
+  --secondary: #181820;        /* Subtle Charcoal Slate */
+  --secondary-foreground: #e4e4e7;
+  --muted: #181820;
+  --muted-foreground: #a1a1aa;  /* Clean Muted Gray */
+  
+  --accent: #b042ff;           /* Bright Soft Violet Accent Glow */
+  --accent-foreground: #ffffff;
+  --destructive: #ef4444;      
+  --destructive-foreground: #ffffff;
+  
+  --border: rgba(152, 16, 250, 0.25); /* Glowing Electric Violet Border */
+  --input: rgba(152, 16, 250, 0.2);
+  --ring: #9810fa;             /* Violet Focus Ring */
+  --radius: 0.5rem;
 }
 
-.font-space {
-  font-family: var(--font-space-grotesk);
+.light {
+  /* ---------------------------------------------------------------------------
+     Light Theme - Pure White & Royal Electric Violet
+  --------------------------------------------------------------------------- */
+  --background: #ffffff;
+  --foreground: #09090d;       /* High Contrast Obsidian Text */
+  --card: #f8fafc;
+  --card-foreground: #09090d;
+  --popover: #ffffff;
+  --popover-foreground: #09090d;
+  
+  --primary: #7c03d0;          /* Deep Royal Violet */
+  --primary-foreground: #ffffff;
+  --secondary: #f4f4f5;
+  --secondary-foreground: #18181b;
+  --muted: #f4f4f5;
+  --muted-foreground: #71717a;
+  
+  --accent: #9810fa;
+  --accent-foreground: #ffffff;
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  
+  --border: #e4e4e7;
+  --input: #e4e4e7;
+  --ring: #7c03d0;
+  --radius: 0.5rem;
+}
+
+/* -----------------------------------------------------------------------------
+   Tailwind Theme Mapping
+----------------------------------------------------------------------------- */
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+/* -----------------------------------------------------------------------------
+   Base Styles
+----------------------------------------------------------------------------- */
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* -----------------------------------------------------------------------------
+   Custom Scrollbar
+----------------------------------------------------------------------------- */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(152, 16, 250, 0.3);
+  border-radius: 999px;
+}
+
+.light ::-webkit-scrollbar-thumb {
+  background: rgba(124, 3, 208, 0.3);
 }
