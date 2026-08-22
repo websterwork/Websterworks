@@ -14,7 +14,7 @@
 
  export * from "./FadeIn";
  export * from "./Reveal";
-// export * from "./Stagger";
+ export * from "./Stagger";
 
 // /* -------------------------------------------------------------------------- */
 // /* Text Animations                                                            */
@@ -22,15 +22,15 @@
 
  export * from "./SplitText";
  export * from "./Typewriter";
-// export * from "./BlurText";
-// export * from "./TextGradient";
-// export * from "./TextScramble";
+ export * from "./BlurText";
+ export * from "./TextGradient";
+ export * from "./TextScramble";
 
 // /* -------------------------------------------------------------------------- */
 // /* Number Animations                                                          */
 // /* -------------------------------------------------------------------------- */
 
-// export * from "./AnimatedCounter";
+ export * from "./AnimatedCounter";
 
 // /* -------------------------------------------------------------------------- */
 // /* Interactive Effects                                                        */
@@ -39,14 +39,14 @@
  export * from "./Magnetic";
  export * from "./Floating";
 // // export * from "./Tilt";
-// export * from "./HoverCard";
+ export * from "./HoverCard";
 // export * from "./FlipCard";
 
 // /* -------------------------------------------------------------------------- */
 // /* Background & Decorative                                                    */
 // /* -------------------------------------------------------------------------- */
 
-// export * from "./Shine";
+ export * from "./Shine";
 // export * from "./Parallax";
 // export * from "./Spotlight";
 // export * from "./CursorGlow";
@@ -57,7 +57,7 @@
 // /* Scroll                                                                     */
 // /* -------------------------------------------------------------------------- */
 
-// export * from "./Marquee";
+ export * from "./Marquee";
 // // export * from "./InfiniteSlider";
 // export * from "./ScrollProgress";
 // export * from "./AutoAnimate";

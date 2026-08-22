@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 168 40" fill="none">
+  <rect x="6" y="8" width="10" height="10" fill="currentColor"/>
+  <rect x="18" y="8" width="10" height="10" fill="currentColor" opacity=".45"/>
+  <rect x="6" y="20" width="10" height="10" fill="currentColor" opacity=".45"/>
+  <rect x="18" y="20" width="10" height="10" fill="currentColor"/>
+  <path d="M44 11h8.4l11.6 13.8V11h7.4v21h-8.4L51.4 18.2V32H44V11Z" fill="currentColor"/>
+  <path d="M80 11h20v6.2h-12.4v2.6H99v6.2H86.6V32H80V11Z" fill="currentColor"/>
+  <path d="M108 11h8.4l7.1 18.2L130.7 11H139L126.2 32h-8.4L108 11Z" fill="currentColor"/>
+</svg>

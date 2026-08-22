@@ -1,49 +1,19 @@
 // src/app/page.tsx
 import { HeroSection } from "@/components/sections/HomePageSections/HeroSection";
 import { TechnologiesSection } from "@/components/sections/HomePageSections/TechnologiesSection";
-import Image from "next/image";
+import { ServiceSection } from "@/components/sections/HomePageSections/ServiceSection";
+import { CompaniesSection } from "@/components/sections/HomePageSections/CompaniesSection";
+import { WhyChooseUsSection } from "@/components/sections/HomePageSections/WhyChooseUsSection";
 
 export default function Home() {
   return (
     <>
       {/* Hero Section */}
-     <HeroSection/>
-      <TechnologiesSection/>
-      {/* Features Section */}
-      <section className="min-h-screen flex flex-col items-center justify-center bg-white dark:bg-zinc-900 py-20 px-4">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-black dark:text-white">
-            Why Choose Websterwork?
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                title: "AI Solutions",
-                desc: "Cutting-edge AI and machine learning solutions",
-              },
-              {
-                title: "Web Development",
-                desc: "Modern, scalable web applications",
-              },
-              {
-                title: "Digital Strategy",
-                desc: "Data-driven digital transformation",
-              },
-            ].map((item, i) => (
-              <div
-                key={i}
-                className="p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:shadow-lg transition"
-              >
-                <h3 className="text-xl font-semibold text-black dark:text-white mb-2">
-                  {item.title}
-                </h3>
-                <p className="text-zinc-600 dark:text-zinc-400">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
+      <HeroSection />
+      <TechnologiesSection />
+      <ServiceSection />
+      <CompaniesSection />
+      <WhyChooseUsSection />
       {/* About Section */}
       <section className="min-h-screen flex flex-col items-center justify-center bg-zinc-50 dark:bg-black py-20 px-4">
         <div className="max-w-3xl mx-auto text-center">

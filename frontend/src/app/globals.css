@@ -134,3 +134,42 @@
 .light ::-webkit-scrollbar-thumb {
   background: rgba(124, 3, 208, 0.3);
 }
+
+/* -----------------------------------------------------------------------------
+   Custom Pointer
+----------------------------------------------------------------------------- */
+
+.custom-pointer,
+.custom-pointer * {
+  cursor: none !important;
+}
+
+/* -----------------------------------------------------------------------------
+   Logo marquee
+----------------------------------------------------------------------------- */
+
+@keyframes marquee-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marquee-right {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.animate-marquee-left {
+  animation: marquee-left linear infinite;
+}
+
+.animate-marquee-right {
+  animation: marquee-right linear infinite;
+}
