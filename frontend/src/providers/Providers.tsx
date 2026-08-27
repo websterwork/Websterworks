@@ -4,7 +4,7 @@
 import { ReactNode } from "react";
 import { ToastProvider } from "./ToastProvider";
 import { ThemeProvider } from "./ThemeProvider";
-import { PointerEffect } from "./PointerEffect";
+import { PointerEffect } from "./PointerEffectProvider";
 
 interface ProvidersProps {
   children: ReactNode;

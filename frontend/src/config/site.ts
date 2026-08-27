@@ -47,7 +47,7 @@ export const siteConfig = {
         faviconLightMode: "/logos/black-logo.svg",
         faviconDarkMode: "/logos/white-logo.svg",
         favicon: "/favicon/favicon.ico",
-        ogImage: "/og",
+        ogImage: "/og/og.png",
         appleIcon: "/favicon/apple-touch-icon.png",
     },
 

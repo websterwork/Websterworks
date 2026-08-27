@@ -14,11 +14,12 @@
  * • Custom transitions
  * • Viewport animation
  * • Semantic HTML support
+ * • Supports both `children` and `text` props
  *
  * -----------------------------------------------------------------------------
  */
 
-import { ElementType, ReactNode } from "react";
+import { ElementType } from "react";
 
 import { motion, Transition, Variants } from "motion/react";
 
@@ -55,7 +56,9 @@ const animationMap = {
 /* -------------------------------------------------------------------------- */
 
 interface SplitTextProps<T extends ElementType = "div"> {
-  children: string;
+  children?: string;
+
+  text?: string;
 
   as?: T;
 
@@ -85,6 +88,8 @@ interface SplitTextProps<T extends ElementType = "div"> {
 export function SplitText<T extends ElementType = "div">({
   children,
 
+  text,
+
   as,
 
   className,
@@ -107,7 +112,9 @@ export function SplitText<T extends ElementType = "div">({
 }: SplitTextProps<T>) {
   const Component = motion.create(as ?? "div");
 
-  const pieces = by === "word" ? children.split(" ") : children.split("");
+  const content = text ?? children ?? "";
+
+  const pieces = by === "word" ? content.split(" ") : content.split("");
 
   return (
     <Component

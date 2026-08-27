@@ -5,30 +5,16 @@
  * Shine
  * -----------------------------------------------------------------------------
  *
- * Animated shine / shimmer wrapper.
- *
- * Features
- * • Infinite or hover-only shine
- * • Configurable duration
- * • Configurable angle
- * • Configurable width
- * • Configurable opacity
- * • Overflow hidden
+ * Animated shine / shimmer wrapper with adaptive dark/light gradient support.
  *
  * -----------------------------------------------------------------------------
  */
 
 import { motion } from "motion/react";
-
 import { cn } from "@/lib/utils";
-
-/* -------------------------------------------------------------------------- */
-/* Props                                                                      */
-/* -------------------------------------------------------------------------- */
 
 interface ShineProps {
   children: React.ReactNode;
-
   className?: string;
 
   /**
@@ -60,11 +46,12 @@ interface ShineProps {
    * Opacity.
    */
   opacity?: number;
-}
 
-/* -------------------------------------------------------------------------- */
-/* Component                                                                  */
-/* -------------------------------------------------------------------------- */
+  /**
+   * Custom CSS linear-gradient string for complete control.
+   */
+  shineGradient?: string;
+}
 
 export function Shine({
   children,
@@ -75,6 +62,7 @@ export function Shine({
   width = "30%",
   angle = 20,
   opacity = 0.5,
+  shineGradient,
 }: ShineProps) {
   const animation = {
     x: ["-150%", "250%"],
@@ -95,7 +83,8 @@ export function Shine({
           rotate: `${angle}deg`,
           opacity,
           background:
-            "linear-gradient(to right, transparent, rgba(255,255,255,0.9), transparent)",
+            shineGradient ||
+            "linear-gradient(to right, transparent, var(--shine-color, rgba(255,255,255,0.8)), transparent)",
         }}
         variants={{
           initial: {
