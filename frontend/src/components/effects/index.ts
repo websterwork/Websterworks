@@ -11,7 +11,7 @@
  export * from './GridPattern'
 // export * from './NeonBorder'
 // export * from './Noise'
-// export * from './ParticleField'
+ export * from './ParticleField'
 // export * from './Stars'
  export * from './Spotlight'
 // export * from './Vignette'

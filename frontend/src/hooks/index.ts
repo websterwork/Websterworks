@@ -28,3 +28,4 @@ export * from "./useTypewriter";
 export * from "./useTechnologyCloud";
 export * from "./useTechnologyInteraction";
 export * from "./useWindowsize";
+export * from "./useActiveSection";
