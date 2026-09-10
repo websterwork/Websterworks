@@ -1,0 +1,157 @@
+version: "3.9"
+
+services:
+  #=====================================
+  # CLOUDFLARED TUNNEL
+  #=====================================
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run --protocol http2
+    environment:
+      - TUNNEL_TOKEN=eyJhIjoiYWRlN2I3ODUzN2MwYmVkNjhjN2MzODcwOWU4MGFjOWEiLCJ0IjoiMDI5NDk2YjUtZjMzMC00ZGIwLTllYWEtMzI1OTA1NmQwOTM2IiwicyI6Ik56Y3dObUk1TURVdFlUQXhNaTAwWm1Ga0xUaGtNekl0T0RZeFpUUmhZamt5TUdJeSJ9
+    depends_on:
+      - nginx
+    networks:
+      - app-network
+
+  #=====================================
+  # NGINX REVERSE PROXY
+  #=====================================
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: nginx
+    restart: unless-stopped
+    volumes:
+      - ./nginx:/etc/nginx/conf.d:ro
+    networks:
+      - app-network
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /var/cache/nginx
+      - /var/run
+
+  #=====================================
+  # Websterwork Frontend (3000)
+  #=====================================
+  websterwork-frontend:
+    build: /home/soul00/server/apps/Websterworks/frontend
+    container_name: websterwork-frontend
+    restart: unless-stopped
+    expose:
+      - "3000"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3000 || exit 1"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+
+  #=====================================
+  # Websterwork Backend (5000)
+  #=====================================
+  websterwork-backend:
+    build: /home/soul00/server/apps/Websterworks/backend
+    container_name: websterwork-backend
+    restart: unless-stopped
+    expose:
+      - "5000"
+    env_file:
+      - /home/soul00/server/apps/Websterworks/backend/.env.production
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - mongo
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:5000/api/health || exit 1"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+
+  #=====================================
+  # Websterchat Frontend (3001)
+  #=====================================
+  websterchat-frontend:
+    build: /home/soul00/server/apps/Websterchat/frontend
+    container_name: websterchat-frontend
+    restart: unless-stopped
+    expose:
+      - "3001"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3001 || exit 1"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+
+  #=====================================
+  # Websterchat Backend (5001)
+  #=====================================
+  websterchat-backend:
+    build: /home/soul00/server/apps/Websterchat/backend
+    container_name: websterchat-backend
+    restart: unless-stopped
+    volumes:
+      - ./uploads:/app/uploads
+    expose:
+      - "5001"
+    env_file:
+      - /home/soul00/server/apps/Websterchat/backend/.env.production
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - mongo
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:5001/api/health || exit 1"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+
+  #=====================================
+  # MongoDB
+  #=====================================
+  mongo:
+    image: mongo:7.0
+    container_name: mongo
+    restart: unless-stopped
+    command: ["mongod", "--bind_ip_all", "--auth"]
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: webster
+      MONGO_INITDB_ROOT_PASSWORD: webster.00
+    volumes:
+      - mongo_data:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    expose:
+      - "27017"
+    ports:
+      - "100.103.125.7:27017:27017"
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "mongosh --eval 'db.adminCommand(\"ping\")' || exit 1"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+
+#=====================================
+# Volumes & Networks
+#=====================================
+volumes:
+  mongo_data:
+
+networks:
+  app-network:
+    driver: bridge
