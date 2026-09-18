@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Lenis from "lenis";
 
 import {
   AnimatedCounter,
@@ -11,6 +11,7 @@ import {
   TextGradient,
   TextScramble,
 } from "@/components/animations";
+
 import { Glow, GridPattern } from "@/components/effects";
 import { Container } from "@/components/common";
 import { Separator } from "@/components/ui";
@@ -62,32 +63,10 @@ export function WhyChooseUsSection() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // 1. Initialize Lenis Smooth Scroll
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      touchMultiplier: 2,
-    });
-
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-    const rafId = requestAnimationFrame(raf);
-
-    // Synchronize GSAP ScrollTrigger with Lenis
-    lenis.on("scroll", ScrollTrigger.update);
-    gsap.ticker.add((time) => {
-      lenis.raf(time * 1000);
-    });
-    gsap.ticker.lagSmoothing(0, 0);
-
-    // 2. GSAP Direction-Alternating Animations
     const ctx = gsap.context(() => {
       const items = gsap.utils.toArray<HTMLElement>(".gsap-slide-item");
 
       items.forEach((item, index) => {
-        // Alternating directions: Even indices (0, 2...) from Left (-100px), Odd indices (1, 3...) from Right (+100px)
         const direction = index % 2 === 0 ? -120 : 120;
 
         gsap.fromTo(
@@ -103,78 +82,84 @@ export function WhyChooseUsSection() {
             ease: "power3.out",
             scrollTrigger: {
               trigger: item,
-              start: "top 85%", // Triggers line-by-line as item scrolls into viewport
+              start: "top 85%",
               toggleActions: "play none none reverse",
             },
           },
         );
       });
+
+      ScrollTrigger.refresh();
     }, containerRef);
 
     return () => {
       ctx.revert();
-      cancelAnimationFrame(rafId);
-      lenis.destroy();
     };
   }, []);
 
   return (
     <section
       ref={containerRef}
-      className="relative overflow-hidden py-28 md:py-36"
+      className="relative overflow-hidden py-20 sm:py-24 md:py-28 lg:py-36"
     >
       <GridPattern opacity={0.1} />
+
       <Glow
-        className="top-[-10%] left-[-8%]"
+        className="left-[-15%] top-[-8%] sm:left-[-8%] sm:top-[-10%]"
         color="bg-primary"
-        size={480}
-        opacity={0.18}
+        size={360}
+        opacity={0.16}
       />
+
       <Glow
-        className="right-[-10%] bottom-[-16%]"
+        className="bottom-[-12%] right-[-18%] sm:bottom-[-16%] sm:right-[-10%]"
         color="bg-accent"
-        size={380}
-        opacity={0.12}
+        size={300}
+        opacity={0.1}
         duration={9}
       />
 
       <Container className="relative z-10">
+        {/* Header */}
         <div className="max-w-4xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-primary">
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-primary sm:text-sm sm:tracking-[0.3em]">
             Why choose us
           </p>
 
           <BlurText
             as="h2"
-            className="mt-6 text-4xl font-black tracking-tight md:text-6xl xl:text-7xl"
+            className="mt-5 text-3xl font-black tracking-tight sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl"
           >
             Built to last. <TextGradient>Chosen to grow.</TextGradient>
           </BlurText>
 
-          <p className="mt-8 max-w-2xl text-lg leading-8 text-muted-foreground">
+          <p className="mt-6 max-w-2xl text-base leading-7 text-muted-foreground sm:mt-8 sm:text-lg sm:leading-8">
             Websterwork is product thinking, engineering, and design in one
             room. You get a partner that ships — not a vendor that vanishes
             after kickoff.
           </p>
         </div>
 
-        <div className="mt-24 space-y-28">
+        {/* Chapters */}
+        <div className="mt-16 space-y-20 sm:mt-20 sm:space-y-24 md:mt-24 md:space-y-28">
           {/* Chapter 01 - Product */}
           <Chapter index="01" label="Product">
-            <div className="space-y-16">
+            <div className="space-y-12 sm:space-y-16">
               {product.map((item) => (
                 <article
                   key={item.title}
-                  className="gsap-slide-item grid gap-6 border-t border-border/50 pt-10 md:grid-cols-[5rem_1fr] md:gap-12"
+                  className="gsap-slide-item grid gap-5 border-t border-border/50 pt-7 sm:gap-6 sm:pt-10 md:grid-cols-[5rem_1fr] md:gap-12"
                 >
-                  <span className="font-mono text-sm tracking-[0.2em] text-primary">
+                  <span className="font-mono text-xs tracking-[0.2em] text-primary sm:text-sm">
                     {item.index}
                   </span>
+
                   <div>
-                    <h3 className="text-3xl font-black tracking-tight md:text-5xl">
+                    <h3 className="text-2xl font-black tracking-tight sm:text-3xl md:text-5xl">
                       {item.title}
                     </h3>
-                    <p className="mt-5 max-w-2xl text-base leading-8 text-muted-foreground md:text-lg">
+
+                    <p className="mt-4 max-w-2xl text-sm leading-7 text-muted-foreground sm:mt-5 sm:text-base sm:leading-8 md:text-lg">
                       {item.description}
                     </p>
                   </div>
@@ -185,22 +170,24 @@ export function WhyChooseUsSection() {
 
           {/* Chapter 02 - Process */}
           <Chapter index="02" label="Process">
-            <div className="relative pt-4">
+            <div className="relative pt-2 sm:pt-4">
               <div
                 aria-hidden
-                className="absolute top-[2.15rem] right-0 left-0 hidden h-px bg-border md:block"
+                className="absolute left-0 right-0 top-[2.15rem] hidden h-px bg-border md:block"
               />
 
-              <div className="grid gap-12 md:grid-cols-4">
+              <div className="grid gap-10 sm:gap-12 md:grid-cols-2 lg:grid-cols-4">
                 {process.map((item) => (
                   <div key={item.step} className="gsap-slide-item relative">
-                    <span className="relative z-10 block font-mono text-sm tracking-[0.24em] text-primary">
+                    <span className="relative z-10 block font-mono text-xs tracking-[0.24em] text-primary sm:text-sm">
                       {item.step}
                     </span>
-                    <h3 className="mt-8 text-2xl font-black tracking-tight md:text-3xl">
+
+                    <h3 className="mt-6 text-xl font-black tracking-tight sm:mt-8 sm:text-2xl md:text-3xl">
                       {item.title}
                     </h3>
-                    <p className="mt-3 text-sm leading-7 text-muted-foreground md:text-base">
+
+                    <p className="mt-2 text-sm leading-6 text-muted-foreground sm:mt-3 sm:leading-7 md:text-base">
                       {item.line}
                     </p>
                   </div>
@@ -211,16 +198,17 @@ export function WhyChooseUsSection() {
 
           {/* Chapter 03 - Partnership */}
           <Chapter index="03" label="Partnership">
-            <div className="grid gap-16 md:grid-cols-2 md:gap-20">
+            <div className="grid gap-10 sm:gap-12 md:grid-cols-2 md:gap-20">
               {partnership.map((item) => (
                 <blockquote
                   key={item.quote}
-                  className="gsap-slide-item border-l border-primary/70 pl-8 md:pl-10"
+                  className="gsap-slide-item border-l border-primary/70 pl-5 sm:pl-8 md:pl-10"
                 >
-                  <p className="text-2xl font-medium leading-snug tracking-tight md:text-4xl md:leading-tight">
+                  <p className="text-xl font-medium leading-snug tracking-tight sm:text-2xl md:text-4xl md:leading-tight">
                     {item.quote}
                   </p>
-                  <p className="mt-6 text-base leading-7 text-muted-foreground">
+
+                  <p className="mt-5 text-sm leading-7 text-muted-foreground sm:mt-6 sm:text-base">
                     {item.detail}
                   </p>
                 </blockquote>
@@ -229,22 +217,24 @@ export function WhyChooseUsSection() {
           </Chapter>
         </div>
 
-        <Separator className="my-20 bg-border/60" />
+        <Separator className="my-16 bg-border/60 sm:my-20" />
 
-        <div className="grid grid-cols-2 gap-y-12 md:grid-cols-4">
+        {/* Stats */}
+        <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:gap-x-8 sm:gap-y-12 md:grid-cols-4">
           {stats.map((stat, index) => (
             <div
               key={stat.label}
               className="gsap-slide-item md:border-l md:border-border/50 md:pl-8 md:first:border-l-0 md:first:pl-0"
             >
-              <p className="text-4xl font-black tracking-tight md:text-5xl">
+              <p className="text-3xl font-black tracking-tight sm:text-4xl md:text-5xl">
                 <AnimatedCounter
                   to={stat.to}
                   suffix={stat.suffix}
                   delay={index * 0.12}
                 />
               </p>
-              <p className="mt-3 text-xs font-medium uppercase tracking-[0.22em] text-muted-foreground">
+
+              <p className="mt-2 text-[10px] font-medium uppercase tracking-[0.16em] text-muted-foreground sm:mt-3 sm:text-xs sm:tracking-[0.22em]">
                 {stat.label}
               </p>
             </div>
@@ -265,16 +255,18 @@ function Chapter({
   children: React.ReactNode;
 }) {
   return (
-    <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,0.32fr)_minmax(0,0.68fr)] lg:gap-16">
+    <div className="grid items-start gap-8 sm:gap-10 lg:grid-cols-[minmax(0,0.32fr)_minmax(0,0.68fr)] lg:gap-16">
       <div className="lg:sticky lg:top-28">
-        <span className="block text-[18vw] font-black leading-none text-foreground/6 lg:text-[7vw]">
+        <span className="block text-[20vw] font-black leading-none text-foreground/6 sm:text-[16vw] lg:text-[7vw]">
           {index}
         </span>
+
         <TextScramble
           text={label.toUpperCase()}
-          className="-mt-6 text-sm font-semibold tracking-[0.32em] text-primary"
+          className="-mt-4 text-xs font-semibold tracking-[0.25em] text-primary sm:-mt-6 sm:text-sm sm:tracking-[0.32em]"
         />
       </div>
+
       <div>{children}</div>
     </div>
   );

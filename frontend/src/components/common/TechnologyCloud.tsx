@@ -1,29 +1,10 @@
 "use client";
 
-/**
- * -----------------------------------------------------------------------------
- * Technology Cloud
- * -----------------------------------------------------------------------------
- *
- * Floating technology simulation.
- *
- * Responsibilities
- * • Measure container
- * • Particle engine
- * • Interaction engine
- *
- * -----------------------------------------------------------------------------
- */
-
 import { useEffect, useMemo, useRef, useState } from "react";
-
 import { technologies } from "@/data/technologies";
-
 import { useTechnologyCloud } from "@/hooks/useTechnologyCloud";
 import { useTechnologyInteraction } from "@/hooks/useTechnologyInteraction";
-
 import { TechnologyParticle } from "./TechnologyParticles";
-
 import { cn } from "@/lib/utils";
 
 interface TechnologyCloudProps {
@@ -40,10 +21,9 @@ export function TechnologyCloud({ className }: TechnologyCloudProps) {
 
   /**
    * ---------------------------------------------------------------------------
-   * Resize
+   * Resize Observer
    * ---------------------------------------------------------------------------
    */
-
   useEffect(() => {
     if (!containerRef.current) return;
 
@@ -57,9 +37,7 @@ export function TechnologyCloud({ className }: TechnologyCloudProps) {
     };
 
     resize();
-
     const observer = new ResizeObserver(resize);
-
     observer.observe(containerRef.current);
 
     return () => observer.disconnect();
@@ -67,35 +45,42 @@ export function TechnologyCloud({ className }: TechnologyCloudProps) {
 
   /**
    * ---------------------------------------------------------------------------
-   * Flatten technologies
+   * Dynamic Item Density Based on Screen Width
    * ---------------------------------------------------------------------------
    */
+  const items = useMemo(() => {
+    const allItems = technologies.flatMap((group) => group.items);
 
-  const items = useMemo(() => technologies.flatMap((group) => group.items), []);
+    if (size.width === 0) return allItems;
+
+    // Mobile screens (< 640px)
+    if (size.width < 640) {
+      return allItems.slice(0, 12);
+    }
+    // Tablet screens (< 1024px)
+    if (size.width < 1024) {
+      return allItems.slice(0, 22);
+    }
+
+    // Desktop
+    return allItems;
+  }, [size.width]);
 
   /**
    * ---------------------------------------------------------------------------
-   * Interaction
+   * Interactions & Physics
    * ---------------------------------------------------------------------------
    */
-
   const interaction = useTechnologyInteraction({
     containerRef,
     width: size.width,
     height: size.height,
   });
 
-  /**
-   * ---------------------------------------------------------------------------
-   * Physics
-   * ---------------------------------------------------------------------------
-   */
-
   const particles = useTechnologyCloud({
     width: size.width,
     height: size.height,
     items,
-
     interaction,
   });
 
@@ -103,10 +88,8 @@ export function TechnologyCloud({ className }: TechnologyCloudProps) {
     <div
       ref={containerRef}
       className={cn(
-        "relative",
-        "h-[700px]",
-        "w-full",
-        "overflow-hidden",
+        "relative w-full overflow-hidden select-none",
+        "h-[400px] sm:h-[550px] md:h-[650px] lg:h-[750px]",
         className,
       )}
     >

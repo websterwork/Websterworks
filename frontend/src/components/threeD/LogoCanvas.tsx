@@ -16,16 +16,27 @@
  * -----------------------------------------------------------------------------
  */
 
-import { ReactNode, Suspense } from "react";
-
-import { Canvas } from "@react-three/fiber";
-
-import { useLogoTheme } from "./hooks/useLogoTheme";
+import { ReactNode, Suspense, useEffect } from "react";
+import { Canvas, useThree } from "@react-three/fiber";
 import { Bounds, Center } from "@react-three/drei";
+import { useLogoTheme } from "./hooks/useLogoTheme";
+
 interface LogoCanvasProps {
   className?: string;
-
   children: (primaryColor: string) => ReactNode;
+}
+
+/**
+ * Ensures projection matrix updates without triggering camera shifts.
+ */
+function CameraSync() {
+  const { camera, size } = useThree();
+
+  useEffect(() => {
+    camera.updateProjectionMatrix();
+  }, [size, camera]);
+
+  return null;
 }
 
 export function LogoCanvas({ className, children }: LogoCanvasProps) {
@@ -40,30 +51,38 @@ export function LogoCanvas({ className, children }: LogoCanvasProps) {
           position: [0, 0, 3.5],
           fov: 45,
         }}
+        resize={{ scroll: false, debounce: { scroll: 50, resize: 0 } }}
         gl={{
           antialias: true,
           alpha: true,
           powerPreference: "high-performance",
+          preserveDrawingBuffer: true,
+        }}
+        onCreated={({ camera }) => {
+          camera.updateProjectionMatrix();
         }}
       >
-        {/* Ambient */}
+        <CameraSync />
 
+        {/* Ambient */}
         <ambientLight intensity={1.8} />
 
         {/* Key */}
-
         <directionalLight position={[5, 5, 5]} intensity={2.5} />
 
         {/* Fill */}
-
         <directionalLight position={[-5, -5, -2]} intensity={1.2} />
 
         {/* Accent */}
-
         <directionalLight position={[0, 2, 4]} intensity={2} color={primary} />
 
         <Suspense fallback={null}>
-          <Bounds fit clip observe margin={1.1}>
+          {/* 
+            fit & clip frame the logo tightly on load.
+            margin={0.85} brings it close and zoomed-in.
+            NO 'observe' prop ensures explosion/scroll won't trigger re-zooming!
+          */}
+          <Bounds fit clip margin={1.8}>
             <Center>{children(primary)}</Center>
           </Bounds>
         </Suspense>

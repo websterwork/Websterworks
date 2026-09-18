@@ -1,36 +1,14 @@
 "use client";
 
-/**
- * -----------------------------------------------------------------------------
- * Technology Particle
- * -----------------------------------------------------------------------------
- *
- * Individual floating technology.
- *
- * Responsibilities
- * • Render icon
- * • Render label
- * • Hover animation
- * • GPU accelerated transforms
- *
- * -----------------------------------------------------------------------------
- */
-
 import { motion, type MotionValue } from "motion/react";
-
 import { Icon, type IconName } from "@/components/icons";
 
 export interface TechnologyParticleProps {
   name: string;
-
   icon: IconName;
-
   x: MotionValue<number>;
-
   y: MotionValue<number>;
-
   rotation: MotionValue<number>;
-
   scale: MotionValue<number>;
 }
 
@@ -51,85 +29,89 @@ export function TechnologyParticle({
         scale,
       }}
       whileHover={{
-        scale: 1.15,
-        y: -6,
+        scale: 1.12,
       }}
       transition={{
         type: "spring",
-        stiffness: 320,
-        damping: 20,
+        stiffness: 180,
+        damping: 24,
+        mass: 0.8,
       }}
       className="
+        group
         absolute
+        left-0
+        top-0
         flex
+        cursor-pointer
+        select-none
         flex-col
         items-center
         justify-center
-        gap-3
-        select-none
-        cursor-pointer
+        gap-2
         will-change-transform
-        group
       "
     >
-      {/* Glow */}
-
-      <div
-        className="
-          absolute
-          inset-0
-          -z-10
-          rounded-full
-          bg-primary/20
-          blur-3xl
-          opacity-0
-          transition-all
-          duration-300
-          group-hover:scale-150
-          group-hover:opacity-100
-        "
-      />
-
-      {/* Icon */}
-
-      <motion.div
-        whileHover={{
-          rotate: 8,
-        }}
-        transition={{
-          type: "spring",
-          stiffness: 250,
-        }}
-      >
-        <Icon
-          name={icon}
-          size={44}
+      {/* Visual Container for CSS offset to prevent MotionValue transform conflicts */}
+      <div className="flex flex-col items-center justify-center gap-2 transition-transform duration-300 ease-out group-hover:-translate-y-2">
+        {/* Glow backdrop */}
+        <div
           className="
-            text-foreground
+            absolute
+            inset-0
+            -z-10
+            rounded-full
+            bg-primary/25
+            blur-2xl
+            opacity-0
             transition-all
-            duration-300
-            group-hover:text-primary
-            group-hover:drop-shadow-[0_0_20px_rgba(152,16,250,0.8)]
+            duration-500
+            ease-out
+            group-hover:scale-150
+            group-hover:opacity-100
           "
         />
-      </motion.div>
 
-      {/* Label */}
+        {/* Icon with smooth rotation */}
+        <motion.div
+          whileHover={{ rotate: 6 }}
+          transition={{
+            type: "spring",
+            stiffness: 180,
+            damping: 20,
+          }}
+        >
+          <Icon
+            name={icon}
+            size={36}
+            className="
+              text-foreground/80
+              transition-colors
+              duration-300
+              sm:h-10 sm:w-10
+              md:h-11 md:w-11
+              group-hover:text-primary
+            "
+          />
+        </motion.div>
 
-      <span
-        className="
-          whitespace-nowrap
-          text-xs
-          font-medium
-          tracking-wide
-          text-muted-foreground
-          transition-all
-          duration-300
-          group-hover:text-foreground
-        "
-      >
-        {name}
-      </span>
+        {/* Label */}
+        <span
+          className="
+            whitespace-nowrap
+            text-[11px]
+            font-medium
+            tracking-wide
+            text-muted-foreground
+            transition-colors
+            duration-300
+            sm:text-xs
+            group-hover:text-foreground
+          "
+        >
+          {name}
+        </span>
+      </div>
     </motion.div>
   );
 }

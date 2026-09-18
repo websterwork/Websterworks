@@ -1,15 +1,5 @@
 "use client";
 
-/**
- * -----------------------------------------------------------------------------
- * About Page
- * -----------------------------------------------------------------------------
- *
- * Websterwork company story.
- *
- * -----------------------------------------------------------------------------
- */
-
 import {
   AboutUsHeader,
   WhoWeAreSection,
@@ -19,23 +9,10 @@ import {
 
 export default function AboutPage() {
   return (
-    <main
-      className="
-        relative
-        h-screen
-        snap-y
-        snap-mandatory
-        overflow-y-auto
-        overflow-x-hidden
-        scroll-smooth
-      "
-    >
+    <main className="relative w-full">
       <AboutUsHeader />
-
       <WhoWeAreSection />
-
       <OurMissionSection />
-
       <OurVisionSection />
     </main>
   );

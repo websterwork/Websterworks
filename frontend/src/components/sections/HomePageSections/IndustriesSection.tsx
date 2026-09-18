@@ -118,21 +118,23 @@ export function IndustriesSection() {
       <span
         ref={progressRef}
         aria-hidden
-        className="pointer-events-none absolute top-0 left-0 z-20 h-0.5 w-full origin-left scale-x-0 bg-primary"
+        className="pointer-events-none absolute left-0 top-0 z-20 h-0.5 w-full origin-left scale-x-0 bg-primary"
       />
 
-      <div className="relative flex h-full w-full flex-col px-[5%] py-[6vh] md:py-[8vh]">
-        <FadeIn className="flex items-end justify-between gap-6">
+      <div className="relative flex h-full w-full flex-col px-5 py-6 sm:px-7 sm:py-8 md:px-10 md:py-[6vh] lg:px-[5%] lg:py-[8vh]">
+        {/* Header */}
+        <FadeIn className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between sm:gap-6">
           <div>
-            <span className="text-sm font-semibold uppercase tracking-[0.3em] text-primary">
+            <span className="text-xs font-semibold uppercase tracking-[0.25em] text-primary sm:text-sm sm:tracking-[0.3em]">
               Industries We Serve
             </span>
-            <p className="mt-2 text-sm text-muted-foreground">
+
+            <p className="mt-2 text-xs text-muted-foreground sm:text-sm">
               {indexLabel} / {totalLabel}
             </p>
           </div>
 
-          <div className="flex items-center gap-6">
+          <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-6">
             <nav
               aria-label="Industry progress"
               className="flex items-center gap-2"
@@ -144,7 +146,7 @@ export function IndustriesSection() {
                   className={cn(
                     "h-1.5 rounded-full transition-all duration-500",
                     index === activeIndex
-                      ? "w-7 bg-primary"
+                      ? "w-6 bg-primary sm:w-7"
                       : "w-1.5 bg-muted-foreground/35",
                   )}
                 />
@@ -156,7 +158,7 @@ export function IndustriesSection() {
                 <Link
                   href="/industries"
                   data-cursor="hover"
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-foreground/80 transition-colors hover:text-primary"
+                  className="inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-foreground/80 transition-colors hover:text-primary sm:text-xs sm:tracking-[0.22em]"
                 >
                   View All Industries
                   <ArrowUpRight className="size-3.5" />
@@ -166,7 +168,8 @@ export function IndustriesSection() {
           </div>
         </FadeIn>
 
-        <div className="relative mt-8 min-h-0 flex-1">
+        {/* Industry Content */}
+        <div className="relative mt-5 min-h-0 flex-1 sm:mt-8">
           {/* Background Industry Initial Letter */}
           <Floating
             className="pointer-events-none absolute right-[-2vw] top-[-6vh] hidden lg:block"
@@ -190,7 +193,16 @@ export function IndustriesSection() {
           <AnimatePresence mode="wait">
             <motion.div
               key={industry.id}
-              className="absolute inset-0 grid min-h-0 grid-rows-[auto_1fr_auto] gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:grid-rows-1 lg:gap-16"
+              className="
+                absolute inset-0
+                grid min-h-0
+                grid-rows-[auto_1fr_auto]
+                gap-6
+                sm:gap-8
+                lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]
+                lg:grid-rows-1
+                lg:gap-16
+              "
               initial={{ opacity: 0, y: 36 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -28 }}
@@ -202,7 +214,7 @@ export function IndustriesSection() {
               <div className="flex min-h-0 flex-col justify-center">
                 <Reveal>
                   <p
-                    className="mb-5 text-sm font-semibold uppercase tracking-[0.28em]"
+                    className="mb-3 text-[10px] font-semibold uppercase tracking-[0.22em] sm:mb-5 sm:text-sm sm:tracking-[0.28em]"
                     style={{ color: industry.hero.accentColor }}
                   >
                     {industry.hero.subtitle}
@@ -211,12 +223,12 @@ export function IndustriesSection() {
 
                 <SplitText
                   as="h2"
-                  className="max-w-4xl text-4xl font-black tracking-tight sm:text-5xl md:text-6xl xl:text-7xl"
+                  className="max-w-4xl text-3xl font-black tracking-tight sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl"
                 >
                   {industry.hero.title}
                 </SplitText>
 
-                <div className="mt-6 text-xl font-medium text-primary md:text-2xl">
+                <div className="mt-4 text-base font-medium leading-7 text-primary sm:mt-6 sm:text-xl sm:leading-8 md:text-2xl">
                   <Typewriter
                     key={`${industry.id}-line`}
                     text={industry.hero.shortDescription}
@@ -226,17 +238,17 @@ export function IndustriesSection() {
                 </div>
 
                 <FadeIn delay={0.2}>
-                  <p className="mt-6 max-w-2xl text-sm leading-7 text-muted-foreground line-clamp-4 md:mt-8 md:text-lg md:leading-8 md:line-clamp-none">
+                  <p className="mt-4 max-w-2xl text-xs leading-6 text-muted-foreground sm:mt-6 sm:text-sm sm:leading-7 md:mt-8 md:text-lg md:leading-8 md:line-clamp-none">
                     {industry.hero.longDescription}
                   </p>
                 </FadeIn>
 
-                <FadeIn delay={0.35} className="mt-10">
+                <FadeIn delay={0.35} className="mt-7 sm:mt-10">
                   <Magnetic strength={18}>
                     <Button
                       asChild
                       size="lg"
-                      className="h-12 rounded-full px-6 text-base"
+                      className="h-11 rounded-full px-5 text-sm sm:h-12 sm:px-6 sm:text-base"
                       data-cursor="hover"
                     >
                       <Link href={industry.cta.href}>
@@ -248,8 +260,9 @@ export function IndustriesSection() {
                 </FadeIn>
               </div>
 
+              {/* Desktop / Tablet Solutions & Process */}
               <div className="hidden min-h-0 flex-col justify-between gap-10 overflow-hidden md:flex">
-                <ul className="space-y-5">
+                <ul className="space-y-4 lg:space-y-5">
                   {industry.solutions
                     .slice(0, 4)
                     .map(
@@ -257,38 +270,40 @@ export function IndustriesSection() {
                         solution: { title: string; description: string },
                         index: number,
                       ) => (
-                    <li
-                      key={solution.title}
-                      className="grid grid-cols-[auto_1fr] items-baseline gap-5 border-b border-border/40 pb-4 last:border-b-0"
-                    >
-                      <span
-                        className="font-mono text-sm"
-                        style={{ color: industry.hero.accentColor }}
-                      >
-                        {String(index + 1).padStart(2, "0")}
-                      </span>
-                      <div>
-                        <p className="text-lg font-semibold">
-                          {solution.title}
-                        </p>
-                        <p className="mt-1 text-sm leading-6 text-muted-foreground">
-                          {solution.description}
-                        </p>
-                      </div>
-                    </li>
+                        <li
+                          key={solution.title}
+                          className="grid grid-cols-[auto_1fr] items-baseline gap-4 border-b border-border/40 pb-4 last:border-b-0 lg:gap-5"
+                        >
+                          <span
+                            className="font-mono text-xs sm:text-sm"
+                            style={{ color: industry.hero.accentColor }}
+                          >
+                            {String(index + 1).padStart(2, "0")}
+                          </span>
+                          <div>
+                            <p className="text-base font-semibold sm:text-lg">
+                              {solution.title}
+                            </p>
+                            <p className="mt-1 text-xs leading-5 text-muted-foreground sm:text-sm sm:leading-6">
+                              {solution.description}
+                            </p>
+                          </div>
+                        </li>
                       ),
                     )}
                 </ul>
 
-                <ol className="flex flex-wrap gap-x-8 gap-y-3 text-xs uppercase tracking-[0.18em] text-muted-foreground">
-                  {industry.process.map((step: { step: number; title: string }) => (
-                    <li key={step.step} className="flex items-center gap-2">
-                      <span style={{ color: industry.hero.accentColor }}>
-                        {String(step.step).padStart(2, "0")}
-                      </span>
-                      {step.title}
-                    </li>
-                  ))}
+                <ol className="flex flex-wrap gap-x-5 gap-y-2 text-[10px] uppercase tracking-[0.14em] text-muted-foreground sm:gap-x-8 sm:text-xs sm:tracking-[0.18em]">
+                  {industry.process.map(
+                    (step: { step: number; title: string }) => (
+                      <li key={step.step} className="flex items-center gap-2">
+                        <span style={{ color: industry.hero.accentColor }}>
+                          {String(step.step).padStart(2, "0")}
+                        </span>
+                        {step.title}
+                      </li>
+                    ),
+                  )}
                 </ol>
               </div>
             </motion.div>
