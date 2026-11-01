@@ -1,87 +1,45 @@
+// src/components/animations/BorderBeam.tsx
 "use client";
 
 /**
  * -----------------------------------------------------------------------------
  * Border Beam
  * -----------------------------------------------------------------------------
- *
- * Animated SVG border beam.
- *
- * Features
- * • SVG path animation
- * • Rounded corners
- * • Configurable color
- * • Configurable duration
- * • Configurable stroke width
- * • Configurable border radius
- * • Optional animation
- * • ClassName support
- *
- * -----------------------------------------------------------------------------
  */
 
 import { useId } from "react";
 import type { HTMLMotionProps } from "motion/react";
 import { motion } from "motion/react";
-
 import { cn } from "@/lib/utils";
 
-/* -------------------------------------------------------------------------- */
-/* Props                                                                      */
-/* -------------------------------------------------------------------------- */
-
 export interface BorderBeamProps extends HTMLMotionProps<"div"> {
-  children: React.ReactNode;
-
+  children?: React.ReactNode;
   className?: string;
-
-  /**
-   * Beam color.
-   */
   color?: string;
-
-  /**
-   * Border radius in px.
-   */
+  colorFrom?: string;
+  colorTo?: string;
+  size?: number;
   radius?: number;
-
-  /**
-   * Stroke width.
-   */
   strokeWidth?: number;
-
-  /**
-   * Animation duration.
-   */
   duration?: number;
-
-  /**
-   * Enable animation.
-   */
   animated?: boolean;
 }
-
-/* -------------------------------------------------------------------------- */
-/* Component                                                                  */
-/* -------------------------------------------------------------------------- */
 
 export function BorderBeam({
   children,
   className,
-
-  color = "#00F0FF",
-
+  color = "#9810fa",
+  colorFrom = "transparent",
+  colorTo = "#9810fa",
+  size = 200,
   radius = 20,
-
   strokeWidth = 2,
-
   duration = 5,
-
   animated = true,
-
   ...props
 }: BorderBeamProps) {
   const id = useId();
+  const primaryColor = color || colorTo;
 
   return (
     <motion.div
@@ -96,16 +54,13 @@ export function BorderBeam({
       >
         <defs>
           <linearGradient id={id} x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="transparent" />
-
-            <stop offset="50%" stopColor={color} />
-
-            <stop offset="100%" stopColor="transparent" />
+            <stop offset="0%" stopColor={colorFrom} />
+            <stop offset="50%" stopColor={primaryColor} />
+            <stop offset="100%" stopColor={colorTo} />
           </linearGradient>
         </defs>
 
         {/* Base Border */}
-
         <rect
           x={strokeWidth / 2}
           y={strokeWidth / 2}
@@ -119,7 +74,6 @@ export function BorderBeam({
         />
 
         {/* Animated Beam */}
-
         <motion.rect
           x={strokeWidth / 2}
           y={strokeWidth / 2}
@@ -131,11 +85,11 @@ export function BorderBeam({
           stroke={`url(#${id})`}
           strokeWidth={strokeWidth}
           strokeLinecap="round"
-          strokeDasharray="140 900"
+          strokeDasharray={`${size} 900`}
           animate={
             animated
               ? {
-                  strokeDashoffset: [0, -1040],
+                  strokeDashoffset: [0, -(size + 900)],
                 }
               : undefined
           }
@@ -145,7 +99,7 @@ export function BorderBeam({
             repeat: Infinity,
           }}
           style={{
-            filter: `drop-shadow(0 0 8px ${color})`,
+            filter: `drop-shadow(0 0 8px ${primaryColor})`,
           }}
         />
       </svg>

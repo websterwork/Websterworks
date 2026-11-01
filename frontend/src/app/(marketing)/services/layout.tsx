@@ -1,13 +1,14 @@
+// src/app/(marketing)/services/layout.tsx
 import type { ReactNode } from "react";
-type ServicesLayoutProps = {
+
+interface ServicesLayoutProps {
   children: ReactNode;
-};
+}
 
 export default function ServicesLayout({ children }: ServicesLayoutProps) {
   return (
-    <>
-
-      <main>{children}</main>
-    </>
+    <div className="relative min-h-screen bg-background text-foreground flex flex-col">
+      {children}
+    </div>
   );
 }

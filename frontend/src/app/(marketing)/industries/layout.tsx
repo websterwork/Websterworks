@@ -1,13 +1,14 @@
+// src/app/(marketing)/industries/layout.tsx
 import type { ReactNode } from "react";
-type IndustriesesLayoutProps = {
+
+interface IndustriesLayoutProps {
   children: ReactNode;
-};
+}
 
-export default function IndustriesLayout({ children }: IndustriesesLayoutProps) {
+export default function IndustriesLayout({ children }: IndustriesLayoutProps) {
   return (
-    <>
-
-      <main>{children}</main>
-    </>
+    <div className="relative min-h-screen bg-background text-foreground flex flex-col">
+      {children}
+    </div>
   );
 }
