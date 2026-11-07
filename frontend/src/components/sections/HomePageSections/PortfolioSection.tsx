@@ -106,34 +106,11 @@ function OrbitalRing({
                 center
                 zIndexRange={[100, 0]}
               >
-                <div
-                  onClick={() => onSelectProject(project)}
-                  onMouseEnter={() => !isMobile && onSelectProject(project)}
-                  className="group relative h-[175px] w-36 sm:h-[218px] sm:w-48 cursor-pointer rounded-2xl border border-primary/20 bg-background/90 p-2.5 sm:p-3 backdrop-blur-2xl transition-all duration-500 hover:scale-105 hover:border-primary hover:shadow-[0_0_30px_rgba(152,16,250,0.35)] active:scale-95"
-                >
-                  <div className="relative h-20 sm:h-28 w-full overflow-hidden rounded-xl border border-border/30">
-                    <Image
-                      src={project.image}
-                      alt={project.title}
-                      fill
-                      sizes="(max-width: 640px) 144px, 192px"
-                      className="object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-80" />
-                  </div>
-
-                  <div className="mt-2 sm:mt-2.5 flex flex-col">
-                    <span className="font-mono text-[8px] sm:text-[9px] font-bold uppercase tracking-widest text-primary truncate">
-                      {project.category}
-                    </span>
-                    <h4 className="mt-0.5 truncate text-[11px] sm:text-xs font-black text-foreground group-hover:text-primary">
-                      {project.title}
-                    </h4>
-                    <p className="mt-0.5 font-mono text-[8px] sm:text-[9px] text-muted-foreground">
-                      {project.year}
-                    </p>
-                  </div>
-                </div>
+                <ProjectCardNode 
+                  project={project} 
+                  onSelect={onSelectProject} 
+                  isMobile={isMobile} 
+                />
               </Html>
             </Float>
           </group>
@@ -143,11 +120,65 @@ function OrbitalRing({
   );
 }
 
+// Sub-component for individual project nodes to handle image load fallback safely
+function ProjectCardNode({ 
+  project, 
+  onSelect, 
+  isMobile 
+}: { 
+  project: typeof projects[0]; 
+  onSelect: (p: typeof projects[0]) => void; 
+  isMobile: boolean; 
+}) {
+  const [imgError, setImgError] = useState(false);
+
+  return (
+    <div
+      onClick={() => onSelect(project)}
+      onMouseEnter={() => !isMobile && onSelect(project)}
+      className="group relative h-[175px] w-36 sm:h-[218px] sm:w-48 cursor-pointer rounded-2xl border border-primary/20 bg-background/90 p-2.5 sm:p-3 backdrop-blur-2xl transition-all duration-500 hover:scale-105 hover:border-primary hover:shadow-[0_0_30px_rgba(152,16,250,0.35)] active:scale-95"
+    >
+      <div className="relative h-20 sm:h-28 w-full overflow-hidden rounded-xl border border-border/30 bg-muted/30">
+        {!imgError ? (
+          <Image
+            src={project.image}
+            alt={project.title}
+            fill
+            sizes="(max-width: 640px) 144px, 192px"
+            className="object-cover transition-transform duration-700 group-hover:scale-110"
+            onError={() => setImgError(true)}
+          />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/20 to-background">
+            <span className="font-mono text-[9px] uppercase tracking-wider text-primary">
+              {project.title.split(" ")[0]}
+            </span>
+          </div>
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-80" />
+      </div>
+
+      <div className="mt-2 sm:mt-2.5 flex flex-col">
+        <span className="font-mono text-[8px] sm:text-[9px] font-bold uppercase tracking-widest text-primary truncate">
+          {project.category}
+        </span>
+        <h3 className="mt-0.5 truncate text-[11px] sm:text-xs font-black text-foreground group-hover:text-primary">
+          {project.title}
+        </h3>
+        <p className="mt-0.5 font-mono text-[8px] sm:text-[9px] text-muted-foreground">
+          {project.year}
+        </p>
+      </div>
+    </div>
+  );
+}
+
 export function PortfolioSection() {
   const [selectedProject, setSelectedProject] = useState<
     (typeof projects)[0] | null
   >(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [modalImgError, setModalImgError] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -157,6 +188,11 @@ export function PortfolioSection() {
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
+
+  // Reset modal image error when a new project is selected
+  useEffect(() => {
+    setModalImgError(false);
+  }, [selectedProject]);
 
   return (
     <section className="relative overflow-hidden py-16 sm:py-24 lg:py-32">
@@ -168,7 +204,7 @@ export function PortfolioSection() {
       {/* Header */}
       <div className="relative z-10 mx-auto px-4 text-center max-w-4xl">
         <span className="inline-flex items-center gap-2 font-mono text-[10px] sm:text-xs font-semibold uppercase tracking-[0.25em] sm:tracking-[0.3em] text-primary">
-          <Sparkles className="size-3 sm:size-3.5" /> Selected Works
+          <Sparkles className="size-3 sm:size-3.5" aria-hidden="true" /> Selected Works
         </span>
         <h2 className="mt-1.5 text-2xl font-black tracking-tight sm:text-4xl md:text-5xl lg:text-6xl">
           Orbital Void Stage
@@ -222,7 +258,7 @@ export function PortfolioSection() {
                 className="absolute right-4 top-4 sm:right-6 sm:top-6 z-20 rounded-full border border-border bg-muted p-2 text-muted-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
                 aria-label="Close modal"
               >
-                <X className="size-4 sm:size-5" />
+                <X className="size-4 sm:size-5" aria-hidden="true" />
               </button>
 
               <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-12">
@@ -246,7 +282,7 @@ export function PortfolioSection() {
                     </p>
 
                     <div className="mt-4 sm:mt-6 flex items-center gap-3 sm:gap-3.5 rounded-xl sm:rounded-2xl border border-primary/20 bg-muted/50 p-3 sm:p-4">
-                      <Layers className="size-4 sm:size-5 text-primary shrink-0" />
+                      <Layers className="size-4 sm:size-5 text-primary shrink-0" aria-hidden="true" />
                       <div>
                         <span className="block font-mono text-[9px] sm:text-[10px] uppercase tracking-wider text-muted-foreground">
                           Key Outcome
@@ -278,23 +314,32 @@ export function PortfolioSection() {
                       >
                         <Link href={selectedProject.href}>
                           Inspect Project Spec
-                          <ArrowUpRight className="ml-2 size-4" />
+                          <ArrowUpRight className="ml-2 size-4" aria-hidden="true" />
                         </Link>
                       </Button>
                     </div>
                   </div>
                 </div>
 
-                <div className="relative min-h-[220px] sm:min-h-[300px] w-full overflow-hidden rounded-xl sm:rounded-2xl border border-border/40 bg-background lg:min-h-[420px]">
-                  <Image
-                    src={selectedProject.image}
-                    alt={selectedProject.title}
-                    fill
-                    priority
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                    className="object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-card/80 via-transparent to-transparent" />
+                <div className="relative min-h-[220px] sm:min-h-[300px] w-full overflow-hidden rounded-xl sm:rounded-2xl border border-border/40 bg-background lg:min-h-[420px] flex items-center justify-center">
+                  {!modalImgError ? (
+                    <Image
+                      src={selectedProject.image}
+                      alt={selectedProject.title}
+                      fill
+                      priority
+                      sizes="(max-width: 1024px) 100vw, 50vw"
+                      className="object-cover"
+                      onError={() => setModalImgError(true)}
+                    />
+                  ) : (
+                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-tr from-primary/10 via-card to-background p-6 text-center">
+                      <span className="font-mono text-xs uppercase tracking-widest text-primary mb-2">Websterwork Archive</span>
+                      <h4 className="text-xl font-black text-foreground">{selectedProject.title}</h4>
+                      <p className="text-xs text-muted-foreground mt-1">High-performance production preview asset</p>
+                    </div>
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-card/80 via-transparent to-transparent pointer-events-none" />
                 </div>
               </div>
             </motion.div>

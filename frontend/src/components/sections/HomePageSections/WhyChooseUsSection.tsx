@@ -150,7 +150,7 @@ export function WhyChooseUsSection() {
                   key={item.title}
                   className="gsap-slide-item grid gap-5 border-t border-border/50 pt-7 sm:gap-6 sm:pt-10 md:grid-cols-[5rem_1fr] md:gap-12"
                 >
-                  <span className="font-mono text-xs tracking-[0.2em] text-primary sm:text-sm">
+                  <span className="font-mono text-xs tracking-[0.2em] text-primary sm:text-sm" aria-hidden="true">
                     {item.index}
                   </span>
 
@@ -172,14 +172,14 @@ export function WhyChooseUsSection() {
           <Chapter index="02" label="Process">
             <div className="relative pt-2 sm:pt-4">
               <div
-                aria-hidden
+                aria-hidden="true"
                 className="absolute left-0 right-0 top-[2.15rem] hidden h-px bg-border md:block"
               />
 
               <div className="grid gap-10 sm:gap-12 md:grid-cols-2 lg:grid-cols-4">
                 {process.map((item) => (
                   <div key={item.step} className="gsap-slide-item relative">
-                    <span className="relative z-10 block font-mono text-xs tracking-[0.24em] text-primary sm:text-sm">
+                    <span className="relative z-10 block font-mono text-xs tracking-[0.24em] text-primary sm:text-sm" aria-hidden="true">
                       {item.step}
                     </span>
 
@@ -257,7 +257,10 @@ function Chapter({
   return (
     <div className="grid items-start gap-8 sm:gap-10 lg:grid-cols-[minmax(0,0.32fr)_minmax(0,0.68fr)] lg:gap-16">
       <div className="lg:sticky lg:top-28">
-        <span className="block text-[20vw] font-black leading-none text-foreground/6 sm:text-[16vw] lg:text-[7vw]">
+        <span 
+          aria-hidden="true"
+          className="block text-[20vw] font-black leading-none text-foreground/6 sm:text-[16vw] lg:text-[7vw]"
+        >
           {index}
         </span>
 

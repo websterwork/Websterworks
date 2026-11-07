@@ -76,6 +76,10 @@ export default function RootLayout({
         <StructuredData
           data={[organizationSchema(), websiteSchema(), localBusinessSchema()]}
         />
+
+        {/* Preconnect hints to eliminate GTM & Analytics connection latency */}
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="preconnect" href="https://www.google-analytics.com" />
         
         {/* --------------------------------------------------------------------------*/}
         {/* TAGS MANAGER                                                              */}

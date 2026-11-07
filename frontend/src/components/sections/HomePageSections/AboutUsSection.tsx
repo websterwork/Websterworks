@@ -27,14 +27,12 @@ export function AboutUsSection() {
       "
     >
       {/* Background */}
-
       <Aurora />
       <GradientBlur />
       <Glow />
 
       <Container className="relative z-10">
         {/* Heading */}
-
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -78,10 +76,8 @@ export function AboutUsSection() {
         </motion.div>
 
         {/* About Grid */}
-
         <div className="grid gap-6 sm:gap-8 lg:grid-cols-2 lg:gap-10">
           {/* Who We Are */}
-
           <HoverCard>
             <div className="h-full rounded-3xl border border-border/50 bg-background/40 p-6 backdrop-blur-md sm:p-8 lg:p-10">
               <span className="text-xs uppercase tracking-[0.25em] text-primary sm:text-sm sm:tracking-[0.3em]">
@@ -103,7 +99,6 @@ export function AboutUsSection() {
           </HoverCard>
 
           {/* Mission */}
-
           <HoverCard>
             <div className="h-full rounded-3xl border border-border/50 bg-background/40 p-6 backdrop-blur-md sm:p-8 lg:p-10">
               <span className="text-xs uppercase tracking-[0.25em] text-primary sm:text-sm sm:tracking-[0.3em]">
@@ -124,7 +119,6 @@ export function AboutUsSection() {
           </HoverCard>
 
           {/* Vision */}
-
           <HoverCard>
             <div className="h-full rounded-3xl border border-border/50 bg-background/40 p-6 backdrop-blur-md sm:p-8 lg:p-10">
               <span className="text-xs uppercase tracking-[0.25em] text-primary sm:text-sm sm:tracking-[0.3em]">
@@ -145,16 +139,15 @@ export function AboutUsSection() {
           </HoverCard>
 
           {/* Founded */}
-
           <HoverCard>
             <div className="flex h-full min-h-[280px] flex-col items-center justify-center rounded-3xl border border-primary/30 bg-primary/5 p-6 text-center backdrop-blur-md sm:min-h-[320px] sm:p-10">
               <span className="text-xs uppercase tracking-[0.25em] text-primary sm:text-sm sm:tracking-[0.3em]">
                 Established
               </span>
 
-              <h2 className="mt-4 text-5xl font-black text-primary sm:mt-6 sm:text-6xl lg:text-7xl">
+              <h3 className="mt-4 text-5xl font-black text-primary sm:mt-6 sm:text-6xl lg:text-7xl">
                 2022
-              </h2>
+              </h3>
 
               <p className="mt-5 max-w-sm text-sm leading-7 text-muted-foreground sm:mt-6 sm:text-base sm:leading-8">
                 Since our foundation in 2022, we've been committed to helping

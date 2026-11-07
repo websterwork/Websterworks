@@ -4,23 +4,15 @@
  * -----------------------------------------------------------------------------
  * Homepage CTA Section
  * -----------------------------------------------------------------------------
- *
- * Final high-converting Call To Action section matching the void design system.
- *
- * -----------------------------------------------------------------------------
  */
 
 import Link from "next/link";
-
 import { ArrowRight, Sparkles, MessageSquare } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-
 import { Aurora, Spotlight, GradientBlur } from "@/components/effects";
-
 import { FadeIn, Reveal, Magnetic } from "@/components/animations";
-
 import { Container } from "@/components/common";
 
 export function CTASection() {
@@ -39,7 +31,6 @@ export function CTASection() {
       "
     >
       {/* Background Effects */}
-
       <Aurora />
       <Spotlight />
       <GradientBlur />
@@ -61,9 +52,8 @@ export function CTASection() {
           "
         >
           {/* Internal Glow Overlay */}
-
           <div
-            aria-hidden
+            aria-hidden="true"
             className="pointer-events-none absolute -right-32 -top-32 size-72 opacity-40 sm:-right-20 sm:-top-20 sm:size-96"
             style={{
               background:
@@ -74,7 +64,7 @@ export function CTASection() {
           <div className="relative z-10 mx-auto max-w-4xl text-center">
             <Reveal>
               <Badge className="mb-5 rounded-full border border-primary/30 bg-primary/10 px-3 py-1.5 font-mono text-[10px] font-semibold uppercase tracking-widest text-primary backdrop-blur-md sm:mb-6 sm:px-4 sm:py-2 sm:text-xs">
-                <Sparkles className="mr-2 size-3" />
+                <Sparkles className="mr-2 size-3" aria-hidden="true" />
                 Start Your Evolution
               </Badge>
             </Reveal>
@@ -139,7 +129,7 @@ export function CTASection() {
                   >
                     <Link href="/contact">
                       Schedule Consultation
-                      <ArrowRight className="ml-2.5 size-5" />
+                      <ArrowRight className="ml-2.5 size-5" aria-hidden="true" />
                     </Link>
                   </Button>
                 </Magnetic>
@@ -169,7 +159,7 @@ export function CTASection() {
                   "
                 >
                   <Link href="/portfolio">
-                    <MessageSquare className="mr-2.5 size-5 text-primary" />
+                    <MessageSquare className="mr-2.5 size-5 text-primary" aria-hidden="true" />
                     Explore Our Work
                   </Link>
                 </Button>
@@ -177,7 +167,6 @@ export function CTASection() {
             </FadeIn>
 
             {/* Feature Checkmarks */}
-
             <FadeIn delay={0.5}>
               <div
                 className="
@@ -199,17 +188,17 @@ export function CTASection() {
                 "
               >
                 <span className="flex items-center gap-2">
-                  <span className="text-[#9810fa]">✓</span>
+                  <span className="text-[#9810fa]" aria-hidden="true">✓</span>
                   Rapid AI Integration
                 </span>
 
                 <span className="flex items-center gap-2">
-                  <span className="text-[#9810fa]">✓</span>
+                  <span className="text-[#9810fa]" aria-hidden="true">✓</span>
                   Scalable Cloud Systems
                 </span>
 
                 <span className="flex items-center gap-2">
-                  <span className="text-[#9810fa]">✓</span>
+                  <span className="text-[#9810fa]" aria-hidden="true">✓</span>
                   High-Performance WebGL
                 </span>
               </div>

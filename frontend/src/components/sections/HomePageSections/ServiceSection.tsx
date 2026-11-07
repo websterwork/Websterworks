@@ -162,7 +162,7 @@ export function ServiceSection() {
                   className="inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-foreground/80 transition-colors hover:text-primary sm:text-xs sm:tracking-[0.22em]"
                 >
                   View All Services
-                  <ArrowUpRight className="size-3.5" />
+                  <ArrowUpRight className="size-3.5" aria-hidden="true" />
                 </Link>
               </Magnetic>
             )}
@@ -176,7 +176,7 @@ export function ServiceSection() {
             distance={18}
             duration={7}
           >
-            <span className="select-none text-[28vw] font-black leading-none text-foreground/4.5">
+            <span className="select-none text-[28vw] font-black leading-none text-foreground/4.5" aria-hidden="true">
               {indexLabel}
             </span>
           </Floating>
@@ -244,7 +244,7 @@ export function ServiceSection() {
                     >
                       <Link href={service.cta.href}>
                         {service.cta.button}
-                        <ArrowUpRight />
+                        <ArrowUpRight aria-hidden="true" />
                       </Link>
                     </Button>
                   </Magnetic>

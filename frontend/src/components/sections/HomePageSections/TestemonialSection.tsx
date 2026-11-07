@@ -4,11 +4,6 @@
  * -----------------------------------------------------------------------------
  * Homepage Testimonials Section
  * -----------------------------------------------------------------------------
- *
- * High-performance feedback grid with glowing void aesthetic, interactive cards,
- * and unified background effects.
- *
- * -----------------------------------------------------------------------------
  */
 
 import Image from "next/image";
@@ -62,7 +57,7 @@ export function TestimonialSection() {
         <div className="mx-auto max-w-3xl text-center">
           <Reveal>
             <Badge className="mb-5 rounded-full border border-primary/30 bg-primary/10 px-3.5 py-1.5 font-mono text-[10px] font-semibold uppercase tracking-[0.16em] text-primary backdrop-blur-md sm:mb-6 sm:px-4 sm:py-2 sm:text-xs sm:tracking-widest">
-              <Sparkles className="mr-1.5 size-3 sm:mr-2 sm:size-3.5" />
+              <Sparkles className="mr-1.5 size-3 sm:mr-2 sm:size-3.5" aria-hidden="true" />
               Client Validation
             </Badge>
           </Reveal>
@@ -84,17 +79,18 @@ export function TestimonialSection() {
               <Magnetic>
                 <div className="group relative flex h-full flex-col justify-between rounded-2xl border border-primary/20 bg-card/60 p-5 backdrop-blur-2xl transition-all duration-500 hover:border-primary hover:shadow-[0_0_35px_rgba(152,16,250,0.25)] sm:rounded-3xl sm:p-6 md:p-7 lg:p-8">
                   {/* Quote Icon Overlay */}
-                  <div className="absolute right-5 top-5 text-primary/15 transition-colors duration-500 group-hover:text-primary/30 sm:right-6 sm:top-6">
-                    <Quote className="size-8 sm:size-10" />
+                  <div className="absolute right-5 top-5 text-primary/15 transition-colors duration-500 group-hover:text-primary/30 sm:right-6 sm:top-6" aria-hidden="true">
+                    <Quote className="size-8 sm:size-10" aria-hidden="true" />
                   </div>
 
                   <div>
                     {/* Star Rating */}
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-1" aria-label={`${item.rating} out of 5 stars`}>
                       {Array.from({ length: item.rating }).map((_, i) => (
                         <Star
                           key={i}
                           className="size-3.5 fill-primary text-primary sm:size-4"
+                          aria-hidden="true"
                         />
                       ))}
                     </div>
@@ -118,9 +114,9 @@ export function TestimonialSection() {
                     </div>
 
                     <div className="min-w-0">
-                      <h4 className="truncate text-sm font-bold text-foreground">
+                      <h3 className="truncate text-sm font-bold text-foreground">
                         {item.author}
-                      </h4>
+                      </h3>
 
                       <p className="truncate font-mono text-[10px] text-muted-foreground sm:text-xs">
                         {item.role} •{" "}

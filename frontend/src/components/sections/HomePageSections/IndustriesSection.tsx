@@ -108,7 +108,7 @@ export function IndustriesSection() {
       </div>
 
       <motion.div
-        aria-hidden
+        aria-hidden="true"
         className="pointer-events-none absolute inset-0 transition-colors duration-700"
         style={{
           background: `radial-gradient(ellipse 70% 55% at 12% 88%, ${industry.hero.accentColor}28, transparent 58%)`,
@@ -117,7 +117,7 @@ export function IndustriesSection() {
 
       <span
         ref={progressRef}
-        aria-hidden
+        aria-hidden="true"
         className="pointer-events-none absolute left-0 top-0 z-20 h-0.5 w-full origin-left scale-x-0 bg-primary"
       />
 
@@ -161,7 +161,7 @@ export function IndustriesSection() {
                   className="inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-foreground/80 transition-colors hover:text-primary sm:text-xs sm:tracking-[0.22em]"
                 >
                   View All Industries
-                  <ArrowUpRight className="size-3.5" />
+                  <ArrowUpRight className="size-3.5" aria-hidden="true" />
                 </Link>
               </Magnetic>
             )}
@@ -184,6 +184,7 @@ export function IndustriesSection() {
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.55, ease: cubicBezier.premium }}
                 className="inline-block select-none text-[32vw] font-black leading-none text-foreground/4.5"
+                aria-hidden="true"
               >
                 {initialLetter}
               </motion.span>
@@ -253,7 +254,7 @@ export function IndustriesSection() {
                     >
                       <Link href={industry.cta.href}>
                         {industry.cta.button}
-                        <ArrowUpRight />
+                        <ArrowUpRight aria-hidden="true" />
                       </Link>
                     </Button>
                   </Magnetic>
@@ -277,6 +278,7 @@ export function IndustriesSection() {
                           <span
                             className="font-mono text-xs sm:text-sm"
                             style={{ color: industry.hero.accentColor }}
+                            aria-hidden="true"
                           >
                             {String(index + 1).padStart(2, "0")}
                           </span>
@@ -297,7 +299,7 @@ export function IndustriesSection() {
                   {industry.process.map(
                     (step: { step: number; title: string }) => (
                       <li key={step.step} className="flex items-center gap-2">
-                        <span style={{ color: industry.hero.accentColor }}>
+                        <span style={{ color: industry.hero.accentColor }} aria-hidden="true">
                           {String(step.step).padStart(2, "0")}
                         </span>
                         {step.title}

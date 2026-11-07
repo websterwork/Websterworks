@@ -13,7 +13,7 @@ export function TechnologiesSection() {
       <GradientBlur />
 
       <Container className="relative z-10">
-        {/* Heading */}
+        {/* Heading - Uses an <h2> tag for correct accessibility hierarchy */}
         <motion.div
           initial={{
             opacity: 0,

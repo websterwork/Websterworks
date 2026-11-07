@@ -11,6 +11,7 @@
  */
 
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { ArrowRight, Sparkles } from "lucide-react";
 
 import { Badge, Button } from "@/components/ui";
@@ -24,7 +25,19 @@ import {
   Magnetic,
 } from "@/components/animations";
 import { Container } from "@/components/common";
-import { LogoViewer } from "@/components/threeD";
+
+// Dynamic import for LogoViewer - defers heavy Three.js / WebGL bundle from initial load
+const LogoViewer = dynamic(
+  () => import("@/components/threeD").then((mod) => mod.LogoViewer),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="h-full w-full rounded-3xl bg-card/20 border border-primary/20 animate-pulse flex items-center justify-center">
+        <span className="font-mono text-xs uppercase tracking-widest text-primary/60">Loading 3D Engine...</span>
+      </div>
+    ),
+  }
+);
 
 export function HeroSection() {
   return (
@@ -64,7 +77,7 @@ export function HeroSection() {
           <div className="min-w-0">
             <Reveal>
               <Badge className="mb-6 rounded-full px-3 py-1.5 text-xs sm:mb-8 sm:px-4 sm:py-2 sm:text-sm">
-                <Sparkles className="mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                <Sparkles className="mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4" aria-hidden="true" />
                 AI Powered Digital Agency
               </Badge>
             </Reveal>
@@ -123,7 +136,7 @@ export function HeroSection() {
                   <Button asChild size="lg" className="w-full sm:w-auto">
                     <Link href="/contact">
                       Start Your Project
-                      <ArrowRight className="ml-2 h-4 w-4" />
+                      <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
                     </Link>
                   </Button>
                 </Magnetic>
@@ -148,7 +161,7 @@ export function HeroSection() {
             </FadeIn>
           </div>
 
-          {/* Right Column (3D Logo Canvas) */}
+          {/* Right Column (3D Logo Canvas - Lazily Loaded) */}
           <div
             className="
               relative
