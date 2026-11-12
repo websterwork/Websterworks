@@ -4,7 +4,7 @@
 import { ReactNode } from "react";
 import { ToastProvider } from "./ToastProvider";
 import { ThemeProvider } from "./ThemeProvider";
-import { PointerEffect } from "./PointerEffectProvider";
+// import { PointerEffect } from "./PointerEffectProvider";
 
 interface ProvidersProps {
   children: ReactNode;
@@ -14,7 +14,7 @@ export function Providers({ children }: ProvidersProps) {
   return (
     <ThemeProvider>
       {children}
-      <PointerEffect />
+      {/* <PointerEffect /> */}
       <ToastProvider />
     </ThemeProvider>
   );

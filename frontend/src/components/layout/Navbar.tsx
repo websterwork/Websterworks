@@ -67,7 +67,7 @@ export function Navbar() {
       const hideShowAnim = gsap.to(navbar, {
         yPercent: -100,
         paused: true,
-        duration: duration.normal,
+        duration: duration.fast,
         ease: gsapEasings.power2InOut,
       });
 

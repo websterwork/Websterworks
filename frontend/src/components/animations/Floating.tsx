@@ -33,8 +33,8 @@ interface FloatingProps extends HTMLMotionProps<"div"> {
 export function Floating({
   children,
   className,
-  distance = 16,
-  duration = 4,
+  distance = 1,
+  duration = 0,
   delay = 0,
   disabled = false,
   ...props

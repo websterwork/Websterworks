@@ -26,18 +26,18 @@ import {
 } from "@/components/animations";
 import { Container } from "@/components/common";
 
-// Dynamic import for LogoViewer - defers heavy Three.js / WebGL bundle from initial load
-const LogoViewer = dynamic(
-  () => import("@/components/threeD").then((mod) => mod.LogoViewer),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="h-full w-full rounded-3xl bg-card/20 border border-primary/20 animate-pulse flex items-center justify-center">
-        <span className="font-mono text-xs uppercase tracking-widest text-primary/60">Loading 3D Engine...</span>
-      </div>
-    ),
-  }
-);
+// // Dynamic import for LogoViewer - defers heavy Three.js / WebGL bundle from initial load
+// const LogoViewer = dynamic(
+//   () => import("@/components/threeD").then((mod) => mod.LogoViewer),
+//   {
+//     ssr: false,
+//     loading: () => (
+//       <div className="h-full w-full rounded-3xl bg-card/20 border border-primary/20 animate-pulse flex items-center justify-center">
+//         <span className="font-mono text-xs uppercase tracking-widest text-primary/60">Loading 3D Engine...</span>
+//       </div>
+//     ),
+//   }
+// );
 
 export function HeroSection() {
   return (
@@ -75,14 +75,14 @@ export function HeroSection() {
         >
           {/* Left Column */}
           <div className="min-w-0">
-            <Reveal>
+            {/* <Reveal> */}
               <Badge className="mb-6 rounded-full px-3 py-1.5 text-xs sm:mb-8 sm:px-4 sm:py-2 sm:text-sm">
                 <Sparkles className="mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4" aria-hidden="true" />
                 AI Powered Digital Agency
               </Badge>
-            </Reveal>
+            {/* </Reveal> */}
 
-            <SplitText
+            <h1
               className="
                 max-w-4xl
                 text-4xl
@@ -94,11 +94,11 @@ export function HeroSection() {
               "
             >
               We Build Digital Products That Scale Businesses
-            </SplitText>
-            <FadeIn delay={0.4}>
+            </h1>
+            {/* <FadeIn> */}
               {/* Lock the height to prevent collapse when typewriter clears text */}
               <div className="mt-6 min-h-[2.5rem] text-xl font-semibold text-primary sm:mt-8 sm:min-h-[3rem] sm:text-2xl">
-                <Typewriter
+                {/* <Typewriter
                   words={[
                     "Web Applications",
                     "Mobile Apps",
@@ -106,11 +106,11 @@ export function HeroSection() {
                     "Cloud Platforms",
                     "SaaS Products",
                   ]}
-                />
+                /> */}
               </div>
-            </FadeIn>
+            {/* </FadeIn> */}
 
-            <FadeIn delay={0.6}>
+            {/* <FadeIn> */}
               <p
                 className="
                   mt-6
@@ -128,9 +128,9 @@ export function HeroSection() {
                 digital products using modern technologies and AI-powered
                 workflows.
               </p>
-            </FadeIn>
+            {/* </FadeIn> */}
 
-            <FadeIn delay={0.8}>
+            {/* <FadeIn> */}
               <div className="mt-8 flex flex-col gap-4 sm:mt-10 sm:flex-row sm:flex-wrap sm:gap-5">
                 <Magnetic>
                   <Button asChild size="lg" className="w-full sm:w-auto">
@@ -150,18 +150,18 @@ export function HeroSection() {
                   <Link href="/portfolio">View Portfolio</Link>
                 </Button>
               </div>
-            </FadeIn>
-
-            <FadeIn delay={1}>
+            {/* </FadeIn> */}
+{/* 
+            <FadeIn> */}
               <div className="mt-8 flex flex-col gap-3 text-sm text-muted-foreground sm:mt-12 sm:flex-row sm:flex-wrap sm:gap-6 lg:gap-8">
                 <span>✓ Modern Tech Stack</span>
                 <span>✓ AI Integrated</span>
                 <span>✓ Scalable Architecture</span>
               </div>
-            </FadeIn>
+            {/* </FadeIn> */}
           </div>
 
-          {/* Right Column (3D Logo Canvas - Lazily Loaded) */}
+          {/* Right Column (3D Logo Canvas - Lazily Loaded)
           <div
             className="
               relative
@@ -180,7 +180,7 @@ export function HeroSection() {
                 className="h-full w-full"
               />
             </Floating>
-          </div>
+          </div> */}
         </div>
       </Container>
     </section>

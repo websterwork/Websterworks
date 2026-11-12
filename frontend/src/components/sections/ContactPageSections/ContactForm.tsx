@@ -198,7 +198,7 @@ export function ContactForm() {
                       required
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      placeholder="Muhammad Hussnain"
+                      placeholder="Enter Your Name"
                       className="w-full px-4 py-3.5 rounded-xl bg-background border border-border focus:border-primary focus:outline-none transition-all text-sm text-foreground placeholder:text-muted-foreground/50"
                     />
                   </div>
@@ -212,7 +212,7 @@ export function ContactForm() {
                       required
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      placeholder="info@websterwork.com"
+                      placeholder="Enter your Email address"
                       className="w-full px-4 py-3.5 rounded-xl bg-background border border-border focus:border-primary focus:outline-none transition-all text-sm text-foreground placeholder:text-muted-foreground/50"
                     />
                   </div>

@@ -98,7 +98,7 @@ export function SplitText<T extends ElementType = "div">({
 
   animation = "up",
 
-  stagger = 0.05,
+  stagger = 0.02,
 
   delay = 0,
 
@@ -108,7 +108,7 @@ export function SplitText<T extends ElementType = "div">({
 
   once = true,
 
-  amount = 0.2,
+  amount = 0.1,
 }: SplitTextProps<T>) {
   const Component = motion.create(as ?? "div");
 

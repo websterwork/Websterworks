@@ -99,7 +99,7 @@ export function FadeIn<T extends ElementType = "div">({
 
   once = true,
 
-  amount = 0.2,
+  amount = 0.1,
 }: FadeInProps<T>) {
   const Component = motion.create(as ?? "div");
 

@@ -62,11 +62,11 @@ export function Typewriter<T extends ElementType = "div">({
 
   className,
 
-  typingSpeed = 70,
+  typingSpeed = 10,
 
-  deletingSpeed = 40,
+  deletingSpeed = 10,
 
-  pauseDuration = 1500,
+  pauseDuration = 1200,
 
   loop = true,
 

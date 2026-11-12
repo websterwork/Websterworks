@@ -7,15 +7,15 @@ import { StructuredData } from "@/lib/seo/structured-data";
 import { webpageSchema } from "@/lib/seo/jsonld";
 
 import { HeroSection } from "@/components/sections/HomePageSections/HeroSection";
-import { TechnologiesSection } from "@/components/sections/HomePageSections/TechnologiesSection";
-import { ServiceSection } from "@/components/sections/HomePageSections/ServiceSection";
-import { CompaniesSection } from "@/components/sections/HomePageSections/CompaniesSection";
-import { WhyChooseUsSection } from "@/components/sections/HomePageSections/WhyChooseUsSection";
-import { AboutUsSection } from "@/components/sections/HomePageSections/AboutUsSection";
-import { IndustriesSection } from "@/components/sections/HomePageSections/IndustriesSection";
-import { PortfolioSection } from "@/components/sections/HomePageSections/PortfolioSection";
-import { TestimonialSection } from "@/components/sections/HomePageSections/TestemonialSection";
-import { CTASection } from "@/components/sections/HomePageSections/CTASection";
+// import { TechnologiesSection } from "@/components/sections/HomePageSections/TechnologiesSection";
+// import { ServiceSection } from "@/components/sections/HomePageSections/ServiceSection";
+// import { CompaniesSection } from "@/components/sections/HomePageSections/CompaniesSection";
+// import { WhyChooseUsSection } from "@/components/sections/HomePageSections/WhyChooseUsSection";
+// import { AboutUsSection } from "@/components/sections/HomePageSections/AboutUsSection";
+// import { IndustriesSection } from "@/components/sections/HomePageSections/IndustriesSection";
+// import { PortfolioSection } from "@/components/sections/HomePageSections/PortfolioSection";
+// import { TestimonialSection } from "@/components/sections/HomePageSections/TestemonialSection";
+// import { CTASection } from "@/components/sections/HomePageSections/CTASection";
 
 /* -------------------------------------------------------------------------- */
 /* Page Metadata                                                              */
@@ -52,7 +52,7 @@ export default function Home() {
 
       {/* Page Sections */}
       <HeroSection />
-      <TechnologiesSection />
+      {/* <TechnologiesSection />
       <ServiceSection />
       <CompaniesSection />
       <WhyChooseUsSection />
@@ -60,7 +60,7 @@ export default function Home() {
       <IndustriesSection />
       <PortfolioSection />
       <TestimonialSection />
-      <CTASection />
+      <CTASection /> */}
     </>
   );
 }
