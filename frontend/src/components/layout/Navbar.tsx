@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Menu, X, ChevronRight, LogIn } from "lucide-react";
@@ -12,8 +11,6 @@ import { cn } from "@/lib/utils";
 
 // Laser Border Animation Component
 import { LaserBorder } from "@/components/animations/LaserBorder";
-
-
 
 import {
   dropAndBounce,
@@ -26,7 +23,6 @@ import { gsapEasings } from "@/lib/motion/easings";
 
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { LogoViewer } from "@/components/threeD";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -114,18 +110,14 @@ export function Navbar() {
 
         <Container className="h-full">
           <nav className="flex h-full items-center justify-between">
-            {/* LOGO SECTION */}
+            {/* LOGO SECTION - Optimized with lightweight CSS/SVG badge instead of heavy 3D WebGL */}
             <Link
               href="/"
               onClick={() => setIsOpen(false)}
               className="flex items-center gap-2.5 group tracking-wider font-extrabold text-lg sm:text-xl text-foreground"
             >
-              <div className="relative flex items-center justify-center w-10 h-10   transition-all overflow-hidden">
-                <LogoViewer
-                  model="default"
-                  animation="rotate"
-                  className="h-10 w-10"
-                />
+              <div className="relative flex items-center justify-center w-10 h-10 rounded-lg bg-primary/10 border border-primary/20 group-hover:border-primary transition-all overflow-hidden">
+                <span className="font-mono text-primary font-black text-base">W</span>
               </div>
 
               <span className="font-mono">

@@ -15,8 +15,9 @@
  * -----------------------------------------------------------------------------
  */
 import type { Metadata } from "next";
-import { Analytics } from "@vercel/analytics/next"
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import Script from "next/script"; // <-- Native Next.js Script for optimized GTM loading
 /* -------------------------------------------------------------------------- */
 /* Providers                                                                  */
 /* -------------------------------------------------------------------------- */
@@ -44,11 +45,6 @@ import {
 } from "@/lib/seo";
 
 /* -------------------------------------------------------------------------- */
-/* TAGS MANAGER                                                               */
-/* -------------------------------------------------------------------------- */
-import { GoogleTagManager } from "@next/third-parties/google";
-
-/* -------------------------------------------------------------------------- */
 /* Metadata                                                                   */
 /* -------------------------------------------------------------------------- */
 
@@ -68,6 +64,9 @@ export default function RootLayout({
         {activeSocials.map((url) => (
           <link key={url} rel="me" href={url} />
         ))}
+        {/* Preconnect hints to eliminate GTM connection latency */}
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="preconnect" href="https://www.google-analytics.com" />
       </head>
       <body>
         {/* ------------------------------------------------------ */}
@@ -77,14 +76,14 @@ export default function RootLayout({
           data={[organizationSchema(), websiteSchema(), localBusinessSchema()]}
         />
 
-        {/* Preconnect hints to eliminate GTM & Analytics connection latency
-        <link rel="preconnect" href="https://www.googletagmanager.com" />
-        <link rel="preconnect" href="https://www.google-analytics.com" />
-         */}
         {/* --------------------------------------------------------------------------*/}
-        {/* TAGS MANAGER                                                              */}
+        {/* OPTIMIZED GTM VIA NEXT/SCRIPT (Lazy Loaded)                              */}
         {/* --------------------------------------------------------------------------*/}
-        {/* <GoogleTagManager gtmId="GTM-5VZXN6F9" /> */}
+        <Script
+          id="google-tag-manager"
+          strategy="lazyOnload"
+          src="https://www.googletagmanager.com/gtm.js?id=GTM-5VZXN6F9"
+        />
 
         {/* ---------------------------------------------------------- */}
         {/* Global Providers                                           */}
