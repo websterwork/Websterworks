@@ -77,14 +77,14 @@ export default function RootLayout({
           data={[organizationSchema(), websiteSchema(), localBusinessSchema()]}
         />
 
-        {/* Preconnect hints to eliminate GTM & Analytics connection latency */}
+        {/* Preconnect hints to eliminate GTM & Analytics connection latency
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link rel="preconnect" href="https://www.google-analytics.com" />
-        
+         */}
         {/* --------------------------------------------------------------------------*/}
         {/* TAGS MANAGER                                                              */}
         {/* --------------------------------------------------------------------------*/}
-        <GoogleTagManager gtmId="GTM-5VZXN6F9" />
+        {/* <GoogleTagManager gtmId="GTM-5VZXN6F9" /> */}
 
         {/* ---------------------------------------------------------- */}
         {/* Global Providers                                           */}
