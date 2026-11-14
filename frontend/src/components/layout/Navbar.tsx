@@ -2,21 +2,11 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
 import { Menu, X, ChevronRight, LogIn } from "lucide-react";
 import { Container } from "@/components/common/Container";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import { navigationConfig } from "@/config/navigation";
 import { cn } from "@/lib/utils";
-
-import {
-  dropAndBounce,
-  slideOutTop,
-  staggerContainer,
-  fadeDown,
-} from "@/lib/motion/variants";
-import { duration, fastTransition } from "@/lib/motion/transitions";
-import { gsapEasings } from "@/lib/motion/easings";
 
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -42,6 +32,7 @@ export function Navbar() {
     };
   }, [isOpen]);
 
+  // GSAP Scroll Shrink & Hide/Show effect
   useEffect(() => {
     if (!navbarRef.current) return;
     const navbar = navbarRef.current;
@@ -60,8 +51,8 @@ export function Navbar() {
       const hideShowAnim = gsap.to(navbar, {
         yPercent: -100,
         paused: true,
-        duration: duration.fast,
-        ease: gsapEasings.power2InOut,
+        duration: 0.2,
+        ease: "power2.inOut",
       });
 
       let lastScroll = 0;
@@ -91,18 +82,15 @@ export function Navbar() {
 
   return (
     <>
-      <motion.header
+      <header
         ref={navbarRef}
-        variants={dropAndBounce}
-        initial="hidden"
-        animate="visible"
         className={cn(
           "fixed top-0 left-0 right-0 z-50 w-full h-20",
           "bg-background/80 backdrop-blur-xl border-b border-border/60 shadow-sm",
           "will-change-transform transition-colors duration-300 relative",
         )}
       >
-        {/* Lightweight pure CSS laser glow line instead of heavy JS animation component */}
+        {/* Lightweight pure CSS laser glow line */}
         <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-60 pointer-events-none" />
 
         <Container className="h-full">
@@ -126,10 +114,7 @@ export function Navbar() {
             </Link>
 
             {/* DESKTOP NAV */}
-            <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              animate="visible"
+            <div
               className="hidden items-center gap-1 lg:flex"
               onMouseLeave={() => setHoveredIdx(null)}
             >
@@ -138,16 +123,15 @@ export function Navbar() {
                 const isAnotherHovered = hoveredIdx !== null && !isHovered;
 
                 return (
-                  <motion.div
+                  <div
                     key={item.href}
-                    variants={fadeDown}
                     onMouseEnter={() => setHoveredIdx(idx)}
-                    animate={{
+                    style={{
                       opacity: isAnotherHovered ? 0.4 : 1,
                       filter: isAnotherHovered ? "blur(1px)" : "blur(0px)",
-                      scale: isHovered ? 1.04 : 1,
+                      transform: isHovered ? "scale(1.04)" : "scale(1)",
                     }}
-                    transition={fastTransition}
+                    className="transition-all duration-200"
                   >
                     <Link
                       href={item.href}
@@ -160,16 +144,13 @@ export function Navbar() {
                       <span>{item.title}</span>
 
                       {isHovered && (
-                        <motion.span
-                          layoutId="navHoverBar"
-                          className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary shadow-[0_0_8px_var(--primary)]"
-                        />
+                        <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary shadow-[0_0_8px_var(--primary)] transition-all" />
                       )}
                     </Link>
-                  </motion.div>
+                  </div>
                 );
               })}
-            </motion.div>
+            </div>
 
             {/* RIGHT ACTION MENU */}
             <div className="hidden items-center gap-4 lg:flex">
@@ -217,61 +198,48 @@ export function Navbar() {
             </div>
           </nav>
         </Container>
-      </motion.header>
+      </header>
 
       {/* MOBILE DRAWER */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            variants={slideOutTop}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            className="fixed inset-x-0 top-20 bottom-0 z-40 bg-background/95 backdrop-blur-2xl border-b border-border/80 p-6 overflow-y-auto lg:hidden flex flex-col justify-between"
-          >
-            <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              animate="visible"
-              className="flex flex-col gap-3"
+      {isOpen && (
+        <div className="fixed inset-x-0 top-20 bottom-0 z-40 bg-background/95 backdrop-blur-2xl border-b border-border/80 p-6 overflow-y-auto lg:hidden flex flex-col justify-between transition-all animate-in fade-in slide-in-from-top-4 duration-200">
+          <div className="flex flex-col gap-3">
+            {navigationConfig.main.map((item) => (
+              <div key={item.href}>
+                <Link
+                  href={item.href}
+                  onClick={() => setIsOpen(false)}
+                  className="flex items-center gap-3 rounded-md p-3 text-base font-medium text-muted-foreground hover:bg-primary/10 hover:text-foreground border border-transparent hover:border-primary/20 transition-all"
+                >
+                  <item.icon size={20} className="text-primary" />
+                  <span>{item.title}</span>
+                </Link>
+              </div>
+            ))}
+          </div>
+
+          {/* MOBILE ACTION BUTTONS (LOG IN + GET STARTED) */}
+          <div className="mt-6 pt-6 border-t border-border/60 flex flex-col gap-3">
+            <Link
+              href="/login"
+              onClick={() => setIsOpen(false)}
+              className="w-full text-center rounded-md border border-border bg-secondary/50 py-3 text-sm font-semibold text-foreground hover:bg-secondary transition-colors flex items-center justify-center gap-2"
             >
-              {navigationConfig.main.map((item) => (
-                <motion.div key={item.href} variants={fadeDown}>
-                  <Link
-                    href={item.href}
-                    onClick={() => setIsOpen(false)}
-                    className="flex items-center gap-3 rounded-md p-3 text-base font-medium text-muted-foreground hover:bg-primary/10 hover:text-foreground border border-transparent hover:border-primary/20 transition-all"
-                  >
-                    <item.icon size={20} className="text-primary" />
-                    <span>{item.title}</span>
-                  </Link>
-                </motion.div>
-              ))}
-            </motion.div>
+              <LogIn size={18} className="text-primary" />
+              <span>Log in</span>
+            </Link>
 
-            {/* MOBILE ACTION BUTTONS (LOG IN + GET STARTED) */}
-            <div className="mt-6 pt-6 border-t border-border/60 flex flex-col gap-3">
-              <Link
-                href="/login"
-                onClick={() => setIsOpen(false)}
-                className="w-full text-center rounded-md border border-border bg-secondary/50 py-3 text-sm font-semibold text-foreground hover:bg-secondary transition-colors flex items-center justify-center gap-2"
-              >
-                <LogIn size={18} className="text-primary" />
-                <span>Log in</span>
-              </Link>
-
-              <Link
-                href="/contact"
-                onClick={() => setIsOpen(false)}
-                className="w-full text-center rounded-md bg-primary py-3 text-sm font-bold text-primary-foreground shadow-[0_0_15px_var(--primary)] flex items-center justify-center gap-2"
-              >
-                <span>Get Started</span>
-                <ChevronRight size={16} />
-              </Link>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            <Link
+              href="/contact"
+              onClick={() => setIsOpen(false)}
+              className="w-full text-center rounded-md bg-primary py-3 text-sm font-bold text-primary-foreground shadow-[0_0_15px_var(--primary)] flex items-center justify-center gap-2"
+            >
+              <span>Get Started</span>
+              <ChevronRight size={16} />
+            </Link>
+          </div>
+        </div>
+      )}
     </>
   );
-} 
+}
