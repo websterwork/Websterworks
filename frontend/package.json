@@ -44,6 +44,7 @@
     "firefox >= 100"
   ],
   "devDependencies": {
+    "@next/bundle-analyzer": "^16.4.6",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

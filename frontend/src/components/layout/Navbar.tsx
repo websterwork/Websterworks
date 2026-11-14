@@ -9,9 +9,6 @@ import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import { navigationConfig } from "@/config/navigation";
 import { cn } from "@/lib/utils";
 
-// Laser Border Animation Component
-import { LaserBorder } from "@/components/animations/LaserBorder";
-
 import {
   dropAndBounce,
   slideOutTop,
@@ -74,7 +71,6 @@ export function Navbar() {
         start: "top top",
         end: "max",
         onUpdate: (self) => {
-          // Do not hide navbar if mobile drawer is currently open
           if (isOpen) return;
 
           const currentScroll = self.scroll();
@@ -106,11 +102,12 @@ export function Navbar() {
           "will-change-transform transition-colors duration-300 relative",
         )}
       >
-        <LaserBorder speed={3.5} />
+        {/* Lightweight pure CSS laser glow line instead of heavy JS animation component */}
+        <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-60 pointer-events-none" />
 
         <Container className="h-full">
           <nav className="flex h-full items-center justify-between">
-            {/* LOGO SECTION - Optimized with lightweight CSS/SVG badge instead of heavy 3D WebGL */}
+            {/* LOGO SECTION */}
             <Link
               href="/"
               onClick={() => setIsOpen(false)}
@@ -277,4 +274,4 @@ export function Navbar() {
       </AnimatePresence>
     </>
   );
-}
+} 
